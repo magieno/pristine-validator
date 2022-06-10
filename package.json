@@ -1,0 +1,22 @@
+{
+  "name": "pristine-validator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magieno/pristine-validator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/magieno/pristine-validator/issues"
+  },
+  "homepage": "https://github.com/magieno/pristine-validator#readme",
+  "dependencies": {
+    "validator": "^13.7.0"
+  }
+}
