@@ -107,24 +107,34 @@ export class Validator {
                 continue;
             }
 
-            if(typeof value === 'object') {
-                const nestedValidationErrors = await this.executeValidation(value, defaultConditions, propertyPath);
+            if(Array.isArray(value)) {
+                const nestedValidationErrors: ValidationError[] = [];
+
+                const validationError = new ValidationError(property, value, objectToValidate)
+
+                for (const [index, element] of value.entries()) {
+                    const inArrayElementValidationErrors = await this.executeValidation(element, defaultConditions, propertyPath);
+
+                    if(inArrayElementValidationErrors.length === 0) {
+                        continue;
+                    }
+
+                    const inArrayValidationError = new ValidationError(index + "", element, element);
+                    inArrayValidationError.children.push(...inArrayElementValidationErrors)
+
+                    nestedValidationErrors.push(inArrayValidationError);
+                }
 
                 if(nestedValidationErrors.length === 0) {
                     continue;
                 }
 
-                const validationError = new ValidationError(property, value, objectToValidate)
                 validationError.children.push(...nestedValidationErrors);
 
                 // Add the errors to the list of validation errors
                 validationErrors.push(validationError);
-            } else if(Array.isArray(value)) {
-                const nestedValidationErrors: ValidationError[] = [];
-
-                for (const element of value) {
-                    nestedValidationErrors.push(... (await this.executeValidation(element, defaultConditions, propertyPath)));
-                }
+            } else if(typeof value === 'object') {
+                const nestedValidationErrors = await this.executeValidation(value, defaultConditions, propertyPath);
 
                 if(nestedValidationErrors.length === 0) {
                     continue;
