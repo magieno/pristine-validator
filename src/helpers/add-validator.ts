@@ -7,13 +7,17 @@ export const addValidator = (target: any, propertyKey: string, instanciatedValid
         target.constructor.prototype["__metadata__"] = {}
     }
 
-    if(target.constructor.prototype["__metadata__"].hasOwnProperty("validators") === false) {
-        target.constructor.prototype["__metadata__"]["validators"] = {}
+    if(target.constructor.prototype["__metadata__"].hasOwnProperty("properties") === false) {
+        target.constructor.prototype["__metadata__"]["properties"] = {}
     }
 
-    if(target.constructor.prototype["__metadata__"]["validators"].hasOwnProperty(propertyKey) === false) {
-        target.constructor.prototype["__metadata__"]["validators"][propertyKey] = []
+    if(target.constructor.prototype["__metadata__"]["properties"].hasOwnProperty(propertyKey) === false) {
+        target.constructor.prototype["__metadata__"]["properties"][propertyKey] = {}
     }
 
-    target.constructor.prototype["__metadata__"]["validators"][propertyKey].push(instanciatedValidator)
+    if(target.constructor.prototype["__metadata__"]["properties"][propertyKey].hasOwnProperty("validators") === false) {
+        target.constructor.prototype["__metadata__"]["properties"][propertyKey]["validators"] = []
+    }
+
+    target.constructor.prototype["__metadata__"]["properties"][propertyKey]["validators"].push(instanciatedValidator)
 }
