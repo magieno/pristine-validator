@@ -18,7 +18,7 @@ export class Validator {
         // Find the validators associated with this particular property for this object.
         const propertyMetadata = PrototypeMetadataUtils.getPropertyMetadata(objectToValidate, property);
 
-        if(propertyMetadata.hasOwnProperty("validators") === false || Array.isArray(propertyMetadata.validators)) {
+        if(propertyMetadata.hasOwnProperty("validators") === false || Array.isArray(propertyMetadata.validators) === false) {
             return null;
         }
 
@@ -78,14 +78,10 @@ export class Validator {
         else {
             // If there are no property path, we validate all the paths.
             // Loop over all the properties in the object that needs to be validated, then check for each if there are any validators associated.
-            propertiesToVisit = Object.keys(objectToValidate);
+            propertiesToVisit = PrototypeMetadataUtils.getPropertiesFromMetadata(objectToValidate);
         }
 
-        for (let property in propertiesToVisit) {
-            if (!objectToValidate.hasOwnProperty(property)) {
-                continue;
-            }
-
+        for (let property of propertiesToVisit) {
             // todo: Find the conditions for this property and execute them.
 
             const validationError: ValidationError | null = await this.executeValidatorsOnProperty(property, objectToValidate)
@@ -155,7 +151,7 @@ export class Validator {
      */
     public async validate(objectToValidate: any, parameters: {
         propertyPath?: string
-    }): Promise<ValidationError[]> {
+    } = {}): Promise<ValidationError[]> {
         let validationErrors: ValidationError[] = [];
 
         let propertyPaths: string[] = [];

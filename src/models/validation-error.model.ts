@@ -11,6 +11,7 @@ export class ValidationError {
         this.property = property;
         this.value = value;
         this.target = target;
+        this.constraints = constraints;
     }
 
     addChild(validationError: ValidationError) {
