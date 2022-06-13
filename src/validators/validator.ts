@@ -96,7 +96,7 @@ export class Validator {
 
             // If there are nested elements and there is a @validateNested annotation, we must validate them further.
             const propertyMetadata = PrototypeMetadataUtils.getPropertyMetadata(objectToValidate, property);
-            const shouldValidateNested = propertyMetadata.hasOwnProperty("shouldValidateNested") && propertyMetadata.shouldValidateNested;
+            const shouldValidateNested = propertyMetadata.hasOwnProperty("validateNested") && propertyMetadata.validateNested;
 
             // If we visit only specific properties, the value must be a nested element if there are additional property paths
             if(visitOnlyInPropertyPath && propertyPath.length !== 0 && typeof value !== 'object' && Array.isArray(value) === false) {
