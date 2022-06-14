@@ -13,9 +13,9 @@ export const addCondition = (target: any, propertyKey: string, instanciatedConst
         target.constructor.prototype["__metadata__"]["properties"][propertyKey] = {}
     }
 
-    if(target.constructor.prototype["__metadata__"]["properties"][propertyKey].hasOwnProperty("constraints") === false) {
-        target.constructor.prototype["__metadata__"]["properties"][propertyKey]["constraints"] = []
+    if(target.constructor.prototype["__metadata__"]["properties"][propertyKey].hasOwnProperty("conditions") === false) {
+        target.constructor.prototype["__metadata__"]["properties"][propertyKey]["conditions"] = []
     }
 
-    target.constructor.prototype["__metadata__"]["properties"][propertyKey]["constraints"].push(instanciatedConstraint)
+    target.constructor.prototype["__metadata__"]["properties"][propertyKey]["conditions"].push(instanciatedConstraint)
 }

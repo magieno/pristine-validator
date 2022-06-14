@@ -1,6 +1,7 @@
 import {isString} from "./validators/is-string.validator";
 import {Validator} from "./validator";
 import {validateNested} from "./validators/validate-nested.validator";
+import {isOptional} from "./conditions/is-optional.condition";
 
 describe("Validator", () => {
     it("should directly validate the first-level properties", async () => {
@@ -203,5 +204,72 @@ describe("Validator", () => {
         expect(validationErrors[0].children[0].children[0].constraints.IS_STRING).toBeDefined();
 
         expect(validationErrors[0].children[1].property).toBe("title");
+    })
+
+    // Conditional validators
+    it("should not validate a property if it isn't present in the object and there is the @isOptional condition", async () => {
+        class NestedClass {
+            @isString()
+                // @ts-ignore
+            title: string;
+
+            @isString()
+            @isOptional()
+                // @ts-ignore
+            description: string;
+        }
+
+        class BasicClass {
+            @validateNested()
+                // @ts-ignore
+            nestedClass: NestedClass;
+
+            @isString()
+            @isOptional()
+                // @ts-ignore
+            title: string;
+        }
+
+        const basicClassInvalid = new BasicClass();
+        basicClassInvalid.nestedClass = new NestedClass();
+        basicClassInvalid.nestedClass.title = "title";
+
+        const validator = new Validator();
+        const validationErrors = await validator.validate(basicClassInvalid);
+
+        expect(validationErrors.length).toBe(0);
+    })
+
+    it("should still validate a property if it's not undefined in the object, the @isOptional condition is present but the value is invalid", async () => {
+        class NestedClass {
+            @isString()
+                // @ts-ignore
+            title: string;
+
+            @isString()
+            @isOptional()
+                // @ts-ignore
+            description: string;
+        }
+
+        class BasicClass {
+            @validateNested()
+                // @ts-ignore
+            nestedClass: NestedClass;
+
+            @isString()
+                // @ts-ignore
+            title: string;
+        }
+
+        const basicClassInvalid = new BasicClass();
+        basicClassInvalid.nestedClass = new NestedClass();
+        basicClassInvalid.nestedClass.title = "title";
+
+        const validator = new Validator();
+        const validationErrors = await validator.validate(basicClassInvalid);
+
+        expect(validationErrors.length).toBe(1);
+        expect(validationErrors[0].property).toBe("title");
     })
 });
