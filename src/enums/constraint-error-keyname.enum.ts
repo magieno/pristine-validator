@@ -23,6 +23,7 @@ export enum ConstraintErrorKeynameEnum {
     NotEquals = "NOT_EQUALS",
 
     // Date
+    InvalidDate = "INVALID_DATE",
     MaxDate = "MAX_DATE",
     MinDate = "MIN_DATE",
 
