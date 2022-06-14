@@ -242,9 +242,7 @@ describe("Validator", () => {
 
     it("should still validate a property if it's not undefined in the object, the @isOptional condition is present but the value is invalid", async () => {
         class NestedClass {
-            @isString((constraintName, value, propertyKey, target) => {
-                return myTranslation.getLocaleError(constraintName, propertyKey, value);
-            })
+            @isString()
                 // @ts-ignore
             title: string;
 
