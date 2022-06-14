@@ -115,12 +115,93 @@ describe("Validator", () => {
     })
 
     // Specific property paths
-    it("should properly validate a property path without arrays (when other fields are invalid)", () => {
+    it("should properly validate a property path without arrays (when other fields are invalid)", async () => {
+        class NestedClass {
+            @isString()
+            // @ts-ignore
+            title: string;
 
+            @isString()
+            // @ts-ignore
+            description: string;
+        }
+
+        class BasicClass {
+            @validateNested()
+            // @ts-ignore
+            nestedClass: NestedClass;
+
+            @isString()
+            // @ts-ignore
+            validMissingNumber: string;
+        }
+
+        const basicClass = new BasicClass();
+        const nestedClass = new NestedClass();
+        nestedClass.title = "Great title";
+        basicClass.nestedClass = nestedClass;
+
+        const validator = new Validator();
+        const validationErrors = await validator.validate(basicClass, {
+            propertyPath: "nestedClass.title"
+        });
+
+        expect(validationErrors.length).toBe(0);
+
+        const validationErrors2 = await validator.validate(basicClass, {
+            propertyPath: "nestedClass.description"
+        });
+
+        expect(validationErrors2.length).toBe(1);
+        expect(validationErrors2[0].property).toBe("nestedClass");
+        expect(validationErrors2[0].children.length).toBe(1);
+        expect(validationErrors2[0].children[0].property).toBe("description");
+        expect(validationErrors2[0].children[0].constraints.IS_STRING).toBeDefined();
     })
 
     // Validate array of objects
-    it("should properly validate an array at the root", () => {
+    it("should properly validate an array at the root", async () => {
+        class NestedClass {
+            @isString()
+                // @ts-ignore
+            title: string;
 
+            @isString()
+                // @ts-ignore
+            description: string;
+        }
+
+        class BasicClass {
+            @validateNested()
+                // @ts-ignore
+            nestedClass: NestedClass;
+
+            @isString()
+                // @ts-ignore
+            title: string;
+        }
+
+        const basicClassValid = new BasicClass();
+        basicClassValid.title = "Valid title";
+        basicClassValid.nestedClass = new NestedClass();
+        basicClassValid.nestedClass.title = "title";
+        basicClassValid.nestedClass.description = "description";
+
+        const basicClassInvalid = new BasicClass();
+        basicClassInvalid.nestedClass = new NestedClass();
+        basicClassInvalid.nestedClass.title = "title";
+
+        const validator = new Validator();
+        const validationErrors = await validator.validate([basicClassValid, basicClassInvalid]);
+
+        expect(validationErrors.length).toBe(1);
+        expect(validationErrors[0].property).toBe("1");
+        expect(validationErrors[0].children.length).toBe(2);
+        expect(validationErrors[0].children[0].property).toBe("nestedClass");
+        expect(validationErrors[0].children[0].children.length).toBe(1);
+        expect(validationErrors[0].children[0].children[0].property).toBe("description");
+        expect(validationErrors[0].children[0].children[0].constraints.IS_STRING).toBeDefined();
+
+        expect(validationErrors[0].children[1].property).toBe("title");
     })
 });

@@ -7,7 +7,7 @@ import {PrototypeMetadataUtils} from "../utils/prototype-metadata.utils";
 
 export class Validator {
     /**
-     *
+     * This method executes all the validators that are attached on the property as decorators
      * @param property
      * @param objectToValidate
      */
@@ -51,6 +51,16 @@ export class Validator {
         return new ValidationError(property, value, objectToValidate, validationConstraints);
     }
 
+    /**
+     * This method recursively executes the validation on each property of the object to validate.
+     *
+     * If there are specific property paths to check, all other properties of the object are not validated.
+     *
+     * @param objectToValidate
+     * @param defaultConditions
+     * @param propertyPath
+     * @private
+     */
     private async executeValidation(objectToValidate: any, defaultConditions: ConditionInterface[] = [], propertyPath: string[] = []): Promise<ValidationError[]> {
         if(typeof objectToValidate !== "object") {
             throw new Error("The Object to validate must be of type object. Type: '" + typeof objectToValidate + "'.")
@@ -69,8 +79,8 @@ export class Validator {
             // We visit only the first property, check if the property is valid
             const property = propertyPath.shift();
 
-            if (property === undefined || objectToValidate.hasOwnProperty(property) === false) {
-                throw new Error("The property '" + property + "' doesn't exist on the object");
+            if (property === undefined) {
+                throw new Error("The property '" + property + "' is undefined and shouldn't be.");
             }
 
             propertiesToVisit.push(property);
@@ -153,9 +163,11 @@ export class Validator {
 
 
     /**
-     * This method takes an object to validate and return the list of validation errors it finds.
+     * This method takes an object (or an array of objects) to validate and return the list of validation errors it finds.
      *
      * If there are no validation errors, the object is to be considered valid.
+     *
+     * The propertyPath parameters takes a path using dot notation: ex: nestedClass.secondLevelNestedClass.title and this property will only be the one to be validated. This is useful to check if one specific property is valid or not without validting the whole object.
      * @param objectToValidate
      * @param parameters
      */
@@ -172,8 +184,17 @@ export class Validator {
 
         // If object is array, loop over the array and validate each object inside
         if(Array.isArray(objectToValidate)) {
-            for (const object of objectToValidate) {
-                validationErrors.push(... (await this.executeValidation(object, [], propertyPaths)));
+            for (const [index, object] of objectToValidate.entries()) {
+                const nestedValidationErrors = await this.executeValidation(object, [], propertyPaths);
+
+                if(nestedValidationErrors.length === 0) {
+                    continue;
+                }
+
+                const validationError = new ValidationError(index + "", object, object);
+                validationError.children.push(...nestedValidationErrors);
+
+                validationErrors.push(validationError);
             }
         } else {
             validationErrors = await this.executeValidation(objectToValidate, [], propertyPaths);
