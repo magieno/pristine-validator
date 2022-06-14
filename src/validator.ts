@@ -1,9 +1,9 @@
-import {ValidatorInterface} from "../interfaces/validator.interface";
-import {ConditionInterface} from "../interfaces/condition.interface";
-import {ValidationError} from "../models/validation-error.model";
-import {ErrorMessage} from "../types/error-message.type";
-import {ValidationConstraintError} from "../types/validation-constraint-error.type";
-import {PrototypeMetadataUtils} from "../utils/prototype-metadata.utils";
+import {ValidatorInterface} from "./interfaces/validator.interface";
+import {ConditionInterface} from "./interfaces/condition.interface";
+import {ValidationError} from "./models/validation-error.model";
+import {ErrorMessage} from "./types/error-message.type";
+import {ValidationConstraintError} from "./types/validation-constraint-error.type";
+import {PrototypeMetadataUtils} from "./utils/prototype-metadata.utils";
 
 export class Validator {
     /**

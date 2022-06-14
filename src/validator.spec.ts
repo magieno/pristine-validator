@@ -1,6 +1,6 @@
-import {isString} from "./is-string.validator";
+import {isString} from "./validators/is-string.validator";
 import {Validator} from "./validator";
-import {validateNested} from "./validate-nested.validator";
+import {validateNested} from "./validators/validate-nested.validator";
 
 describe("Validator", () => {
     it("should directly validate the first-level properties", async () => {

@@ -1,3 +1,3 @@
 export interface ConditionInterface {
-    shouldBeValidated(): boolean
+    shouldBeValidated(value: any, propertyKey: string, target: any, root: any): boolean
 }
