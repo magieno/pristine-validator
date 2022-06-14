@@ -36,10 +36,6 @@ export class ArrayUniqueValidator extends BaseValidator implements ValidatorInte
 
     return null;
   }
-
-  getName(): string {
-    return "ARRAY_UNIQUE";
-  }
 }
 
 

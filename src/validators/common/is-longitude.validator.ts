@@ -1,0 +1,43 @@
+import {BaseValidator} from "../base.validator";
+import {ValidatorInterface} from "../../interfaces/validator.interface";
+import {ErrorMessage} from "../../types/error-message.type";
+import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {addValidator} from "../../helpers/add-validator";
+import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
+import isLatLongValidator from "validator/lib/isLatLong";
+
+export class IsLongitudeValidator extends BaseValidator implements ValidatorInterface {
+    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+        if( isLatLongValidator(`0,${value}`) === false) {
+            return this.generateErrorMessage("'" + property + "' must be a longitude string or number.",
+                ConstraintErrorKeynameEnum.IsLongitude,
+                value,
+                property,
+                target);
+        }
+
+        return null;
+    }
+}
+
+
+// Decorator
+export const isLongitude = (buildErrorMessage?: BuildErrorMessageType) => {
+    return (
+        /**
+         * The class on which the decorator is used.
+         */
+        target: any,
+
+        /**
+         * The property on which the decorator is used.
+         */
+        propertyKey: string,
+    ) => {
+        const validator = new IsLongitudeValidator(buildErrorMessage);
+
+        addValidator(target, propertyKey, validator)
+    }
+}
+
+export const IsLongitude = isLongitude;

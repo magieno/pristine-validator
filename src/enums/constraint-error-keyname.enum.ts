@@ -8,6 +8,39 @@ export enum ConstraintErrorKeynameEnum {
     ArrayNotEmpty = "ARRAY_NOT_EMPTY",
     ArrayUnique = "ARRAY_UNIQUE",
 
+    // Common
+    Allow = "ALLOW",
+    Equals = "EQUALS",
+    IsDefined = "IS_DEFINED",
+    IsEmpty = "IS_EMPTY",
+    IsIn = "IS_IN",
+    IsLatitude = "IS_LATITUDE",
+    IsLatLong = "IS_LAT_LONG",
+    IsLongitude = "IS_LONGITUDE",
+    IsNotEmpty = "IS_NOT_EMPTY",
+    IsNotIn = "IS_NOT_IN",
+    IsOptional = "IS_OPTIONAL",
+    NotEquals = "NOT_EQUALS",
+
+    // Date
+    MaxDate = "MAX_DATE",
+    MinDate = "MIN_DATE",
+
+    // Number
+    IsDivisibleBy = "IS_DIVISIBLE_BY",
+    IsNegative = "IS_NEGATIVE",
+    IsPositive = "IS_POSITIVE",
+    Max = "MAX",
+    Min = "Min",
+
+    // Object
+    IsInstance = "IS_INSTANCE",
+    IsNotEmptyObject = "IS_NOT_EMPTY_OBJECT",
+
+    // String
+
+    // Typechecker
+
     IsString = "IS_STRING",
 
 }
