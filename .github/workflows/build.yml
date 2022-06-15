@@ -1,0 +1,73 @@
+name: build
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    name: Build
+    # Set the type of machine to run on
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.ref != 'refs/heads/master'
+
+    strategy:
+      matrix:
+        node-version: [ 12.x, 14.x, 16.x ]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          always-auth: true
+          node-version: ${{ matrix.node-version }}
+          registry-url: https://registry.npmjs.org
+          scope: '@pristine'
+      - run: npm install -g npm@latest
+      - run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm run build
+      - run: npx eslint --ext .ts packages/**
+      - run: npm run test
+
+  publish:
+    name: Publish
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+
+    # Set the type of machine to run on
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          always-auth: true
+          node-version: 16.x
+          registry-url: https://registry.npmjs.org
+          scope: '@pristine'
+      - run: npm install -g npm@latest
+      - run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm whoami
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm run publish-ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Version and publish to npm
+        uses: bcomnes/npm-bump@v2.0.2
+        with:
+          git_email: 'ima-bot@ima-tech.ca'
+          git_username: 'ima-bot'
+          newversion: 'patch'
+#          github_token: ${{ secrets.GITHUB_TOKEN }} # built in actions token.  Passed tp gh-release if in use.
+          npm_token: ${{ secrets.NPM_TOKEN }} # user set secret token generated at npm
