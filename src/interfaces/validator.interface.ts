@@ -2,13 +2,11 @@ import {ValidationConstraintError} from "../types/validation-constraint-error.ty
 import {ErrorMessage} from "../types/error-message.type";
 
 export interface ValidatorInterface {
-    getName(): string;
-
     /**
      * This method validates the value at the specified property. If the value is validated, return null. If it isn't validate, return the error message.
      * @param value
-     * @param propertyKey
+     * @param property
      * @param target
      */
-    validate(value: any, propertyKey: string, target: any): Promise<ErrorMessage | null>;
+    validate(value: any, property: string, target: any): Promise<ErrorMessage | null>;
 }

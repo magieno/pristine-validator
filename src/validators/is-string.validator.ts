@@ -41,3 +41,5 @@ export const isString = (buildErrorMessage?: BuildErrorMessageType) => {
         addValidator(target, propertyKey, isStringValidator)
     }
 }
+
+export const IsString = isString;
