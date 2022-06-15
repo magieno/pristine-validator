@@ -5,8 +5,12 @@ import {BuildErrorMessageType} from "../../types/build-error-message.type";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 
+export interface IsNotEmptyObjectOptions {
+    nullable?: boolean;
+}
+
 export class IsNotEmptyObjectValidator extends BaseValidator implements ValidatorInterface {
-  constructor(private readonly options: { nullable?: boolean }, buildErrorMessage?: BuildErrorMessageType) {
+  constructor(private readonly options?: IsNotEmptyObjectOptions, buildErrorMessage?: BuildErrorMessageType) {
     super(buildErrorMessage);
   }
 
@@ -44,7 +48,7 @@ export class IsNotEmptyObjectValidator extends BaseValidator implements Validato
 
 
 // Decorator
-export const isNotEmptyObject = (buildErrorMessage?: BuildErrorMessageType) => {
+export const isNotEmptyObject = (options?: IsNotEmptyObjectOptions, buildErrorMessage?: BuildErrorMessageType) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -55,7 +59,7 @@ export const isNotEmptyObject = (buildErrorMessage?: BuildErrorMessageType) => {
          */
         propertyKey: string,
     ) => {
-        const validator = new IsNotEmptyObjectValidator(buildErrorMessage);
+        const validator = new IsNotEmptyObjectValidator(options, buildErrorMessage);
 
         addValidator(target, propertyKey, validator)
     }
