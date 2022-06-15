@@ -41,7 +41,13 @@ export enum ConstraintErrorKeynameEnum {
     // String
 
     // Typechecker
-
+    IsArray = "IS_ARRAY",
+    IsBoolean = "IS_BOOLEAN",
+    IsDate = "IS_DATE",
+    IsEnum = "IS_ENUM",
+    IsInt = "IS_INT",
+    IsNumber = "IS_NUMBER",
+    IsObject = "IS_OBJECT",
     IsString = "IS_STRING",
 
 }

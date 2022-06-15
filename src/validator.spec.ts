@@ -1,4 +1,4 @@
-import {isString} from "./validators/is-string.validator";
+import {isString} from "./validators/typechecker/is-string.validator";
 import {Validator} from "./validator";
 import {validateNested} from "./validators/validate-nested.validator";
 import {isOptional} from "./conditions/is-optional.condition";
