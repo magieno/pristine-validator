@@ -39,6 +39,12 @@ export enum ConstraintErrorKeynameEnum {
     IsNotEmptyObject = "IS_NOT_EMPTY_OBJECT",
 
     // String
+    Contains = "CONTAINS",
+    IsEmail = "IS_EMAIL",
+    Length = "LENGTH",
+    MaxLength = "MAX_LENGTH",
+    MinLength = "MIN_LENGTH",
+    NotContains = "NOT_CONTAINS",
 
     // Typechecker
     IsArray = "IS_ARRAY",
