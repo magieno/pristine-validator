@@ -15,8 +15,8 @@ export class LengthValidator extends BaseValidator implements ValidatorInterface
         if(typeof value === 'string' && isLengthValidator(value, { min: this.minLength, max: this.maxLength })){
             return null;
         }
-        // todo: Error message
-        return this.generateErrorMessage("$ERROR_MESSAGE$",
+
+        return this.generateErrorMessage("'" + property + "' must be longer than or equal to '" + this.minLength + "' and shorter than or equal to '" + this.maxLength + "' characters",
             ConstraintErrorKeynameEnum.Length,
             value,
             property,
@@ -26,6 +26,12 @@ export class LengthValidator extends BaseValidator implements ValidatorInterface
 
 
 // Decorator
+/**
+ * Min length and max length must be specified. For only one limit see MinLength and MaxLength validators.
+ * @param minLength
+ * @param maxLength
+ * @param buildErrorMessage
+ */
 export const length = (minLength: number, maxLength: number, buildErrorMessage?: BuildErrorMessageType) => {
     return (
         /**
