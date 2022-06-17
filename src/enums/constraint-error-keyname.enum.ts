@@ -41,7 +41,11 @@ export enum ConstraintErrorKeynameEnum {
     // String
     Contains = "CONTAINS",
     IsEmail = "IS_EMAIL",
+    IsPhoneNumber = "IS_PHONE_NUMBER",
+    IsUrl = "IS_URL",
+    IsUUID = "IS_UUID",
     Length = "LENGTH",
+    Matches = "MATCHES",
     MaxLength = "MAX_LENGTH",
     MinLength = "MIN_LENGTH",
     NotContains = "NOT_CONTAINS",
