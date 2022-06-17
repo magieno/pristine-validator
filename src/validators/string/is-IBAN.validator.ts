@@ -4,6 +4,7 @@ import {ErrorMessage} from "../../types/error-message.type";
 import {BuildErrorMessageType} from "../../types/build-error-message.type";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
+import isIBANValidator from 'validator/lib/isIBAN';
 
 export class IsIBANValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {

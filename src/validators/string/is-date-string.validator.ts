@@ -5,15 +5,19 @@ import { BuildErrorMessageType } from "../../types/build-error-message.type";
 import { addValidator } from "../../helpers/add-validator";
 import { ConstraintErrorKeynameEnum } from "../../enums/constraint-error-keyname.enum";
 import ValidatorJS from "validator";
-import { isISO8601 } from "./IsISO8601";
+import { IsISO8601Validator } from "./is-ISO-8601.validator";
 
 export class IsDateStringValidator extends BaseValidator implements ValidatorInterface {
     public constructor(private readonly options?: ValidatorJS.IsISO8601Options, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
     async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isISO8601(value, this.options)){
-            return null;
+        if(typeof value === 'string'){
+            const validator = new IsISO8601Validator(this.options);
+            const validation = await validator.validate(value, property, target);
+            if(validation === null){
+                return null;
+            }
         }
 
         return this.generateErrorMessage("'" + property + "' must be a valid ISO 8601 date string",
