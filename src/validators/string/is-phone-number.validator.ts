@@ -39,7 +39,7 @@ export class IsPhoneNumberValidator extends BaseValidator implements ValidatorIn
  * @param countryCode 2 characters uppercase country code (e.g. DE, US, CH) for country specific validation.
  * If text doesn't start with the international calling code (e.g. +41), then you must set this parameter.
  */
-export const iIsPhoneNumber = (countryCode?: CountryCode, buildErrorMessage?: BuildErrorMessageType) => {
+export const isPhoneNumber = (countryCode?: CountryCode, buildErrorMessage?: BuildErrorMessageType) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -57,4 +57,4 @@ export const iIsPhoneNumber = (countryCode?: CountryCode, buildErrorMessage?: Bu
     }
 }
 
-export const IsPhoneNumber = iIsPhoneNumber;
+export const IsPhoneNumber = isPhoneNumber;

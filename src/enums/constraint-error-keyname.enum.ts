@@ -40,6 +40,12 @@ export enum ConstraintErrorKeynameEnum {
 
     // String
     Contains = "CONTAINS",
+    IsAlpha = "IS_ALPHA",
+    IsAlphanumeric = "IS_ALPHANUMERIC",
+    IsAscii = "IS_ASCII",
+    IsBase32 = "IS_BASE32",
+    IsBase64 = "IS_BASE64",
+    IsBIC = "IS_BIC",
     IsEmail = "IS_EMAIL",
     IsPhoneNumber = "IS_PHONE_NUMBER",
     IsUrl = "IS_URL",
