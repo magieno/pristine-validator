@@ -4,20 +4,16 @@ import {ErrorMessage} from "../../types/error-message.type";
 import {BuildErrorMessageType} from "../../types/build-error-message.type";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
-import isMacAddressValidator from 'validator/lib/isMACAddress';
-import ValidatorJS from 'validator';
+import isIsinValidator from 'validator/lib/isISIN';
 
-export class IsMacAddressValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly options?: ValidatorJS.IsMACAddressOptions, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
-    }
+export class IsISINValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isMacAddressValidator(value, this.options)) {
+        if(typeof value === 'string' && isIsinValidator(value)) {
             return null;
         }
 
-        return this.generateErrorMessage("'" + property + "' must be a MAC Address",
-            ConstraintErrorKeynameEnum.IsMacAddress,
+        return this.generateErrorMessage("$ERROR_MESSAGE$",
+            ConstraintErrorKeynameEnum.IsISIN,
             value,
             property,
             target);
@@ -25,7 +21,7 @@ export class IsMacAddressValidator extends BaseValidator implements ValidatorInt
 }
 
 // Decorator
-export const isMacAddress = (options?: ValidatorJS.IsMACAddressOptions, buildErrorMessage?: BuildErrorMessageType) => {
+export const isISIN = (buildErrorMessage?: BuildErrorMessageType) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -37,10 +33,10 @@ export const isMacAddress = (options?: ValidatorJS.IsMACAddressOptions, buildErr
          */
         propertyKey: string,
     ) => {
-        const validator = new IsMacAddressValidator(options, buildErrorMessage);
+        const validator = new IsISINValidator(buildErrorMessage);
 
         addValidator(target, propertyKey, validator)
     }
 }
 
-export const IsMacAddress = isMacAddress;
+export const IsISIN = isISIN;

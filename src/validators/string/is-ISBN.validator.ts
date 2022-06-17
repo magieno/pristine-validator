@@ -4,20 +4,24 @@ import {ErrorMessage} from "../../types/error-message.type";
 import {BuildErrorMessageType} from "../../types/build-error-message.type";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
-import isMacAddressValidator from 'validator/lib/isMACAddress';
-import ValidatorJS from 'validator';
+import isIsbnValidator from 'validator/lib/isISBN';
 
-export class IsMacAddressValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly options?: ValidatorJS.IsMACAddressOptions, buildErrorMessage?: BuildErrorMessageType) {
+export type IsISBNVersion = '10' | '13' | 10 | 13;
+
+export class IsISBNValidator extends BaseValidator implements ValidatorInterface {
+    public constructor(private readonly version?: IsISBNVersion, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
+
     async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isMacAddressValidator(value, this.options)) {
+        const versionStr = this.version ? (`${this.version}` as '10' | '13') : undefined;
+        if(typeof value === 'string' && isIsbnValidator(value, versionStr)) {
             return null;
         }
 
-        return this.generateErrorMessage("'" + property + "' must be a MAC Address",
-            ConstraintErrorKeynameEnum.IsMacAddress,
+        // todo: Error message
+        return this.generateErrorMessage("'" + property + "' must be an ISBN",
+            ConstraintErrorKeynameEnum.IsISBN,
             value,
             property,
             target);
@@ -25,7 +29,7 @@ export class IsMacAddressValidator extends BaseValidator implements ValidatorInt
 }
 
 // Decorator
-export const isMacAddress = (options?: ValidatorJS.IsMACAddressOptions, buildErrorMessage?: BuildErrorMessageType) => {
+export const isISBN = (version?: IsISBNVersion, buildErrorMessage?: BuildErrorMessageType) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -37,10 +41,10 @@ export const isMacAddress = (options?: ValidatorJS.IsMACAddressOptions, buildErr
          */
         propertyKey: string,
     ) => {
-        const validator = new IsMacAddressValidator(options, buildErrorMessage);
+        const validator = new IsISBNValidator(version, buildErrorMessage);
 
         addValidator(target, propertyKey, validator)
     }
 }
 
-export const IsMacAddress = isMacAddress;
+export const IsISBN = isISBN;
