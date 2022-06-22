@@ -1,5 +1,5 @@
 {
-  "name": "@pristine/class-validator",
+  "name": "@pristine-ts/class-validator",
   "version": "1.0.0",
   "description": "",
   "main": "src/validator.ts",
