@@ -1,6 +1,5 @@
 import {ConditionInterface} from "../interfaces/condition.interface";
 import {addCondition} from "../helpers/add-condition";
-import {ValidateIfCondition} from "./validate-if.condition";
 
 export class IsOptionalCondition implements ConditionInterface {
     constructor() {

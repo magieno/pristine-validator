@@ -27,7 +27,7 @@ export class IsIPValidator extends BaseValidator implements ValidatorInterface {
 }
 
 // Decorator
-export const $VALIDATOR_DECORATOR_NAME$ = (version?: IsIpVersion, buildErrorMessage?: BuildErrorMessageType) => {
+export const isIP = (version?: IsIpVersion, buildErrorMessage?: BuildErrorMessageType) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -45,5 +45,5 @@ export const $VALIDATOR_DECORATOR_NAME$ = (version?: IsIpVersion, buildErrorMess
     }
 }
 
-export const IsIP = $VALIDATOR_DECORATOR_NAME$;
+export const IsIP = isIP;
 
