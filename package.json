@@ -2,7 +2,9 @@
   "name": "@pristine-ts/class-validator",
   "version": "1.0.4",
   "description": "",
-  "main": "src/validator.ts",
+  "module": "dist/lib/esm/class-validator.js",
+  "main": "dist/lib/cjs/class-validator.js",
+  "types": "dist/types/class-validator.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json",
     "prepare": "npm run build",
