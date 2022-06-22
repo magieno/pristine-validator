@@ -68,4 +68,3 @@ jobs:
           newversion: 'patch'
 #          github_token: ${{ secrets.GITHUB_TOKEN }} # built in actions token.  Passed tp gh-release if in use.
           npm_token: ${{ secrets.NPM_TOKEN }} # user set secret token generated at npm
-          publish_cmd: npm publish --access public
