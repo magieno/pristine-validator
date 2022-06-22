@@ -6,7 +6,7 @@ import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import { format } from 'date-fns'
 
-export class MaxDateValidator extends BaseValidator implements ValidatorInterface {
+export class MinDateValidator extends BaseValidator implements ValidatorInterface {
     public constructor(private readonly minDate: Date, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
@@ -46,7 +46,7 @@ export const minDate = (minDate: Date, buildErrorMessage?: BuildErrorMessageType
          */
         propertyKey: string,
     ) => {
-        const validator = new MaxDateValidator(minDate, buildErrorMessage);
+        const validator = new MinDateValidator(minDate, buildErrorMessage);
 
         addValidator(target, propertyKey, validator)
     }
