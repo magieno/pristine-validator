@@ -40,7 +40,7 @@ export class Validator {
                 continue;
             }
 
-            validationConstraints[errorMessage.keyname] = errorMessage.message;
+            validationConstraints[errorMessage.keyname] = errorMessage;
             isValid = false;
         }
 

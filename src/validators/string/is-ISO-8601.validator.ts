@@ -8,7 +8,7 @@ import isIso8601Validator from 'validator/lib/isISO8601';
 import ValidatorJS from 'validator';
 
 export class IsISO8601Validator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly options: ValidatorJS.IsISO8601Options, buildErrorMessage?: BuildErrorMessageType) {
+    public constructor(private readonly options?: ValidatorJS.IsISO8601Options, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
     
@@ -26,7 +26,7 @@ export class IsISO8601Validator extends BaseValidator implements ValidatorInterf
 }
 
 // Decorator
-export const $VALIDATOR_DECORATOR_NAME$ = (options: ValidatorJS.IsISO8601Options, buildErrorMessage?: BuildErrorMessageType) => {
+export const isISO8601 = (options?: ValidatorJS.IsISO8601Options, buildErrorMessage?: BuildErrorMessageType) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -44,4 +44,4 @@ export const $VALIDATOR_DECORATOR_NAME$ = (options: ValidatorJS.IsISO8601Options
     }
 }
 
-export const IsISO8601 = $VALIDATOR_DECORATOR_NAME$;
+export const IsISO8601 = isISO8601;
