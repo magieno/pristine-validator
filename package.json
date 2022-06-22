@@ -20,6 +20,12 @@
     "url": "https://github.com/magieno/pristine-validator/issues"
   },
   "homepage": "https://github.com/magieno/pristine-validator#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@types/validator": "^13.7.3",
