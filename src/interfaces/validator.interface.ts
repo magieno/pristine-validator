@@ -1,4 +1,3 @@
-import {ValidationConstraintError} from "../types/validation-constraint-error.type";
 import {ErrorMessage} from "../types/error-message.type";
 
 export interface ValidatorInterface {

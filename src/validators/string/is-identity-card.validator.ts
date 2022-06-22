@@ -33,7 +33,7 @@ export class IsIdentityCardValidator extends BaseValidator implements ValidatorI
  * Defaults to 'any'.
  * If given value is not a string, then it returns false.
  */
-export const $VALIDATOR_DECORATOR_NAME$ = (locale: ValidatorJS.IdentityCardLocale, buildErrorMessage?: BuildErrorMessageType) => {
+export const isIdentityCard = (locale: ValidatorJS.IdentityCardLocale, buildErrorMessage?: BuildErrorMessageType) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -51,4 +51,4 @@ export const $VALIDATOR_DECORATOR_NAME$ = (locale: ValidatorJS.IdentityCardLocal
     }
 }
 
-export const IsIdentityCard = $VALIDATOR_DECORATOR_NAME$;
+export const IsIdentityCard = isIdentityCard;
