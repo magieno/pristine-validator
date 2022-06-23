@@ -37,3 +37,5 @@ export const isOptional = () => {
         addCondition(target, propertyKey, isOptionalCondition)
     }
 }
+
+export const IsOptional = isOptional;

@@ -29,3 +29,5 @@ export const validateIf = (condition: (object: any, root?: any) => boolean) => {
         addCondition(target, propertyKey, validateIfCondition)
     }
 }
+
+export const ValidateIf = validateIf;
