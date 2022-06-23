@@ -28,3 +28,5 @@ export const validateNested = () => {
         target.constructor.prototype["__metadata__"]["properties"][propertyKey].validateNested = true
     }
 }
+
+export const ValidateNested = validateNested;

@@ -14,7 +14,7 @@ export interface IsNumberOptions {
 }
 
 export class IsNumberValidator extends BaseValidator implements ValidatorInterface {
-  constructor(private readonly numberOptions: IsNumberOptions, buildErrorMessage?: BuildErrorMessageType) {
+  constructor(private readonly numberOptions?: IsNumberOptions, buildErrorMessage?: BuildErrorMessageType) {
     super(buildErrorMessage);
   }
 
@@ -30,14 +30,14 @@ export class IsNumberValidator extends BaseValidator implements ValidatorInterfa
     }
 
     if (value === Infinity || value === -Infinity) {
-      return this.numberOptions.allowInfinity ? null : errorMessage;
+      return this.numberOptions?.allowInfinity ? null : errorMessage;
     }
 
     if (Number.isNaN(value)) {
-      return this.numberOptions.allowNaN ? null : errorMessage;
+      return this.numberOptions?.allowNaN ? null : errorMessage;
     }
 
-    if (this.numberOptions.maxDecimalPlaces !== undefined) {
+    if (this.numberOptions?.maxDecimalPlaces !== undefined) {
       let decimalPlaces = 0;
       if (value % 1 !== 0) {
         decimalPlaces = value.toString().split('.')[1].length;
@@ -56,7 +56,7 @@ export class IsNumberValidator extends BaseValidator implements ValidatorInterfa
 }
 
 // Decorator
-export const isNumber = (numberOptions: IsNumberOptions, buildErrorMessage?: BuildErrorMessageType) => {
+export const isNumber = (numberOptions?: IsNumberOptions, buildErrorMessage?: BuildErrorMessageType) => {
   return (
       /**
        * The class on which the decorator is used.

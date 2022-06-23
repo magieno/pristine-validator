@@ -8,7 +8,7 @@ import isEmailValidator from "validator/lib/isEmail";
 import ValidatorJS from "validator";
 
 export class IsEmailValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly emailValidationOptions: ValidatorJS.IsEmailOptions, buildErrorMessage?: BuildErrorMessageType) {
+    public constructor(private readonly emailValidationOptions?: ValidatorJS.IsEmailOptions, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
     async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
@@ -26,7 +26,7 @@ export class IsEmailValidator extends BaseValidator implements ValidatorInterfac
 
 
 // Decorator
-export const isEmail = (emailValidationOptions: ValidatorJS.IsEmailOptions, buildErrorMessage?: BuildErrorMessageType) => {
+export const isEmail = (emailValidationOptions?: ValidatorJS.IsEmailOptions, buildErrorMessage?: BuildErrorMessageType) => {
     return (
         /**
          * The class on which the decorator is used.
