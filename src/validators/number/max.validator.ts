@@ -25,7 +25,7 @@ export class MaxValidator extends BaseValidator implements ValidatorInterface {
 
 
 // Decorator
-export const maxValidator = (maxNumber: number, buildErrorMessage?: BuildErrorMessageType) => {
+export const max = (maxNumber: number, buildErrorMessage?: BuildErrorMessageType) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -43,4 +43,4 @@ export const maxValidator = (maxNumber: number, buildErrorMessage?: BuildErrorMe
     }
 }
 
-export const Max = maxValidator;
+export const Max = max;

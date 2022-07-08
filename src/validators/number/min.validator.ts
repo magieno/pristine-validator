@@ -25,7 +25,7 @@ export class MinValidator extends BaseValidator implements ValidatorInterface {
 
 
 // Decorator
-export const minValidator = (minNumber: number, buildErrorMessage?: BuildErrorMessageType) => {
+export const min = (minNumber: number, buildErrorMessage?: BuildErrorMessageType) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -43,4 +43,4 @@ export const minValidator = (minNumber: number, buildErrorMessage?: BuildErrorMe
     }
 }
 
-export const Min = minValidator;
+export const Min = min;
