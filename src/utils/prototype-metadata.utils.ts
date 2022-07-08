@@ -24,7 +24,7 @@ export class PrototypeMetadataUtils {
             return [];
         }
 
-        if(target.constructor.prototype.hasOwnProperty("class-validator") === false) {
+        if(target.constructor.prototype.__metadata__.hasOwnProperty("class-validator") === false) {
             return [];
         }
 
