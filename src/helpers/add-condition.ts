@@ -5,17 +5,21 @@ export const addCondition = (target: any, propertyKey: string, instanciatedConst
         target.constructor.prototype["__metadata__"] = {}
     }
 
-    if(target.constructor.prototype["__metadata__"].hasOwnProperty("properties") === false) {
-        target.constructor.prototype["__metadata__"]["properties"] = {}
+    if(target.constructor.prototype["__metadata__"].hasOwnProperty("class-validator") === false) {
+        target.constructor.prototype["__metadata__"]["class-validator"] = {}
     }
 
-    if(target.constructor.prototype["__metadata__"]["properties"].hasOwnProperty(propertyKey) === false) {
-        target.constructor.prototype["__metadata__"]["properties"][propertyKey] = {}
+    if(target.constructor.prototype["__metadata__"]["class-validator"].hasOwnProperty("properties") === false) {
+        target.constructor.prototype["__metadata__"]["class-validator"]["properties"] = {}
     }
 
-    if(target.constructor.prototype["__metadata__"]["properties"][propertyKey].hasOwnProperty("conditions") === false) {
-        target.constructor.prototype["__metadata__"]["properties"][propertyKey]["conditions"] = []
+    if(target.constructor.prototype["__metadata__"]["class-validator"]["properties"].hasOwnProperty(propertyKey) === false) {
+        target.constructor.prototype["__metadata__"]["class-validator"]["properties"][propertyKey] = {}
     }
 
-    target.constructor.prototype["__metadata__"]["properties"][propertyKey]["conditions"].push(instanciatedConstraint)
+    if(target.constructor.prototype["__metadata__"]["class-validator"]["properties"][propertyKey].hasOwnProperty("conditions") === false) {
+        target.constructor.prototype["__metadata__"]["class-validator"]["properties"][propertyKey]["conditions"] = []
+    }
+
+    target.constructor.prototype["__metadata__"]["class-validator"]["properties"][propertyKey]["conditions"].push(instanciatedConstraint)
 }

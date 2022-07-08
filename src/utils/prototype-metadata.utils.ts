@@ -4,15 +4,19 @@ export class PrototypeMetadataUtils {
             return {};
         }
 
-        if(target.constructor.prototype.__metadata__.hasOwnProperty("properties") === false) {
+        if(target.constructor.prototype.__metadata__.hasOwnProperty("class-validator") === false) {
             return {};
         }
 
-        if(target.constructor.prototype.__metadata__.properties.hasOwnProperty(property) === false) {
+        if(target.constructor.prototype.__metadata__['class-validator'].hasOwnProperty("properties") === false) {
             return {};
         }
 
-        return target.constructor.prototype.__metadata__.properties[property];
+        if(target.constructor.prototype.__metadata__['class-validator'].properties.hasOwnProperty(property) === false) {
+            return {};
+        }
+
+        return target.constructor.prototype.__metadata__['class-validator'].properties[property];
     }
 
     static getPropertiesFromMetadata(target: any): string[] {
@@ -20,10 +24,14 @@ export class PrototypeMetadataUtils {
             return [];
         }
 
-        if(target.constructor.prototype.__metadata__.hasOwnProperty("properties") === false) {
+        if(target.constructor.prototype.__metadata__.hasOwnProperty("class-validator") === false) {
             return [];
         }
 
-        return Object.keys(target.constructor.prototype.__metadata__.properties)
+        if(target.constructor.prototype.__metadata__['class-validator'].hasOwnProperty("properties") === false) {
+            return [];
+        }
+
+        return Object.keys(target.constructor.prototype.__metadata__['class-validator'].properties)
     }
 }
