@@ -1,4 +1,4 @@
-import {isString} from "./validators/typechecker/is-string.validator";
+import {IsString} from "./validators/typechecker/is-string.validator";
 import {Validator} from "./validator";
 import {validateNested} from "./validators/validate-nested.validator";
 import {isOptional} from "./conditions/is-optional.condition";
@@ -6,7 +6,7 @@ import {isOptional} from "./conditions/is-optional.condition";
 describe("Validator", () => {
     it("should directly validate the first-level properties", async () => {
         class BasicClass {
-            @isString()
+            @IsString()
             // @ts-ignore
             title: string;
         }
@@ -25,7 +25,7 @@ describe("Validator", () => {
 
     it("should properly validate the nested element and return properly nested validation errors", async () => {
         class NestedClass {
-            @isString()
+            @IsString()
             // @ts-ignore
             title: string;
         }
@@ -56,7 +56,7 @@ describe("Validator", () => {
 
     it("should not directly validate a nested element if there's no @nestedElement decorator", async () => {
         class NestedClass {
-            @isString()
+            @IsString()
                 // @ts-ignore
             title: string;
         }
@@ -80,7 +80,7 @@ describe("Validator", () => {
 
     it("should properly validate a nested array", async () => {
         class NestedClass {
-            @isString()
+            @IsString()
                 // @ts-ignore
             title: string;
         }
@@ -118,11 +118,11 @@ describe("Validator", () => {
     // Specific property paths
     it("should properly validate a property path without arrays (when other fields are invalid)", async () => {
         class NestedClass {
-            @isString()
+            @IsString()
             // @ts-ignore
             title: string;
 
-            @isString()
+            @IsString()
             // @ts-ignore
             description: string;
         }
@@ -132,7 +132,7 @@ describe("Validator", () => {
             // @ts-ignore
             nestedClass: NestedClass;
 
-            @isString()
+            @IsString()
             // @ts-ignore
             validMissingNumber: string;
         }
@@ -163,11 +163,11 @@ describe("Validator", () => {
     // Validate array of objects
     it("should properly validate an array at the root", async () => {
         class NestedClass {
-            @isString()
+            @IsString()
                 // @ts-ignore
             title: string;
 
-            @isString()
+            @IsString()
                 // @ts-ignore
             description: string;
         }
@@ -177,7 +177,7 @@ describe("Validator", () => {
                 // @ts-ignore
             nestedClass: NestedClass;
 
-            @isString()
+            @IsString()
                 // @ts-ignore
             title: string;
         }
@@ -209,11 +209,11 @@ describe("Validator", () => {
     // Conditional validators
     it("should not validate a property if it isn't present in the object and there is the @isOptional condition", async () => {
         class NestedClass {
-            @isString()
+            @IsString()
                 // @ts-ignore
             title: string;
 
-            @isString()
+            @IsString()
             @isOptional()
                 // @ts-ignore
             description: string;
@@ -224,7 +224,7 @@ describe("Validator", () => {
                 // @ts-ignore
             nestedClass: NestedClass;
 
-            @isString()
+            @IsString()
             @isOptional()
                 // @ts-ignore
             title: string;
@@ -242,11 +242,11 @@ describe("Validator", () => {
 
     it("should still validate a property if it's not undefined in the object, the @isOptional condition is present but the value is invalid", async () => {
         class NestedClass {
-            @isString()
+            @IsString()
                 // @ts-ignore
             title: string;
 
-            @isString()
+            @IsString()
             @isOptional()
                 // @ts-ignore
             description: string;
@@ -257,7 +257,7 @@ describe("Validator", () => {
                 // @ts-ignore
             nestedClass: NestedClass;
 
-            @isString()
+            @IsString()
                 // @ts-ignore
             title: string;
         }
@@ -271,5 +271,56 @@ describe("Validator", () => {
 
         expect(validationErrors.length).toBe(1);
         expect(validationErrors[0].property).toBe("title");
+    })
+
+    it("should properly validate the nested element and return properly nested validation errors when path is provided", async () => {
+        class SubNestedClass {
+            @IsString()
+            // @ts-ignore
+            subNestedTitle: string;
+        }
+        
+        class NestedClass {
+            @IsString()
+            // @ts-ignore
+            nestedTitle: string;
+
+            @validateNested()
+            // @ts-ignore
+            subNested: SubNestedClass;
+        }
+
+        class BasicClass {
+            @validateNested()
+            // @ts-ignore
+            nestedClass: NestedClass;
+
+            // @ts-ignore
+            validMissingNumber: number;
+        }
+
+        const basicClass = new BasicClass();
+        basicClass.nestedClass = new NestedClass();
+        basicClass.nestedClass.subNested = new SubNestedClass();
+
+        const validator = new Validator();
+
+        const validationErrors = await validator.validate(basicClass, {
+            propertyPath: "nestedClass"
+        });
+
+        expect(validationErrors.length).toBe(1);
+        expect(Object.keys(validationErrors[0].constraints).length).toBe(0);
+        expect(validationErrors[0].property).toBe("nestedClass")
+        expect(validationErrors[0].children.length).toBe(2);
+        expect(validationErrors[0].children[0].property).toBe("nestedTitle");
+        expect(validationErrors[0].children[0].target).toBe(basicClass.nestedClass);
+        expect(validationErrors[0].children[0].value).toBeUndefined();
+        expect(validationErrors[0].children[1].property).toBe("subNested");
+        expect(Object.keys(validationErrors[0].children[1].constraints).length).toBe(0);
+        expect(validationErrors[0].children[1].children.length).toBe(1);
+        expect(validationErrors[0].children[1].children[0].property).toBe("subNestedTitle");
+        expect(validationErrors[0].children[1].children[0].target).toBe(basicClass.nestedClass.subNested);
+        expect(validationErrors[0].children[1].children[0].value).toBeUndefined();
     })
 });
