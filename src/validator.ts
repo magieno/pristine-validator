@@ -127,11 +127,24 @@ export class Validator {
             }
 
             if(Array.isArray(value)) {
+                let validateOnlyOneItem = false
+                let indexToValidate;
+                if(propertyPath.length !== 0){
+                    indexToValidate = propertyPath.shift();
+                    if(indexToValidate === undefined || isNaN(+indexToValidate)){
+                        throw new Error("The property path in an array should be a number");
+                    }
+                    indexToValidate = +indexToValidate;
+                    validateOnlyOneItem = true;
+                }
                 const nestedValidationErrors: ValidationError[] = [];
 
                 const validationError = new ValidationError(property, value, objectToValidate)
 
                 for (const [index, element] of value.entries()) {
+                    if(validateOnlyOneItem && indexToValidate !== index){
+                        continue;
+                    }
                     const inArrayElementValidationErrors = await this.executeValidation(element, rootObject, defaultConditions, propertyPath);
 
                     if(inArrayElementValidationErrors.length === 0) {
