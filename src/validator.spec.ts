@@ -2,6 +2,7 @@ import {IsString} from "./validators/typechecker/is-string.validator";
 import {Validator} from "./validator";
 import {validateNested} from "./validators/validate-nested.validator";
 import {isOptional} from "./conditions/is-optional.condition";
+import { Max } from "./validators/number/max.validator";
 
 describe("Validator", () => {
     it("should directly validate the first-level properties", async () => {
@@ -105,6 +106,41 @@ describe("Validator", () => {
         const validator = new Validator();
         const validationErrors = await validator.validate(object);
 
+        expect(validationErrors.length).toBe(1);
+        expect(validationErrors[0].children.length).toBe(2);
+        expect(validationErrors[0].children[0].property).toBe("0");
+        expect(validationErrors[0].children[0].children.length).toBe(1);
+        expect(validationErrors[0].children[0].children[0].property).toBe("title");
+        expect(validationErrors[0].children[1].property).toBe("2");
+        expect(validationErrors[0].children[1].children.length).toBe(1);
+        expect(validationErrors[0].children[1].children[0].property).toBe("title");
+    })
+
+    it("should properly validate a nested array that has multiple checks", async () => {
+        class NestedClass {
+            @IsString()
+            @Max(2)
+                // @ts-ignore
+            title;
+        }
+
+        class BasicClass {
+            @validateNested()
+            nestedClasses: NestedClass[] = [];
+
+            // @ts-ignore
+            validMissingNumber: number;
+        }
+
+        const object = new BasicClass();
+        const nestedClass1 = new NestedClass();
+        nestedClass1.title = 3;
+        object.nestedClasses.push(nestedClass1);
+
+        const validator = new Validator();
+        const validationErrors = await validator.validate(object);
+
+        console.log(JSON.stringify(validationErrors, null, 2));
         expect(validationErrors.length).toBe(1);
         expect(validationErrors[0].children.length).toBe(2);
         expect(validationErrors[0].children[0].property).toBe("0");
