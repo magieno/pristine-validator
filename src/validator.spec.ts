@@ -142,13 +142,13 @@ describe("Validator", () => {
 
         console.log(JSON.stringify(validationErrors, null, 2));
         expect(validationErrors.length).toBe(1);
-        expect(validationErrors[0].children.length).toBe(2);
-        expect(validationErrors[0].children[0].property).toBe("0");
+        expect(validationErrors[0].children.length).toBe(1);
+        expect(validationErrors[0].property).toBe("nestedClasses");
         expect(validationErrors[0].children[0].children.length).toBe(1);
+        expect(validationErrors[0].children[0].property).toBe("0");
+        expect(validationErrors[0].children[0].children[0].children.length).toBe(0);
         expect(validationErrors[0].children[0].children[0].property).toBe("title");
-        expect(validationErrors[0].children[1].property).toBe("2");
-        expect(validationErrors[0].children[1].children.length).toBe(1);
-        expect(validationErrors[0].children[1].children[0].property).toBe("title");
+        expect(Object.keys(validationErrors[0].children[0].children[0].constraints).length).toBe(2);
     })
 
     // Specific property paths
@@ -406,7 +406,7 @@ describe("Validator", () => {
         const validator = new Validator();
 
         const validationErrors = await validator.validate(basicClass, {
-            propertyPath: "nestedClass"
+            propertyPath: "nestedClass.subNestedArray"
         });
 
         console.log(JSON.stringify(validationErrors, null, 2));
@@ -414,16 +414,15 @@ describe("Validator", () => {
         expect(validationErrors.length).toBe(1);
         expect(Object.keys(validationErrors[0].constraints).length).toBe(0);
         expect(validationErrors[0].property).toBe("nestedClass")
-        expect(validationErrors[0].children.length).toBe(2);
-        expect(validationErrors[0].children[0].property).toBe("nestedTitle");
-        expect(validationErrors[0].children[0].target).toBe(basicClass.nestedClass);
-        expect(validationErrors[0].children[0].value).toBeUndefined();
-        expect(validationErrors[0].children[1].property).toBe("subNested");
-        expect(Object.keys(validationErrors[0].children[1].constraints).length).toBe(0);
-        expect(validationErrors[0].children[1].children.length).toBe(1);
-        expect(validationErrors[0].children[1].children[0].property).toBe("subNestedTitle");
-        expect(validationErrors[0].children[1].children[0].target).toBe(basicClass.nestedClass.subNested);
-        expect(validationErrors[0].children[1].children[0].value).toBeUndefined();
+        expect(validationErrors[0].children.length).toBe(1);
+        expect(validationErrors[0].children[0].property).toBe("subNestedArray");
+        expect(validationErrors[0].children[0].children.length).toBe(1);
+        expect(validationErrors[0].children[0].children[0].property).toBe("0");
+        expect(validationErrors[0].children[0].children.length).toBe(1);
+        expect(validationErrors[0].children[0].children[0].property).toBe("0");
+        expect(validationErrors[0].children[0].children[0].children.length).toBe(1);
+        expect(validationErrors[0].children[0].children[0].children[0].property).toBe("subNestedArrayTitle");
+        expect(Object.keys(validationErrors[0].children[0].children[0].children[0].constraints).length).toBe(2);
     })
 
     it("should properly validate the nested element and return properly nested validation errors when path is provided with one element of the array", async () => {
