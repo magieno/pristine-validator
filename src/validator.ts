@@ -61,7 +61,7 @@ export class Validator {
      * @param propertyPath
      * @private
      */
-    private async executeValidation(objectToValidate: any, rootObject: any, defaultConditions: ConditionInterface[] = [], propertyPath: string[] = []): Promise<ValidationError[]> {
+    private async executeValidation(objectToValidate: any, rootObject: any, defaultConditions: ConditionInterface[] = [], propertyPath: string[] = [], currentPath: string = ""): Promise<ValidationError[]> {
         if(typeof objectToValidate !== "object") {
             throw new Error("The Object to validate must be of type object. Type: '" + typeof objectToValidate + "'.")
         }
@@ -92,6 +92,7 @@ export class Validator {
         }
 
         for (let property of propertiesToVisit) {
+            currentPath += currentPath.length > 0 ? "." + property : property;
             const value = objectToValidate[property];
 
             const propertyMetadata = PrototypeMetadataUtils.getPropertyMetadata(objectToValidate, property);
@@ -99,7 +100,7 @@ export class Validator {
 
             if(conditions && Array.isArray(conditions)) {
                 for (let condition of conditions) {
-                    if(condition.shouldBeValidated(value, property, objectToValidate, rootObject) === false) {
+                    if(condition.shouldBeValidated(value, property, objectToValidate, rootObject, currentPath) === false) {
                         return [];
                     }
                 }
@@ -145,7 +146,9 @@ export class Validator {
                     if(validateOnlyOneItem && indexToValidate !== index){
                         continue;
                     }
-                    const inArrayElementValidationErrors = await this.executeValidation(element, rootObject, defaultConditions, propertyPath);
+
+                    let indexCurrentPath = currentPath + "." + index;
+                    const inArrayElementValidationErrors = await this.executeValidation(element, rootObject, defaultConditions, propertyPath, indexCurrentPath );
 
                     if(inArrayElementValidationErrors.length === 0) {
                         continue;
@@ -166,7 +169,7 @@ export class Validator {
                 // Add the errors to the list of validation errors
                 validationErrors.push(validationError);
             } else if(typeof value === 'object') {
-                const nestedValidationErrors = await this.executeValidation(value, rootObject, defaultConditions, propertyPath);
+                const nestedValidationErrors = await this.executeValidation(value, rootObject, defaultConditions, propertyPath, currentPath);
 
                 if(nestedValidationErrors.length === 0) {
                     continue;
