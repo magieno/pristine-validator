@@ -3,6 +3,7 @@ import {Validator} from "./validator";
 import {validateNested} from "./validators/validate-nested.validator";
 import {isOptional} from "./conditions/is-optional.condition";
 import { Max } from "./validators/number/max.validator";
+import { ValidateIf } from "./conditions/validate-if.condition";
 
 describe("Validator", () => {
     it("should directly validate the first-level properties", async () => {
@@ -498,5 +499,88 @@ describe("Validator", () => {
         expect(validationErrors1[0].children[0].children[0].children[0].target).toBe(basicClass.nestedClass.subNestedArray[1]);
         expect(validationErrors1[0].children[0].children[0].children[0].value).toBe(3);
         expect(Object.keys(validationErrors1[0].children[0].children[0].children[0].constraints).length).toBe(2);
+    })
+
+    it("should skip validation if validateIf condition is false", async () => {
+        class SubNestedArrayClass {
+            @ValidateIf((object, root: BasicClass, currentPath) => {
+                let paths = currentPath?.split(".") ?? [];
+                let indexes: number[] = []
+                for (const path of paths) {
+                    if(!isNaN(+path)){
+                        indexes.push(+path);
+                    }
+                }
+                return root.nestedArray[indexes[0]].subNested.subNestedTitle === "subNestedTitle";
+            })
+            @IsString()
+            // @ts-ignore
+            subNestedArrayTitle;
+        }
+
+        class SubNestedClass {
+            @IsString()
+            // @ts-ignore
+            subNestedTitle: string;
+        }
+
+        class NestedArray {
+            @validateNested()
+            // @ts-ignore
+            subNested: SubNestedClass;
+
+            @validateNested()
+            // @ts-ignore
+            subNestedArray: SubNestedArrayClass[] = [];
+        }
+
+        class BasicClass {
+            @validateNested()
+            // @ts-ignore
+            nestedArray: NestedArray[] = [];
+        }
+
+        const basicClass = new BasicClass();
+        const nestedArray1 = new NestedArray();
+        nestedArray1.subNested = new SubNestedClass();
+        nestedArray1.subNested.subNestedTitle = "randomTitle";
+        const subNestedArray1 = new SubNestedArrayClass();
+        subNestedArray1.subNestedArrayTitle = 2;
+        nestedArray1.subNestedArray.push(subNestedArray1);
+        basicClass.nestedArray.push(nestedArray1);
+
+        const nestedArray2 = new NestedArray();
+        nestedArray2.subNested = new SubNestedClass();
+        nestedArray2.subNested.subNestedTitle = "subNestedTitle";
+        const subNestedArray2 = new SubNestedArrayClass();
+        subNestedArray2.subNestedArrayTitle = 3;
+        nestedArray2.subNestedArray.push(subNestedArray2);
+        basicClass.nestedArray.push(nestedArray2);
+
+        const validator = new Validator();
+
+        const validationErrors =  await validator.validate(basicClass, {
+            propertyPath: "nestedArray.0.subNestedArray.0.subNestedArrayTitle"
+        });
+
+        console.log(JSON.stringify(validationErrors, null, 2));
+
+        expect(validationErrors.length).toBe(0);
+
+        const validationErrors1 = await validator.validate(basicClass);
+
+        console.log(JSON.stringify(validationErrors1, null, 2));
+
+        expect(validationErrors1.length).toBe(1);
+        expect(validationErrors1[0].property).toBe("nestedArray")
+        expect(validationErrors1[0].children.length).toBe(1);
+        expect(validationErrors1[0].children[0].property).toBe("1");
+        expect(validationErrors1[0].children[0].children.length).toBe(1);
+        expect(validationErrors1[0].children[0].children[0].property).toBe("subNestedArray");
+        expect(validationErrors1[0].children[0].children[0].children.length).toBe(1);
+        expect(validationErrors1[0].children[0].children[0].children[0].property).toBe("0");
+        expect(validationErrors1[0].children[0].children[0].children[0].children.length).toBe(1);
+        expect(validationErrors1[0].children[0].children[0].children[0].children[0].property).toBe("subNestedArrayTitle");
+        expect(Object.keys(validationErrors1[0].children[0].children[0].children[0].children[0].constraints).length).toBe(1);
     })
 });
