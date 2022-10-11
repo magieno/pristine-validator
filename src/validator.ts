@@ -101,7 +101,7 @@ export class Validator {
             if(conditions && Array.isArray(conditions)) {
                 for (let condition of conditions) {
                     if(condition.shouldBeValidated(value, property, objectToValidate, rootObject, currentPath) === false) {
-                        return [];
+                        continue;
                     }
                 }
             }
