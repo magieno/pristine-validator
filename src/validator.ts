@@ -99,10 +99,15 @@ export class Validator {
             const conditions: ConditionInterface[] = propertyMetadata.conditions;
 
             if(conditions && Array.isArray(conditions)) {
+                let shouldPropertyBeValidated = true;
                 for (let condition of conditions) {
                     if(condition.shouldBeValidated(value, property, objectToValidate, rootObject, currentPath) === false) {
+                        shouldPropertyBeValidated = false;
                         continue;
                     }
+                }
+                if(shouldPropertyBeValidated === false){
+                    continue;
                 }
             }
 
