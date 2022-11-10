@@ -639,7 +639,9 @@ describe("Validator", () => {
         expect(Object.keys(validationErrors[0].children[0].children[0].constraints).length).toBe(1);
         expect(Object.keys(validationErrors[0].children[0].children[0].constraints)[0]).toBe("IS_STRING");
 
-        const validationErrors1 = await validator.validate(basicClass);
+        const validationErrors1 = await validator.validate(basicClass, {
+            propertyPath: "nestedArray.1.title"
+        });
 
         console.log(JSON.stringify(validationErrors1, null, 2));
 
@@ -647,10 +649,20 @@ describe("Validator", () => {
         expect(validationErrors1[0].property).toBe("nestedArray");
         expect(Object.keys(validationErrors1[0].constraints).length).toBe(1);
         expect(Object.keys(validationErrors1[0].constraints)[0]).toBe("EXACTLY_ONE");
-        expect(validationErrors1[0].children.length).toBe(1);
-        expect(validationErrors1[0].children[0].property).toBe("0");
-        expect(validationErrors1[0].children[0].children[0].property).toBe("title");
-        expect(Object.keys(validationErrors1[0].children[0].children[0].constraints).length).toBe(1);
-        expect(Object.keys(validationErrors1[0].children[0].children[0].constraints)[0]).toBe("IS_STRING");
+        expect(validationErrors1[0].children.length).toBe(0);
+
+        const validationErrors2 = await validator.validate(basicClass);
+
+        console.log(JSON.stringify(validationErrors2, null, 2));
+
+        expect(validationErrors2.length).toBe(1);
+        expect(validationErrors2[0].property).toBe("nestedArray");
+        expect(Object.keys(validationErrors2[0].constraints).length).toBe(1);
+        expect(Object.keys(validationErrors2[0].constraints)[0]).toBe("EXACTLY_ONE");
+        expect(validationErrors2[0].children.length).toBe(1);
+        expect(validationErrors2[0].children[0].property).toBe("0");
+        expect(validationErrors2[0].children[0].children[0].property).toBe("title");
+        expect(Object.keys(validationErrors2[0].children[0].children[0].constraints).length).toBe(1);
+        expect(Object.keys(validationErrors2[0].children[0].children[0].constraints)[0]).toBe("IS_STRING");
     })
 });

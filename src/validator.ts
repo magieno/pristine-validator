@@ -142,10 +142,6 @@ export class Validator {
                 }
                 const nestedValidationErrors: ValidationError[] = [];
 
-                // If we already have a validation error, we want to add the errors in the array as children errors.
-                // If not we create a new parent error.
-                const validationError1 = validationError ?? new ValidationError(property, value, objectToValidate)
-
                 for (const [index, element] of value.entries()) {
                     if(validateOnlyOneItem && indexToValidate !== index){
                         continue;
@@ -165,9 +161,16 @@ export class Validator {
                 }
 
                 if(nestedValidationErrors.length === 0) {
+                    // If there was already a parent validation error we need to push it.
+                    if(validationError !== null){
+                        validationErrors.push(validationError);
+                    }
                     continue;
                 }
 
+                // If we already have a validation error, we want to add the errors in the array as children errors.
+                // If not we create a new parent error.
+                const validationError1 = validationError ?? new ValidationError(property, value, objectToValidate)
                 validationError1.children.push(...nestedValidationErrors);
 
                 // Add the errors to the list of validation errors
@@ -176,6 +179,10 @@ export class Validator {
                 const nestedValidationErrors = await this.executeValidation(value, rootObject, defaultConditions, propertyPath, currentPath);
 
                 if(nestedValidationErrors.length === 0) {
+                    // If there was already a parent validation error we need to push it.
+                    if(validationError !== null){
+                        validationErrors.push(validationError);
+                    }
                     continue;
                 }
 
