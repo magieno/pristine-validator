@@ -1,6 +1,3 @@
-import {addValidator} from "../helpers/add-validator";
-import {IsStringValidator} from "./typechecker/is-string.validator";
-
 export const validateNested = () => {
     return (
         /**

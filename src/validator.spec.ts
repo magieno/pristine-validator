@@ -4,6 +4,9 @@ import {validateNested} from "./validators/validate-nested.validator";
 import {isOptional} from "./conditions/is-optional.condition";
 import { Max } from "./validators/number/max.validator";
 import { ValidateIf } from "./conditions/validate-if.condition";
+import {customValidator} from "./validators/common/custom.validator";
+import {ErrorMessage} from "./types/error-message.type";
+import {isNotEmpty} from "./validators/common/is-not-empty.validator";
 
 describe("Validator", () => {
     it("should directly validate the first-level properties", async () => {
@@ -582,5 +585,72 @@ describe("Validator", () => {
         expect(validationErrors1[0].children[0].children[0].children[0].children.length).toBe(1);
         expect(validationErrors1[0].children[0].children[0].children[0].children[0].property).toBe("subNestedArrayTitle");
         expect(Object.keys(validationErrors1[0].children[0].children[0].children[0].children[0].constraints).length).toBe(1);
+    })
+
+    it("should validate children properties if validateNested even if error on whole array", async () => {
+        class NestedArray {
+            @isNotEmpty()
+            @IsString()
+            // @ts-ignore
+            title: string;
+        }
+
+        class BasicClass {
+            @validateNested()
+            @customValidator(async (value: NestedArray[]) => {
+                if(value.length != 1) {
+                    return {
+                        message: "There must be exactly one element.",
+                        keyname: "EXACTLY_ONE",
+                    } as ErrorMessage;
+                }
+
+                return null;
+            })
+            // @ts-ignore
+            nestedArray: NestedArray[] = [];
+        }
+
+        const basicClass = new BasicClass();
+        const nestedArray1 = new NestedArray();
+        // @ts-ignore
+        nestedArray1.title = 2;
+        basicClass.nestedArray.push(nestedArray1);
+
+        const nestedArray2 = new NestedArray();
+        nestedArray2.title = "title";
+        basicClass.nestedArray.push(nestedArray2);
+
+        const validator = new Validator();
+
+        const validationErrors =  await validator.validate(basicClass, {
+            propertyPath: "nestedArray.0.title"
+        });
+
+        console.log(JSON.stringify(validationErrors, null, 2));
+
+        expect(validationErrors.length).toBe(1);
+        expect(validationErrors[0].property).toBe("nestedArray");
+        expect(Object.keys(validationErrors[0].constraints).length).toBe(1);
+        expect(Object.keys(validationErrors[0].constraints)[0]).toBe("EXACTLY_ONE");
+        expect(validationErrors[0].children.length).toBe(1);
+        expect(validationErrors[0].children[0].property).toBe("0");
+        expect(validationErrors[0].children[0].children[0].property).toBe("title");
+        expect(Object.keys(validationErrors[0].children[0].children[0].constraints).length).toBe(1);
+        expect(Object.keys(validationErrors[0].children[0].children[0].constraints)[0]).toBe("IS_STRING");
+
+        const validationErrors1 = await validator.validate(basicClass);
+
+        console.log(JSON.stringify(validationErrors1, null, 2));
+
+        expect(validationErrors1.length).toBe(1);
+        expect(validationErrors1[0].property).toBe("nestedArray");
+        expect(Object.keys(validationErrors1[0].constraints).length).toBe(1);
+        expect(Object.keys(validationErrors1[0].constraints)[0]).toBe("EXACTLY_ONE");
+        expect(validationErrors1[0].children.length).toBe(1);
+        expect(validationErrors1[0].children[0].property).toBe("0");
+        expect(validationErrors1[0].children[0].children[0].property).toBe("title");
+        expect(Object.keys(validationErrors1[0].children[0].children[0].constraints).length).toBe(1);
+        expect(Object.keys(validationErrors1[0].children[0].children[0].constraints)[0]).toBe("IS_STRING");
     })
 });
