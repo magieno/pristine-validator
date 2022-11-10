@@ -638,5 +638,19 @@ describe("Validator", () => {
         expect(validationErrors[0].children[0].children[0].property).toBe("title");
         expect(Object.keys(validationErrors[0].children[0].children[0].constraints).length).toBe(1);
         expect(Object.keys(validationErrors[0].children[0].children[0].constraints)[0]).toBe("IS_STRING");
+
+        const validationErrors1 = await validator.validate(basicClass);
+
+        console.log(JSON.stringify(validationErrors1, null, 2));
+
+        expect(validationErrors1.length).toBe(1);
+        expect(validationErrors1[0].property).toBe("nestedArray");
+        expect(Object.keys(validationErrors1[0].constraints).length).toBe(1);
+        expect(Object.keys(validationErrors1[0].constraints)[0]).toBe("EXACTLY_ONE");
+        expect(validationErrors1[0].children.length).toBe(1);
+        expect(validationErrors1[0].children[0].property).toBe("0");
+        expect(validationErrors1[0].children[0].children[0].property).toBe("title");
+        expect(Object.keys(validationErrors1[0].children[0].children[0].constraints).length).toBe(1);
+        expect(Object.keys(validationErrors1[0].children[0].children[0].constraints)[0]).toBe("IS_STRING");
     })
 });
