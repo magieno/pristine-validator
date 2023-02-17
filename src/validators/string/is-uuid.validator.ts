@@ -14,7 +14,7 @@ export class IsUUIDValidator extends BaseValidator implements ValidatorInterface
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isUuidValidator(value, this.uuidVersion)){
+        if (typeof value === 'string' && isUuidValidator(value, this.uuidVersion)) {
             return null;
         }
 
@@ -23,6 +23,7 @@ export class IsUUIDValidator extends BaseValidator implements ValidatorInterface
             value,
             property,
             target,
+            this,
             metadata);
     }
 
@@ -41,7 +42,6 @@ export const isUUID = (uuidVersion?: UUIDVersion, buildErrorMessage?: BuildError
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

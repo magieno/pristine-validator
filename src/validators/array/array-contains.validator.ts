@@ -16,18 +16,20 @@ export class ArrayContainsValidator extends BaseValidator implements ValidatorIn
                 ConstraintErrorKeynameEnum.ArrayInvalid,
                 value,
                 property,
-            target,
-            metadata);
+                target,
+                this,
+                metadata);
         }
 
         for (const elementToFind of this.values) {
-            if(value.indexOf(elementToFind) === -1) {
+            if (value.indexOf(elementToFind) === -1) {
                 return this.generateErrorMessage("The element '" + elementToFind + "' wasn't found in the array at property '" + property + "'.",
                     ConstraintErrorKeynameEnum.ArrayContains,
                     value,
                     property,
-            target,
-            metadata);
+                    target,
+                    this,
+                    metadata);
             }
         }
 
@@ -50,7 +52,6 @@ export const arrayContains = (values: any[], buildErrorMessage?: BuildErrorMessa
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

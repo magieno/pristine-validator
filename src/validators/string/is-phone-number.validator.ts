@@ -1,10 +1,10 @@
-import { BaseValidator } from "../base.validator";
-import { ValidatorInterface } from "../../interfaces/validator.interface";
-import { ErrorMessage } from "../../types/error-message.type";
-import { BuildErrorMessageType } from "../../types/build-error-message.type";
-import { addValidator } from "../../helpers/add-validator";
-import { ConstraintErrorKeynameEnum } from "../../enums/constraint-error-keyname.enum";
-import { CountryCode, parsePhoneNumberFromString } from "libphonenumber-js";
+import {BaseValidator} from "../base.validator";
+import {ValidatorInterface} from "../../interfaces/validator.interface";
+import {ErrorMessage} from "../../types/error-message.type";
+import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {addValidator} from "../../helpers/add-validator";
+import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
+import {CountryCode, parsePhoneNumberFromString} from "libphonenumber-js";
 
 
 export class IsPhoneNumberValidator extends BaseValidator implements ValidatorInterface {
@@ -15,7 +15,7 @@ export class IsPhoneNumberValidator extends BaseValidator implements ValidatorIn
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         try {
             const phoneNum = parsePhoneNumberFromString(value, this.countryCode);
-            if(phoneNum?.isValid() === true) {
+            if (phoneNum?.isValid() === true) {
                 return null
             }
         } catch (error) {
@@ -27,6 +27,7 @@ export class IsPhoneNumberValidator extends BaseValidator implements ValidatorIn
             value,
             property,
             target,
+            this,
             metadata);
     }
 
@@ -52,7 +53,6 @@ export const isPhoneNumber = (countryCode?: CountryCode, buildErrorMessage?: Bui
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

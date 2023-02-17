@@ -7,21 +7,21 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 
 export class IsBooleanValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value !== 'boolean') {
+        if (typeof value !== 'boolean') {
             return this.generateErrorMessage("'" + property + "' must be of type boolean.",
                 ConstraintErrorKeynameEnum.IsBoolean,
                 value,
                 property,
-            target,
-            metadata);
+                target,
+                this,
+                metadata);
         }
 
         return null;
     }
 
     public getConstraints(): any {
-        return {
-        }
+        return {}
     }
 }
 
@@ -33,7 +33,6 @@ export const isBoolean = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

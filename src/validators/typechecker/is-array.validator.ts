@@ -7,21 +7,21 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 
 export class IsArrayValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(Array.isArray(value) === false) {
+        if (Array.isArray(value) === false) {
             return this.generateErrorMessage("'" + property + "' must be an array",
                 ConstraintErrorKeynameEnum.IsArray,
                 value,
                 property,
-            target,
-            metadata);
+                target,
+                this,
+                metadata);
         }
 
         return null;
     }
 
     public getConstraints(): any {
-        return {
-        }
+        return {}
     }
 }
 
@@ -32,7 +32,6 @@ export const isArray = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

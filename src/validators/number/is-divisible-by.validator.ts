@@ -12,13 +12,14 @@ export class IsDivisibleByValidator extends BaseValidator implements ValidatorIn
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(isDivisibleByValidator(String(value), this.numberToDivideBy) === false) {
+        if (isDivisibleByValidator(String(value), this.numberToDivideBy) === false) {
             return this.generateErrorMessage("'" + property + "' must be divisible by '" + this.numberToDivideBy + "'",
                 ConstraintErrorKeynameEnum.IsDivisibleBy,
                 value,
                 property,
-            target,
-            metadata);
+                target,
+                this,
+                metadata);
         }
 
         return null;
@@ -39,7 +40,6 @@ export const isDivisibleBy = (numberToDivideBy: number, buildErrorMessage?: Buil
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

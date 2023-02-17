@@ -4,7 +4,7 @@ import {ErrorMessage} from "../../types/error-message.type";
 import {BuildErrorMessageType} from "../../types/build-error-message.type";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
-import { format } from 'date-fns'
+import {format} from 'date-fns'
 
 export class MaxDateValidator extends BaseValidator implements ValidatorInterface {
     public constructor(private readonly maxDate: Date, buildErrorMessage?: BuildErrorMessageType) {
@@ -17,17 +17,19 @@ export class MaxDateValidator extends BaseValidator implements ValidatorInterfac
                 ConstraintErrorKeynameEnum.InvalidDate,
                 value,
                 property,
-            target,
-            metadata);
+                target,
+                this,
+                metadata);
         }
 
-        if(value.getTime() > this.maxDate.getTime()) {
-            return this.generateErrorMessage("The property '" + property + "' must be prior to date + '" + format(this.maxDate, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")  + "'",
+        if (value.getTime() > this.maxDate.getTime()) {
+            return this.generateErrorMessage("The property '" + property + "' must be prior to date + '" + format(this.maxDate, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") + "'",
                 ConstraintErrorKeynameEnum.MaxDate,
                 value,
                 property,
-            target,
-            metadata);
+                target,
+                this,
+                metadata);
         }
 
         return null;
@@ -48,7 +50,6 @@ export const maxDate = (maxDate: Date, buildErrorMessage?: BuildErrorMessageType
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

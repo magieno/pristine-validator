@@ -16,17 +16,19 @@ export class IsNotInValidator extends BaseValidator implements ValidatorInterfac
                 ConstraintErrorKeynameEnum.ArrayInvalid,
                 value,
                 property,
-            target,
-            metadata);
+                target,
+                this,
+                metadata);
         }
 
-        if(this.possibleValues.some(possibleValue => possibleValue === value)) {
+        if (this.possibleValues.some(possibleValue => possibleValue === value)) {
             return this.generateErrorMessage("'" + property + "' should not be one of the following values: '" + this.possibleValues.join(",") + "'",
                 ConstraintErrorKeynameEnum.IsNotIn,
                 value,
                 property,
-            target,
-            metadata);
+                target,
+                this,
+                metadata);
         }
 
         return null;
@@ -41,13 +43,12 @@ export class IsNotInValidator extends BaseValidator implements ValidatorInterfac
 
 
 // Decorator
-export const isNotIn = (possibleValues: unknown[],buildErrorMessage?: BuildErrorMessageType) => {
+export const isNotIn = (possibleValues: unknown[], buildErrorMessage?: BuildErrorMessageType) => {
     return (
         /**
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

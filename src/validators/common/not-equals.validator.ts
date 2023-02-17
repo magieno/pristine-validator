@@ -9,15 +9,16 @@ export class NotEqualsValidator extends BaseValidator implements ValidatorInterf
     constructor(private readonly expectedValue: any, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    
+
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(value === this.expectedValue) {
+        if (value === this.expectedValue) {
             return this.generateErrorMessage("The value '" + value + "' at property '" + property + "' should not equal value: '" + this.expectedValue + "'",
                 ConstraintErrorKeynameEnum.NotEquals,
                 value,
                 property,
-            target,
-            metadata);
+                target,
+                this,
+                metadata);
         }
 
         return null;
@@ -38,7 +39,6 @@ export const notEquals = (expectedValue: any, buildErrorMessage?: BuildErrorMess
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

@@ -11,8 +11,9 @@ export class IsNumberStringValidator extends BaseValidator implements ValidatorI
     public constructor(private readonly options?: ValidatorJS.IsNumericOptions, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
+
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isNumericValidator(value, this.options)) {
+        if (typeof value === 'string' && isNumericValidator(value, this.options)) {
             return null;
         }
 
@@ -21,6 +22,7 @@ export class IsNumberStringValidator extends BaseValidator implements ValidatorI
             value,
             property,
             target,
+            this,
             metadata);
     }
 
@@ -39,7 +41,6 @@ export const isNumberString = (options?: ValidatorJS.IsNumericOptions, buildErro
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

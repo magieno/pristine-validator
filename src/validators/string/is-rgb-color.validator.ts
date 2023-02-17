@@ -12,7 +12,7 @@ export class IsRgbColorValidator extends BaseValidator implements ValidatorInter
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isRgbColorValidator(value, this.includePercentValues)) {
+        if (typeof value === 'string' && isRgbColorValidator(value, this.includePercentValues)) {
             return null;
         }
 
@@ -22,6 +22,7 @@ export class IsRgbColorValidator extends BaseValidator implements ValidatorInter
             value,
             property,
             target,
+            this,
             metadata);
     }
 
@@ -40,7 +41,6 @@ export const isRgbColor = (includePercentValues?: boolean, buildErrorMessage?: B
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

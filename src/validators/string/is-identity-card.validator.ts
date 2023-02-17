@@ -14,7 +14,7 @@ export class IsIdentityCardValidator extends BaseValidator implements ValidatorI
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
 
-        if(typeof value === 'string' && isIdentityCardValidator(value, this.locale)) {
+        if (typeof value === 'string' && isIdentityCardValidator(value, this.locale)) {
             return null;
         }
 
@@ -23,6 +23,7 @@ export class IsIdentityCardValidator extends BaseValidator implements ValidatorI
             value,
             property,
             target,
+            this,
             metadata);
     }
 
@@ -46,7 +47,6 @@ export const isIdentityCard = (locale: ValidatorJS.IdentityCardLocale, buildErro
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

@@ -13,6 +13,7 @@ export class IsNotEmptyValidator extends BaseValidator implements ValidatorInter
                 value,
                 property,
                 target,
+                this,
                 metadata);
         }
 
@@ -20,8 +21,7 @@ export class IsNotEmptyValidator extends BaseValidator implements ValidatorInter
     }
 
     public getConstraints(): any {
-        return {
-        }
+        return {}
     }
 }
 

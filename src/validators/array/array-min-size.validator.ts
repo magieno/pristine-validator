@@ -16,8 +16,9 @@ export class ArrayMinSizeValidator extends BaseValidator implements ValidatorInt
                 ConstraintErrorKeynameEnum.ArrayInvalid,
                 value,
                 property,
-            target,
-            metadata);
+                target,
+                this,
+                metadata);
         }
 
         if (value.length >= this.min) {
@@ -30,6 +31,7 @@ export class ArrayMinSizeValidator extends BaseValidator implements ValidatorInt
             value,
             property,
             target,
+            this,
             metadata);
     }
 
@@ -48,7 +50,6 @@ export const arrayMinSize = (min: number, buildErrorMessage?: BuildErrorMessageT
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

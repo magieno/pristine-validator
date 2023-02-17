@@ -12,7 +12,7 @@ export class IsByteLengthValidator extends BaseValidator implements ValidatorInt
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isByteLengthValidator(value, { min: this.minLength, max: this.maxLength })){
+        if (typeof value === 'string' && isByteLengthValidator(value, {min: this.minLength, max: this.maxLength})) {
             return null;
         }
 
@@ -21,6 +21,7 @@ export class IsByteLengthValidator extends BaseValidator implements ValidatorInt
             value,
             property,
             target,
+            this,
             metadata);
     }
 
@@ -46,7 +47,6 @@ export const isByteLength = (minLength: number, maxLength: number, buildErrorMes
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

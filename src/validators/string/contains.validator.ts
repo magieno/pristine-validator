@@ -12,7 +12,7 @@ export class ContainsValidator extends BaseValidator implements ValidatorInterfa
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && containsValidator(value, this.seedToContain)){
+        if (typeof value === 'string' && containsValidator(value, this.seedToContain)) {
             return null;
         }
 
@@ -21,6 +21,7 @@ export class ContainsValidator extends BaseValidator implements ValidatorInterfa
             value,
             property,
             target,
+            this,
             metadata);
     }
 
@@ -39,7 +40,6 @@ export const contains = (seedToContain: string, buildErrorMessage?: BuildErrorMe
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

@@ -11,13 +11,14 @@ export class EqualsValidator extends BaseValidator implements ValidatorInterface
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(value !== this.expectedValue) {
+        if (value !== this.expectedValue) {
             return this.generateErrorMessage("The value '" + value + "' at property '" + property + "' is not equal to expected value: '" + this.expectedValue + "'",
                 ConstraintErrorKeynameEnum.Equals,
                 value,
                 property,
-            target,
-            metadata);
+                target,
+                this,
+                metadata);
         }
 
         return null;
@@ -38,7 +39,6 @@ export const equals = (expectedValue: any, buildErrorMessage?: BuildErrorMessage
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

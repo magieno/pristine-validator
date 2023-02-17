@@ -8,7 +8,7 @@ import isLocaleValidator from 'validator/lib/isLocale';
 
 export class IsLocaleValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isLocaleValidator(value)) {
+        if (typeof value === 'string' && isLocaleValidator(value)) {
             return null;
         }
 
@@ -18,12 +18,12 @@ export class IsLocaleValidator extends BaseValidator implements ValidatorInterfa
             value,
             property,
             target,
+            this,
             metadata);
     }
 
     public getConstraints(): any {
-        return {
-        }
+        return {}
     }
 }
 
@@ -34,7 +34,6 @@ export const isLocale = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

@@ -11,13 +11,14 @@ export class MaxValidator extends BaseValidator implements ValidatorInterface {
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(value > this.maxNumber) {
+        if (value > this.maxNumber) {
             return this.generateErrorMessage("'" + property + "' must not be greater than '" + this.maxNumber + "'",
                 ConstraintErrorKeynameEnum.Max,
                 value,
                 property,
-            target,
-            metadata);
+                target,
+                this,
+                metadata);
         }
 
         return null;
@@ -38,7 +39,6 @@ export const max = (maxNumber: number, buildErrorMessage?: BuildErrorMessageType
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

@@ -11,13 +11,14 @@ export class MinValidator extends BaseValidator implements ValidatorInterface {
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(value < this.minNumber) {
+        if (value < this.minNumber) {
             return this.generateErrorMessage("'" + property + "' must not be less than '" + this.minNumber + "'",
                 ConstraintErrorKeynameEnum.Min,
                 value,
                 property,
-            target,
-            metadata);
+                target,
+                this,
+                metadata);
         }
 
         return null;
@@ -38,7 +39,6 @@ export const min = (minNumber: number, buildErrorMessage?: BuildErrorMessageType
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

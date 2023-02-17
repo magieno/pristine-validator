@@ -8,7 +8,7 @@ import isSurrogatePairValidator from 'validator/lib/isSurrogatePair';
 
 export class IsSurrogatePairValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isSurrogatePairValidator(value)) {
+        if (typeof value === 'string' && isSurrogatePairValidator(value)) {
             return null;
         }
 
@@ -17,12 +17,12 @@ export class IsSurrogatePairValidator extends BaseValidator implements Validator
             value,
             property,
             target,
+            this,
             metadata);
     }
 
     public getConstraints(): any {
-        return {
-        }
+        return {}
     }
 }
 
@@ -34,7 +34,6 @@ export const isSurrogatePair = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

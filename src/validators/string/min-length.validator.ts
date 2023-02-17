@@ -12,7 +12,7 @@ export class MinLengthValidator extends BaseValidator implements ValidatorInterf
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isLengthValidator(value, { min: this.minLength })){
+        if (typeof value === 'string' && isLengthValidator(value, {min: this.minLength})) {
             return null;
         }
 
@@ -21,6 +21,7 @@ export class MinLengthValidator extends BaseValidator implements ValidatorInterf
             value,
             property,
             target,
+            this,
             metadata);
     }
 
@@ -39,7 +40,6 @@ export const minLength = (minLength: number, buildErrorMessage?: BuildErrorMessa
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

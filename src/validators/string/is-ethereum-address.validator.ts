@@ -10,8 +10,9 @@ export class IsEthereumAddressValidator extends BaseValidator implements Validat
     public constructor(buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
+
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isEthereumAddressValidator(value)) {
+        if (typeof value === 'string' && isEthereumAddressValidator(value)) {
             return null;
         }
 
@@ -20,12 +21,12 @@ export class IsEthereumAddressValidator extends BaseValidator implements Validat
             value,
             property,
             target,
+            this,
             metadata);
     }
 
     public getConstraints(): any {
-        return {
-        }
+        return {}
     }
 }
 
@@ -37,7 +38,6 @@ export const isEthereumAddress = (buildErrorMessage?: BuildErrorMessageType) => 
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

@@ -8,7 +8,7 @@ import isMongoIdValidator from 'validator/lib/isMongoId';
 
 export class IsMongoIdValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isMongoIdValidator(value)) {
+        if (typeof value === 'string' && isMongoIdValidator(value)) {
             return null;
         }
 
@@ -17,12 +17,12 @@ export class IsMongoIdValidator extends BaseValidator implements ValidatorInterf
             value,
             property,
             target,
+            this,
             metadata);
     }
 
     public getConstraints(): any {
-        return {
-        }
+        return {}
     }
 }
 
@@ -34,7 +34,6 @@ export const isMongoId = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */
