@@ -11,7 +11,7 @@ export class MaxLengthValidator extends BaseValidator implements ValidatorInterf
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isLengthValidator(value, { max: this.maxLength })){
             return null;
         }
@@ -20,7 +20,8 @@ export class MaxLengthValidator extends BaseValidator implements ValidatorInterf
             ConstraintErrorKeynameEnum.MaxLength,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

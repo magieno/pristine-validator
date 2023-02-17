@@ -10,7 +10,7 @@ export class IsDataURIValidator extends BaseValidator implements ValidatorInterf
     public constructor(buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isDataURIValidator(value)){
             return null;
         }
@@ -19,7 +19,8 @@ export class IsDataURIValidator extends BaseValidator implements ValidatorInterf
             ConstraintErrorKeynameEnum.IsDataURI,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

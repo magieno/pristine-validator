@@ -10,7 +10,7 @@ export class ArrayMinSizeValidator extends BaseValidator implements ValidatorInt
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if (!Array.isArray(value)) {
             return this.generateErrorMessage("The property '" + property + "' should be of 'Array' type, but it was of type '" + typeof value + "'.",
                 ConstraintErrorKeynameEnum.ArrayInvalid,
@@ -19,7 +19,7 @@ export class ArrayMinSizeValidator extends BaseValidator implements ValidatorInt
                 target);
         }
 
-        if(value.length >= this.min) {
+        if (value.length >= this.min) {
             return null;
         }
 
@@ -28,7 +28,8 @@ export class ArrayMinSizeValidator extends BaseValidator implements ValidatorInt
             ConstraintErrorKeynameEnum.ArrayMinSize,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

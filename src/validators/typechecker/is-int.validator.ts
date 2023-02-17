@@ -6,7 +6,7 @@ import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 
 export class IsIntValidator extends BaseValidator implements ValidatorInterface {
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'number' && Number.isInteger(value)) {
             return null;
         }
@@ -16,7 +16,8 @@ export class IsIntValidator extends BaseValidator implements ValidatorInterface 
             ConstraintErrorKeynameEnum.IsInt,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

@@ -12,7 +12,7 @@ export class IsISO8601Validator extends BaseValidator implements ValidatorInterf
         super(buildErrorMessage);
     }
     
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isIso8601Validator(value, this.options)) {
             return null;
         }
@@ -21,7 +21,8 @@ export class IsISO8601Validator extends BaseValidator implements ValidatorInterf
             ConstraintErrorKeynameEnum.IsISO8601,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

@@ -15,7 +15,7 @@ export class IsFQDNValidator extends BaseValidator implements ValidatorInterface
     public constructor(private readonly options?: ValidatorJS.IsFQDNOptions, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isFQDNValidator(value, this.options)){
             return null;
         }
@@ -24,7 +24,8 @@ export class IsFQDNValidator extends BaseValidator implements ValidatorInterface
             ConstraintErrorKeynameEnum.IsFQDN,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

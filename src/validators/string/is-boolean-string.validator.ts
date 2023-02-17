@@ -10,7 +10,7 @@ export class IsBooleanStringValidator extends BaseValidator implements Validator
     public constructor(buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isBooleanValidator(value)) {
             return null;
         }
@@ -19,7 +19,8 @@ export class IsBooleanStringValidator extends BaseValidator implements Validator
             ConstraintErrorKeynameEnum.IsBooleanString,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

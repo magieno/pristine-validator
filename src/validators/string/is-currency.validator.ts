@@ -11,7 +11,7 @@ export class IsCurrencyValidator extends BaseValidator implements ValidatorInter
     public constructor(private readonly options?: ValidatorJS.IsCurrencyOptions, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isCurrencyValidator(value, this.options)){
             return null;
         }
@@ -20,7 +20,8 @@ export class IsCurrencyValidator extends BaseValidator implements ValidatorInter
             ConstraintErrorKeynameEnum.IsCurrency,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

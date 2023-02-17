@@ -7,7 +7,7 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 import isJwtValidator from 'validator/lib/isJWT';
 
 export class IsJWTValidator extends BaseValidator implements ValidatorInterface {
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isJwtValidator(value)) {
             return null;
         }
@@ -17,7 +17,8 @@ export class IsJWTValidator extends BaseValidator implements ValidatorInterface 
             ConstraintErrorKeynameEnum.IsJWT,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

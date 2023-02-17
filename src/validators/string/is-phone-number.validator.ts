@@ -12,7 +12,7 @@ export class IsPhoneNumberValidator extends BaseValidator implements ValidatorIn
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         try {
             const phoneNum = parsePhoneNumberFromString(value, this.countryCode);
             if(phoneNum?.isValid() === true) {
@@ -26,7 +26,8 @@ export class IsPhoneNumberValidator extends BaseValidator implements ValidatorIn
             ConstraintErrorKeynameEnum.IsPhoneNumber,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

@@ -10,7 +10,7 @@ export class IsEANValidator extends BaseValidator implements ValidatorInterface 
     public constructor(buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isEANValidator(value)){
             return null;
         }
@@ -19,7 +19,8 @@ export class IsEANValidator extends BaseValidator implements ValidatorInterface 
             ConstraintErrorKeynameEnum.IsEAN,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

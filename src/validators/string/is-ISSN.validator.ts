@@ -12,7 +12,7 @@ export class IsISSNValidator extends BaseValidator implements ValidatorInterface
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isISSNValidator(value, this.options)) {
             return null;
         }
@@ -21,7 +21,8 @@ export class IsISSNValidator extends BaseValidator implements ValidatorInterface
             ConstraintErrorKeynameEnum.IsISSN,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

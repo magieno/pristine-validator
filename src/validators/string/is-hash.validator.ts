@@ -16,7 +16,7 @@ export class IsHashValidator extends BaseValidator implements ValidatorInterface
     public constructor(private readonly algorithm: ValidatorJS.HashAlgorithm, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isHashValidator(value, this.algorithm)){
             return null;
         }
@@ -25,7 +25,8 @@ export class IsHashValidator extends BaseValidator implements ValidatorInterface
             ConstraintErrorKeynameEnum.IsHash,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

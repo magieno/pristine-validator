@@ -11,7 +11,7 @@ export class Validator {
      * @param property
      * @param objectToValidate
      */
-    public async executeValidatorsOnProperty(property: string, objectToValidate: any): Promise<ValidationError | null> {
+    public async executeValidatorsOnProperty(property: string, objectToValidate: any, metadata?: any): Promise<ValidationError | null> {
         // Retrieve the value from the object
         const value = objectToValidate[property];
 
@@ -34,7 +34,7 @@ export class Validator {
                 throw new Error ("The validator with name: '" + validator.constructor.name + "' doesn't implement the ValidatorInterface");
             }
 
-            const errorMessage: ErrorMessage | null = await validator.validate(value, property, objectToValidate);
+            const errorMessage: ErrorMessage | null = await validator.validate(value, property, objectToValidate, metadata);
 
             if(errorMessage === null) {
                 continue;
@@ -57,11 +57,15 @@ export class Validator {
      * If there are specific property paths to check, all other properties of the object are not validated.
      *
      * @param objectToValidate
+     * @param rootObject
      * @param defaultConditions
      * @param propertyPath
+     * @param currentPath
+     * @param metadata
      * @private
      */
-    private async executeValidation(objectToValidate: any, rootObject: any, defaultConditions: ConditionInterface[] = [], propertyPath: string[] = [], currentPath: string = ""): Promise<ValidationError[]> {
+
+    private async executeValidation(objectToValidate: any, rootObject: any, defaultConditions: ConditionInterface[] = [], propertyPath: string[] = [], currentPath: string = "", metadata?: any): Promise<ValidationError[]> {
         if(typeof objectToValidate !== "object") {
             throw new Error("The Object to validate must be of type object. Type: '" + typeof objectToValidate + "'.")
         }
@@ -111,7 +115,7 @@ export class Validator {
                 }
             }
 
-            const validationError: ValidationError | null = await this.executeValidatorsOnProperty(property, objectToValidate)
+            const validationError: ValidationError | null = await this.executeValidatorsOnProperty(property, objectToValidate, metadata)
 
             // If there are nested elements and there is a @validateNested annotation, we must validate them further.
             const shouldValidateNested = propertyMetadata.hasOwnProperty("validateNested") && propertyMetadata.validateNested;
@@ -148,7 +152,8 @@ export class Validator {
                     }
 
                     let indexCurrentPath = currentPath + "." + index;
-                    const inArrayElementValidationErrors = await this.executeValidation(element, rootObject, defaultConditions, propertyPath, indexCurrentPath );
+                    const inArrayElementValidationErrors = await this.executeValidation(element, rootObject, defaultConditions, propertyPath, indexCurrentPath, metadata );
+
 
                     if(inArrayElementValidationErrors.length === 0) {
                         continue;
@@ -176,7 +181,8 @@ export class Validator {
                 // Add the errors to the list of validation errors
                 validationErrors.push(validationError1);
             } else if(typeof value === 'object') {
-                const nestedValidationErrors = await this.executeValidation(value, rootObject, defaultConditions, propertyPath, currentPath);
+                const nestedValidationErrors = await this.executeValidation(value, rootObject, defaultConditions, propertyPath, currentPath, metadata);
+
 
                 if(nestedValidationErrors.length === 0) {
                     // If there was already a parent validation error we need to push it.
@@ -216,7 +222,7 @@ export class Validator {
      */
     public async validate(objectToValidate: any, parameters: {
         propertyPath?: string
-    } = {}): Promise<ValidationError[]> {
+    } = {}, metadata?: any): Promise<ValidationError[]> {
         let validationErrors: ValidationError[] = [];
 
         let propertyPaths: string[] = [];
@@ -228,7 +234,7 @@ export class Validator {
         // If object is array, loop over the array and validate each object inside
         if(Array.isArray(objectToValidate)) {
             for (const [index, object] of objectToValidate.entries()) {
-                const nestedValidationErrors = await this.executeValidation(object, objectToValidate, [], propertyPaths);
+                const nestedValidationErrors = await this.executeValidation(object, objectToValidate, [], propertyPaths, metadata);
 
                 if(nestedValidationErrors.length === 0) {
                     continue;
@@ -240,7 +246,7 @@ export class Validator {
                 validationErrors.push(validationError);
             }
         } else {
-            validationErrors = await this.executeValidation(objectToValidate, objectToValidate, [], propertyPaths);
+            validationErrors = await this.executeValidation(objectToValidate, objectToValidate, [], propertyPaths, metadata);
         }
 
         return validationErrors;

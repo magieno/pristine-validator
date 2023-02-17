@@ -10,7 +10,7 @@ export class IsEnumValidator extends BaseValidator implements ValidatorInterface
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         const enumValues = Object.keys(this.entity).map(k => this.entity[k]);
         if(enumValues.indexOf(value) >= 0) {
             return null;
@@ -20,7 +20,8 @@ export class IsEnumValidator extends BaseValidator implements ValidatorInterface
             ConstraintErrorKeynameEnum.IsEnum,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

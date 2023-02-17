@@ -11,7 +11,7 @@ export class MatchesValidator extends BaseValidator implements ValidatorInterfac
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         // todo do we want to support string with modifiers ?
         if(typeof value === 'string' && matchesValidator(value, this.pattern as unknown as any)){
             return null;
@@ -21,7 +21,8 @@ export class MatchesValidator extends BaseValidator implements ValidatorInterfac
             ConstraintErrorKeynameEnum.Matches,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

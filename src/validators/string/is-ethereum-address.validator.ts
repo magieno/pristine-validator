@@ -10,7 +10,7 @@ export class IsEthereumAddressValidator extends BaseValidator implements Validat
     public constructor(buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isEthereumAddressValidator(value)) {
             return null;
         }
@@ -19,7 +19,8 @@ export class IsEthereumAddressValidator extends BaseValidator implements Validat
             ConstraintErrorKeynameEnum.IsEthereumAddress,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

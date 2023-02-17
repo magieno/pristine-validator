@@ -13,7 +13,7 @@ export class IsUUIDValidator extends BaseValidator implements ValidatorInterface
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isUuidValidator(value, this.uuidVersion)){
             return null;
         }
@@ -22,7 +22,8 @@ export class IsUUIDValidator extends BaseValidator implements ValidatorInterface
             ConstraintErrorKeynameEnum.IsUUID,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

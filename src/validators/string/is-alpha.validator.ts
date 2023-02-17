@@ -11,7 +11,7 @@ export class IsAlphaValidator extends BaseValidator implements ValidatorInterfac
     public constructor(private readonly locale?: ValidatorJS.AlphaLocale, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isAlphaValidator(value, this.locale)){
             return null;
         }
@@ -20,7 +20,8 @@ export class IsAlphaValidator extends BaseValidator implements ValidatorInterfac
             ConstraintErrorKeynameEnum.IsAlpha,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

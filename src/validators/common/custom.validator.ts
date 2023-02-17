@@ -6,7 +6,7 @@ export class CustomValidator implements ValidatorInterface {
   constructor(private readonly validationFunction: (value: any, property: string, target: any) => Promise<ErrorMessage | null>) {
   }
 
-  async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+  async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
     return this.validationFunction(value, property, target);
   }
 }

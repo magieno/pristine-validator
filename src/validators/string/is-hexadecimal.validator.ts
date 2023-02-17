@@ -10,7 +10,7 @@ export class IsHexadecimalValidator extends BaseValidator implements ValidatorIn
     public constructor(buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isHexadecimalValidator(value)){
             return null;
         }
@@ -19,7 +19,8 @@ export class IsHexadecimalValidator extends BaseValidator implements ValidatorIn
             ConstraintErrorKeynameEnum.IsHexadecimal,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

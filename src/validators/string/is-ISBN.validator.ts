@@ -13,7 +13,7 @@ export class IsISBNValidator extends BaseValidator implements ValidatorInterface
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         const versionStr = this.version ? (`${this.version}` as '10' | '13') : undefined;
         if(typeof value === 'string' && isIsbnValidator(value, versionStr)) {
             return null;
@@ -24,7 +24,8 @@ export class IsISBNValidator extends BaseValidator implements ValidatorInterface
             ConstraintErrorKeynameEnum.IsISBN,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

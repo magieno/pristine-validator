@@ -10,7 +10,7 @@ export class ArrayMaxSizeValidator extends BaseValidator implements ValidatorInt
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if (!Array.isArray(value)) {
             return this.generateErrorMessage("The property '" + property + "' should be of 'Array' type, but it was of type '" + typeof value + "'.",
                 ConstraintErrorKeynameEnum.ArrayInvalid,
@@ -19,7 +19,7 @@ export class ArrayMaxSizeValidator extends BaseValidator implements ValidatorInt
                 target);
         }
 
-        if(value.length <= this.max) {
+        if (value.length <= this.max) {
             return null;
         }
 
@@ -28,7 +28,8 @@ export class ArrayMaxSizeValidator extends BaseValidator implements ValidatorInt
             ConstraintErrorKeynameEnum.ArrayMaxSize,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

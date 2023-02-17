@@ -11,10 +11,10 @@ export class IsDateStringValidator extends BaseValidator implements ValidatorInt
     public constructor(private readonly options?: ValidatorJS.IsISO8601Options, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string'){
             const validator = new IsISO8601Validator(this.options);
-            const validation = await validator.validate(value, property, target);
+            const validation = await validator.validate(value, property, target, metadata);
             if(validation === null){
                 return null;
             }
@@ -24,7 +24,8 @@ export class IsDateStringValidator extends BaseValidator implements ValidatorInt
             ConstraintErrorKeynameEnum.IsDateString,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

@@ -10,7 +10,7 @@ export class MaxValidator extends BaseValidator implements ValidatorInterface {
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(value > this.maxNumber) {
             return this.generateErrorMessage("'" + property + "' must not be greater than '" + this.maxNumber + "'",
                 ConstraintErrorKeynameEnum.Max,

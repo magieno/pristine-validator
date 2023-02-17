@@ -12,7 +12,7 @@ export class IsPostalCodeValidator extends BaseValidator implements ValidatorInt
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if( typeof value === 'string' && isPostalCodeValidator(value, this.locale)) {
             return null;
         }
@@ -21,7 +21,8 @@ export class IsPostalCodeValidator extends BaseValidator implements ValidatorInt
             ConstraintErrorKeynameEnum.IsPostalCode,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 
