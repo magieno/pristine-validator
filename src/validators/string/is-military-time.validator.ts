@@ -20,6 +20,11 @@ export class IsMilitaryTimeValidator extends BaseValidator implements ValidatorI
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 // Decorator

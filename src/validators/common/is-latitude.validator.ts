@@ -19,6 +19,11 @@ export class IsLatitudeValidator extends BaseValidator implements ValidatorInter
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

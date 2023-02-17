@@ -19,6 +19,11 @@ export class IsJSONValidator extends BaseValidator implements ValidatorInterface
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 // Decorator

@@ -28,6 +28,11 @@ export class ArrayNotEmptyValidator extends BaseValidator implements ValidatorIn
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

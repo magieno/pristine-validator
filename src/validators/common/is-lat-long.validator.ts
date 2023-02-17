@@ -19,6 +19,11 @@ export class IsLatLongValidator extends BaseValidator implements ValidatorInterf
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

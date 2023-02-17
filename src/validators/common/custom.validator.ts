@@ -9,6 +9,12 @@ export class CustomValidator implements ValidatorInterface {
   async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
     return this.validationFunction(value, property, target, metadata);
   }
+
+  public getConstraints(): any {
+    return {
+      validationFunction: this.validationFunction,
+    }
+  }
 }
 
 // Decorator

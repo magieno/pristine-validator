@@ -20,6 +20,11 @@ export class IsMimeTypeValidator extends BaseValidator implements ValidatorInter
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 // Decorator

@@ -31,6 +31,12 @@ export class IsInValidator extends BaseValidator implements ValidatorInterface {
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+            possibleValues: this.possibleValues,
+        }
+    }
 }
 
 

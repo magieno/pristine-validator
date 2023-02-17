@@ -18,6 +18,11 @@ export class IsPassportNumberValidator extends BaseValidator implements Validato
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 // Decorator

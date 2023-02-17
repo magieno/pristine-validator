@@ -32,6 +32,12 @@ export class MaxDateValidator extends BaseValidator implements ValidatorInterfac
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+            maxDate: this.maxDate,
+        }
+    }
 }
 
 

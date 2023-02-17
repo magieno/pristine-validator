@@ -23,6 +23,12 @@ export class IsDivisibleByValidator extends BaseValidator implements ValidatorIn
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+            numberToDivideBy: this.numberToDivideBy,
+        }
+    }
 }
 
 

@@ -32,6 +32,12 @@ export class MinDateValidator extends BaseValidator implements ValidatorInterfac
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+            minDate: this.minDate
+        }
+    }
 }
 
 

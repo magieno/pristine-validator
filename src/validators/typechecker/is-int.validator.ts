@@ -19,6 +19,11 @@ export class IsIntValidator extends BaseValidator implements ValidatorInterface 
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

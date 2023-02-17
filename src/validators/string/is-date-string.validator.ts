@@ -27,6 +27,12 @@ export class IsDateStringValidator extends BaseValidator implements ValidatorInt
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            options: this.options,
+        }
+    }
 }
 
 

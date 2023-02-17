@@ -23,6 +23,12 @@ export class IsAlphaValidator extends BaseValidator implements ValidatorInterfac
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            locale: this.locale,
+        }
+    }
 }
 
 

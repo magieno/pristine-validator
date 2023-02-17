@@ -20,6 +20,11 @@ export class IsLocaleValidator extends BaseValidator implements ValidatorInterfa
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 // Decorator

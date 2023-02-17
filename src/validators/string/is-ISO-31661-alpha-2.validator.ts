@@ -19,6 +19,11 @@ export class IsISO31661Alpha2Validator extends BaseValidator implements Validato
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 // Decorator

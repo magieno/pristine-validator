@@ -23,6 +23,12 @@ export class MinLengthValidator extends BaseValidator implements ValidatorInterf
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            minLength: this.minLength,
+        }
+    }
 }
 
 

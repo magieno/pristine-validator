@@ -45,6 +45,12 @@ export class IsNotEmptyObjectValidator extends BaseValidator implements Validato
         return errorMessage;
 
     }
+
+    public getConstraints(): any {
+        return {
+            options: this.options,
+        }
+    }
 }
 
 

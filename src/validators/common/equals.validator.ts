@@ -22,6 +22,12 @@ export class EqualsValidator extends BaseValidator implements ValidatorInterface
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+            expectedValue: this.expectedValue,
+        }
+    }
 }
 
 

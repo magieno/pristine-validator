@@ -20,6 +20,11 @@ export class IsJWTValidator extends BaseValidator implements ValidatorInterface 
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 // Decorator

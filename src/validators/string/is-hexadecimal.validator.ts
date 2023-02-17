@@ -22,6 +22,11 @@ export class IsHexadecimalValidator extends BaseValidator implements ValidatorIn
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

@@ -24,6 +24,12 @@ export class IsRgbColorValidator extends BaseValidator implements ValidatorInter
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            includePercentValues: this.includePercentValues,
+        }
+    }
 }
 
 

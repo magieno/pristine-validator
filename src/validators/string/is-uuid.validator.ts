@@ -25,6 +25,12 @@ export class IsUUIDValidator extends BaseValidator implements ValidatorInterface
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            uuidVersion: this.uuidVersion,
+        }
+    }
 }
 
 

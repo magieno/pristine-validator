@@ -22,6 +22,11 @@ export class IsEthereumAddressValidator extends BaseValidator implements Validat
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

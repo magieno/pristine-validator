@@ -34,6 +34,12 @@ export class ArrayContainsValidator extends BaseValidator implements ValidatorIn
         // Here, it means we have found all the elements
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+            values: this.values,
+        }
+    }
 }
 
 

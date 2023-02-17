@@ -10,6 +10,7 @@ export class IsBase64Validator extends BaseValidator implements ValidatorInterfa
     public constructor(buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
+
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isBase64Validator(value)){
             return null;
@@ -21,6 +22,11 @@ export class IsBase64Validator extends BaseValidator implements ValidatorInterfa
             property,
             target,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+        }
     }
 }
 

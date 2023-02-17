@@ -19,6 +19,11 @@ export class IsMagnetUriValidator extends BaseValidator implements ValidatorInte
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 // Decorator

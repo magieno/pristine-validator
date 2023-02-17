@@ -18,6 +18,11 @@ export class IsDateValidator extends BaseValidator implements ValidatorInterface
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 // Decorator

@@ -18,6 +18,11 @@ export class IsEmptyValidator extends BaseValidator implements ValidatorInterfac
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

@@ -24,6 +24,12 @@ export class IsISO8601Validator extends BaseValidator implements ValidatorInterf
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            options: this.options,
+        }
+    }
 }
 
 // Decorator

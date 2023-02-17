@@ -32,6 +32,12 @@ export class ArrayMaxSizeValidator extends BaseValidator implements ValidatorInt
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            max: this.max,
+        }
+    }
 }
 
 

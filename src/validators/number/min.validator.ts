@@ -22,6 +22,12 @@ export class MinValidator extends BaseValidator implements ValidatorInterface {
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+            minNumber: this.minNumber,
+        }
+    }
 }
 
 

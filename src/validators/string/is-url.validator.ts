@@ -24,6 +24,12 @@ export class IsUrlValidator extends BaseValidator implements ValidatorInterface 
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            options: this.options,
+        }
+    }
 }
 
 

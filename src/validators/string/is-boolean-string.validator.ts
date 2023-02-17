@@ -22,6 +22,11 @@ export class IsBooleanStringValidator extends BaseValidator implements Validator
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

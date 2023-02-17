@@ -19,6 +19,11 @@ export class IsLongitudeValidator extends BaseValidator implements ValidatorInte
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

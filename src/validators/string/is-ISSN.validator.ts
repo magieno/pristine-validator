@@ -24,6 +24,12 @@ export class IsISSNValidator extends BaseValidator implements ValidatorInterface
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            options: this.options,
+        }
+    }
 }
 
 // Decorator

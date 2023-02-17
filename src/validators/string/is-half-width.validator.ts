@@ -26,6 +26,11 @@ export class IsHalfWidthValidator extends BaseValidator implements ValidatorInte
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

@@ -22,6 +22,11 @@ export class IsBase32Validator extends BaseValidator implements ValidatorInterfa
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

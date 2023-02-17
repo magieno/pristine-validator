@@ -22,6 +22,12 @@ export class MaxValidator extends BaseValidator implements ValidatorInterface {
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+            maxNumber: this.maxNumber,
+        }
+    }
 }
 
 

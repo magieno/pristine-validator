@@ -20,6 +20,11 @@ export class IsUppercaseValidator extends BaseValidator implements ValidatorInte
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

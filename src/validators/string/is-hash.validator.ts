@@ -28,6 +28,12 @@ export class IsHashValidator extends BaseValidator implements ValidatorInterface
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            algorithm: this.algorithm,
+        }
+    }
 }
 
 

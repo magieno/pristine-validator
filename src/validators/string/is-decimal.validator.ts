@@ -23,6 +23,12 @@ export class IsDecimalValidator extends BaseValidator implements ValidatorInterf
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            options: this.options,
+        }
+    }
 }
 
 

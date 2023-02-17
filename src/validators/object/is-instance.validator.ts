@@ -23,6 +23,12 @@ export class IsInstanceValidator extends BaseValidator implements ValidatorInter
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            targetTypeConstructor: this.targetTypeConstructor,
+        }
+    }
 }
 
 // Decorator

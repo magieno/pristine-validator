@@ -22,6 +22,11 @@ export class IsFirebasePushIdValidator extends BaseValidator implements Validato
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

@@ -23,6 +23,12 @@ export class MaxLengthValidator extends BaseValidator implements ValidatorInterf
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            maxLength: this.maxLength,
+        }
+    }
 }
 
 

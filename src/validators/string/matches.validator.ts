@@ -24,6 +24,12 @@ export class MatchesValidator extends BaseValidator implements ValidatorInterfac
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            pattern: this.pattern,
+        }
+    }
 }
 
 

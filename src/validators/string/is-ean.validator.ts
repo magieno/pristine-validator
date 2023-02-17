@@ -22,6 +22,11 @@ export class IsEANValidator extends BaseValidator implements ValidatorInterface 
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

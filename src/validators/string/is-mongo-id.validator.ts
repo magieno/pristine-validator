@@ -19,6 +19,11 @@ export class IsMongoIdValidator extends BaseValidator implements ValidatorInterf
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

@@ -23,6 +23,12 @@ export class IsNumberStringValidator extends BaseValidator implements ValidatorI
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            options: this.options,
+        }
+    }
 }
 
 

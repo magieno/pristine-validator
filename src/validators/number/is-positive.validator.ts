@@ -18,6 +18,11 @@ export class IsPositiveValidator extends BaseValidator implements ValidatorInter
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 // Decorator

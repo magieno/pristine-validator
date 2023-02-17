@@ -23,6 +23,12 @@ export class IsMacAddressValidator extends BaseValidator implements ValidatorInt
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            options: this.options,
+        }
+    }
 }
 
 // Decorator

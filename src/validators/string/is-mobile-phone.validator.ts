@@ -25,6 +25,12 @@ export class IsMobilePhoneValidator extends BaseValidator implements ValidatorIn
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            locale: this.locale,
+        }
+    }
 }
 
 

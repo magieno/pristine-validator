@@ -38,6 +38,12 @@ export class ArrayUniqueValidator extends BaseValidator implements ValidatorInte
 
     return null;
   }
+
+  public getConstraints(): any {
+    return {
+      uniqueIdentifier: this.uniqueIdentifier,
+    }
+  }
 }
 
 

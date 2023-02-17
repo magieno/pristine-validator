@@ -9,4 +9,9 @@ export interface ValidatorInterface {
      * @param metadata
      */
     validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null>;
+
+    /**
+     * This method returns the constraints with their names and value.
+     */
+    getConstraints(): any;
 }

@@ -23,6 +23,12 @@ export class IsEmailValidator extends BaseValidator implements ValidatorInterfac
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            emailValidationOptions: this.emailValidationOptions,
+        }
+    }
 }
 
 

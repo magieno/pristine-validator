@@ -54,6 +54,12 @@ export class IsNumberValidator extends BaseValidator implements ValidatorInterfa
 
     return null;
   }
+
+  public getConstraints(): any {
+    return {
+      numberOptions: this.numberOptions,
+    }
+  }
 }
 
 // Decorator

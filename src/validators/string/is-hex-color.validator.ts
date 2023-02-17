@@ -22,6 +22,11 @@ export class IsHexColorValidator extends BaseValidator implements ValidatorInter
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

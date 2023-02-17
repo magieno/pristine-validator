@@ -25,6 +25,12 @@ export class IsIdentityCardValidator extends BaseValidator implements ValidatorI
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            locale: this.locale,
+        }
+    }
 }
 
 // Decorator

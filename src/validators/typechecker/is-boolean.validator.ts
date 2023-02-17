@@ -18,6 +18,11 @@ export class IsBooleanValidator extends BaseValidator implements ValidatorInterf
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

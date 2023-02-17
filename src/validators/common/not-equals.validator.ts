@@ -22,6 +22,12 @@ export class NotEqualsValidator extends BaseValidator implements ValidatorInterf
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+            expectedValue: this.expectedValue,
+        }
+    }
 }
 
 

@@ -23,6 +23,12 @@ export class IsAlphanumericValidator extends BaseValidator implements ValidatorI
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            locale: this.locale,
+        }
+    }
 }
 
 

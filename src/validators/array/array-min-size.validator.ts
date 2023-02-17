@@ -32,6 +32,12 @@ export class ArrayMinSizeValidator extends BaseValidator implements ValidatorInt
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            min: this.min,
+        }
+    }
 }
 
 

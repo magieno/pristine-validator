@@ -18,6 +18,11 @@ export class IsArrayValidator extends BaseValidator implements ValidatorInterfac
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 // Decorator

@@ -19,6 +19,11 @@ export class IsSurrogatePairValidator extends BaseValidator implements Validator
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

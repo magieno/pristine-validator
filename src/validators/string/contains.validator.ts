@@ -23,6 +23,12 @@ export class ContainsValidator extends BaseValidator implements ValidatorInterfa
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            seedToContain: this.seedToContain,
+        }
+    }
 }
 
 

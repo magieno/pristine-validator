@@ -19,6 +19,11 @@ export class IsOctalValidator extends BaseValidator implements ValidatorInterfac
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

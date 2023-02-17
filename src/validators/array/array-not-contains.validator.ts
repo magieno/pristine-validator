@@ -34,6 +34,12 @@ export class ArrayNotContainsValidator extends BaseValidator implements Validato
         // Here, it means we have not found any of the elements
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+            values: this.values,
+        }
+    }
 }
 
 // Decorator

@@ -25,6 +25,12 @@ export class IsIPValidator extends BaseValidator implements ValidatorInterface {
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            version: this.version,
+        }
+    }
 }
 
 // Decorator

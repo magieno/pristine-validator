@@ -29,6 +29,12 @@ export class IsPhoneNumberValidator extends BaseValidator implements ValidatorIn
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            countryCode: this.countryCode,
+        }
+    }
 }
 
 

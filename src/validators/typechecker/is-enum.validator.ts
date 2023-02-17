@@ -23,6 +23,12 @@ export class IsEnumValidator extends BaseValidator implements ValidatorInterface
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            entity: this.entity,
+        }
+    }
 }
 
 

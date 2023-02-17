@@ -23,6 +23,13 @@ export class IsByteLengthValidator extends BaseValidator implements ValidatorInt
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            minLength: this.minLength,
+            maxLength: this.maxLength,
+        }
+    }
 }
 
 

@@ -18,6 +18,11 @@ export class IsNotEmptyValidator extends BaseValidator implements ValidatorInter
 
         return null;
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 // Decorator

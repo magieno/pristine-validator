@@ -24,6 +24,12 @@ export class IsPostalCodeValidator extends BaseValidator implements ValidatorInt
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+            locale: this.locale,
+        }
+    }
 }
 
 

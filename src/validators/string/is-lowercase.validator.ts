@@ -19,6 +19,11 @@ export class IsLowercaseValidator extends BaseValidator implements ValidatorInte
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 // Decorator

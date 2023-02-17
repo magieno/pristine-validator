@@ -22,6 +22,11 @@ export class IsStringValidator extends BaseValidator implements ValidatorInterfa
     getName(): string {
         return "IS_STRING";
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

@@ -22,6 +22,11 @@ export class IsAsciiValidator extends BaseValidator implements ValidatorInterfac
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 

@@ -18,6 +18,11 @@ export class IsSemVerValidator extends BaseValidator implements ValidatorInterfa
             target,
             metadata);
     }
+
+    public getConstraints(): any {
+        return {
+        }
+    }
 }
 
 
