@@ -15,7 +15,7 @@ export class IsHSLValidator extends BaseValidator implements ValidatorInterface 
     public constructor(buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isHSLValidator(value)){
             return null;
         }
@@ -24,7 +24,8 @@ export class IsHSLValidator extends BaseValidator implements ValidatorInterface 
             ConstraintErrorKeynameEnum.IsHSL,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

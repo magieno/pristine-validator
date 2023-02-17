@@ -6,7 +6,7 @@ export abstract class BaseValidator {
     constructor(protected readonly buildErrorMessage?: BuildErrorMessageType) {
     }
 
-    generateErrorMessage(defaultMessage: string, constraintKeyname: ConstraintErrorKeynameEnum, value: any, propertyKey: string, target: any): ErrorMessage {
+    generateErrorMessage(defaultMessage: string, constraintKeyname: ConstraintErrorKeynameEnum, value: any, propertyKey: string, target: any, metadata?: any): ErrorMessage {
         if(this.buildErrorMessage === undefined) {
             return {
                 keyname: constraintKeyname,
@@ -14,6 +14,6 @@ export abstract class BaseValidator {
             };
         }
 
-        return this.buildErrorMessage(constraintKeyname, value, propertyKey, target);
+        return this.buildErrorMessage(constraintKeyname, value, propertyKey, target, metadata);
     }
 }

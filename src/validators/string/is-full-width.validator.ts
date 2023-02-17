@@ -14,7 +14,7 @@ export class IsFullWidthValidator extends BaseValidator implements ValidatorInte
     public constructor(buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isFullWidthValidator(value)){
             return null;
         }
@@ -23,7 +23,8 @@ export class IsFullWidthValidator extends BaseValidator implements ValidatorInte
             ConstraintErrorKeynameEnum.IsFullWidth,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

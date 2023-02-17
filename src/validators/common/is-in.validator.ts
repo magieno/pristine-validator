@@ -10,7 +10,7 @@ export class IsInValidator extends BaseValidator implements ValidatorInterface {
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if (!Array.isArray(value)) {
             return this.generateErrorMessage("The property '" + property + "' should be of 'Array' type, but it was of type '" + typeof value + "'.",
                 ConstraintErrorKeynameEnum.ArrayInvalid,

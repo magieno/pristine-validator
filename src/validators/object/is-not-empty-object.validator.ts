@@ -14,12 +14,13 @@ export class IsNotEmptyObjectValidator extends BaseValidator implements Validato
     super(buildErrorMessage);
   }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         const errorMessage = this.generateErrorMessage("'" + property + "' must be a non-empty object",
             ConstraintErrorKeynameEnum.IsNotEmptyObject,
             value,
             property,
-            target);
+            target,
+            metadata);
 
         // Ensures that it's an object
         if (value != null && (typeof value === 'object' || typeof value === 'function') && !Array.isArray(value)) {

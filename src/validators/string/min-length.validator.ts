@@ -11,7 +11,7 @@ export class MinLengthValidator extends BaseValidator implements ValidatorInterf
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isLengthValidator(value, { min: this.minLength })){
             return null;
         }
@@ -20,7 +20,8 @@ export class MinLengthValidator extends BaseValidator implements ValidatorInterf
             ConstraintErrorKeynameEnum.MinLength,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

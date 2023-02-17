@@ -11,7 +11,7 @@ export class IsAlphanumericValidator extends BaseValidator implements ValidatorI
     public constructor(private readonly locale?: ValidatorJS.AlphanumericLocale, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isAlphanumericValidator(value, this.locale)){
             return null;
         }
@@ -20,7 +20,8 @@ export class IsAlphanumericValidator extends BaseValidator implements ValidatorI
             ConstraintErrorKeynameEnum.IsAlphanumeric,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

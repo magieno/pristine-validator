@@ -11,7 +11,7 @@ export class IsDecimalValidator extends BaseValidator implements ValidatorInterf
     public constructor(private readonly options?: ValidatorJS.IsDecimalOptions, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isDecimalValidator(value, this.options)){
             return null;
         }
@@ -20,7 +20,8 @@ export class IsDecimalValidator extends BaseValidator implements ValidatorInterf
             ConstraintErrorKeynameEnum.IsDecimal,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

@@ -11,7 +11,7 @@ export class NotContainsValidator extends BaseValidator implements ValidatorInte
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && !containsValidator(value, this.seedNotToContain)){
             return null;
         }
@@ -20,7 +20,8 @@ export class NotContainsValidator extends BaseValidator implements ValidatorInte
             ConstraintErrorKeynameEnum.NotContains,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

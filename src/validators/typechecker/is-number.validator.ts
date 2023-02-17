@@ -18,7 +18,7 @@ export class IsNumberValidator extends BaseValidator implements ValidatorInterfa
     super(buildErrorMessage);
   }
 
-  async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+  async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
     const errorMessage = this.generateErrorMessage("'" + property + "' must be a number conforming to the specified constraints.",
         ConstraintErrorKeynameEnum.IsNumber,
         value,

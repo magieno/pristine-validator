@@ -10,7 +10,7 @@ export class IsCreditCardValidator extends BaseValidator implements ValidatorInt
     public constructor(buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isCreditCardValidator(value)){
             return null;
         }
@@ -19,7 +19,8 @@ export class IsCreditCardValidator extends BaseValidator implements ValidatorInt
             ConstraintErrorKeynameEnum.IsCreditCard,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

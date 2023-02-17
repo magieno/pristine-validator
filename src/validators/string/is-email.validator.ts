@@ -11,7 +11,7 @@ export class IsEmailValidator extends BaseValidator implements ValidatorInterfac
     public constructor(private readonly emailValidationOptions?: ValidatorJS.IsEmailOptions, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if( typeof value === 'string' && isEmailValidator(value, this.emailValidationOptions)){
             return null;
         }
@@ -20,7 +20,8 @@ export class IsEmailValidator extends BaseValidator implements ValidatorInterfac
             ConstraintErrorKeynameEnum.IsEmail,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

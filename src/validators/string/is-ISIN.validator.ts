@@ -7,7 +7,7 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 import isIsinValidator from 'validator/lib/isISIN';
 
 export class IsISINValidator extends BaseValidator implements ValidatorInterface {
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isIsinValidator(value)) {
             return null;
         }
@@ -16,7 +16,8 @@ export class IsISINValidator extends BaseValidator implements ValidatorInterface
             ConstraintErrorKeynameEnum.IsISIN,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

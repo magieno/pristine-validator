@@ -11,7 +11,7 @@ export class IsByteLengthValidator extends BaseValidator implements ValidatorInt
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isByteLengthValidator(value, { min: this.minLength, max: this.maxLength })){
             return null;
         }
@@ -20,7 +20,8 @@ export class IsByteLengthValidator extends BaseValidator implements ValidatorInt
             ConstraintErrorKeynameEnum.IsByteLength,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

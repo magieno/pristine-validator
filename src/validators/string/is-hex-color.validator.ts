@@ -10,7 +10,7 @@ export class IsHexColorValidator extends BaseValidator implements ValidatorInter
     public constructor(buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isHexColorValidator(value)){
             return null;
         }
@@ -19,7 +19,8 @@ export class IsHexColorValidator extends BaseValidator implements ValidatorInter
             ConstraintErrorKeynameEnum.IsHexColor,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

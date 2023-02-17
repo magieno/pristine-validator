@@ -10,7 +10,7 @@ export class EqualsValidator extends BaseValidator implements ValidatorInterface
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(value !== this.expectedValue) {
             return this.generateErrorMessage("The value '" + value + "' at property '" + property + "' is not equal to expected value: '" + this.expectedValue + "'",
                 ConstraintErrorKeynameEnum.Equals,

@@ -11,7 +11,7 @@ export class IsDivisibleByValidator extends BaseValidator implements ValidatorIn
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(isDivisibleByValidator(String(value), this.numberToDivideBy) === false) {
             return this.generateErrorMessage("'" + property + "' must be divisible by '" + this.numberToDivideBy + "'",
                 ConstraintErrorKeynameEnum.IsDivisibleBy,

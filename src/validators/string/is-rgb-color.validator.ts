@@ -11,7 +11,7 @@ export class IsRgbColorValidator extends BaseValidator implements ValidatorInter
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isRgbColorValidator(value, this.includePercentValues)) {
             return null;
         }
@@ -21,7 +21,8 @@ export class IsRgbColorValidator extends BaseValidator implements ValidatorInter
             ConstraintErrorKeynameEnum.IsRgbColor,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 

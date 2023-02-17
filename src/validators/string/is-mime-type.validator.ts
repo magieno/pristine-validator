@@ -7,7 +7,7 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 import isMimeTypeValidator from 'validator/lib/isMimeType';
 
 export class IsMimeTypeValidator extends BaseValidator implements ValidatorInterface {
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(typeof value === 'string' && isMimeTypeValidator(value)) {
             return null;
         }
@@ -17,7 +17,8 @@ export class IsMimeTypeValidator extends BaseValidator implements ValidatorInter
             ConstraintErrorKeynameEnum.IsMimeType,
             value,
             property,
-            target);
+            target,
+            metadata);
     }
 }
 
