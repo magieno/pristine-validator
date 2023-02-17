@@ -16,7 +16,8 @@ export class ArrayMinSizeValidator extends BaseValidator implements ValidatorInt
                 ConstraintErrorKeynameEnum.ArrayInvalid,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         if (value.length >= this.min) {

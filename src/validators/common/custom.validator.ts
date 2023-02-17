@@ -3,11 +3,11 @@ import {ErrorMessage} from "../../types/error-message.type";
 import {addValidator} from "../../helpers/add-validator";
 
 export class CustomValidator implements ValidatorInterface {
-  constructor(private readonly validationFunction: (value: any, property: string, target: any) => Promise<ErrorMessage | null>) {
+  constructor(private readonly validationFunction: (value: any, property: string, target: any, metadata?: any) => Promise<ErrorMessage | null>) {
   }
 
   async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-    return this.validationFunction(value, property, target);
+    return this.validationFunction(value, property, target, metadata);
   }
 }
 

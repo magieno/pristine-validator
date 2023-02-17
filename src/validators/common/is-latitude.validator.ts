@@ -7,13 +7,14 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 import isLatLongValidator from "validator/lib/isLatLong";
 
 export class IsLatitudeValidator extends BaseValidator implements ValidatorInterface {
-    async validate(value: number | string, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: number | string, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if( isLatLongValidator(`${value},0`) === false) {
             return this.generateErrorMessage("'" + property + "' must be a latitude string or number.",
                 ConstraintErrorKeynameEnum.IsLatitude,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         return null;

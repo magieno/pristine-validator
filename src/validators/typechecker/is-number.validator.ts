@@ -23,7 +23,8 @@ export class IsNumberValidator extends BaseValidator implements ValidatorInterfa
         ConstraintErrorKeynameEnum.IsNumber,
         value,
         property,
-        target);
+        target,
+        metadata);
 
     if (typeof value !== 'number') {
       return errorMessage;

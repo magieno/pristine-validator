@@ -16,7 +16,8 @@ export class IsNotInValidator extends BaseValidator implements ValidatorInterfac
                 ConstraintErrorKeynameEnum.ArrayInvalid,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         if(this.possibleValues.some(possibleValue => possibleValue === value)) {
@@ -24,7 +25,8 @@ export class IsNotInValidator extends BaseValidator implements ValidatorInterfac
                 ConstraintErrorKeynameEnum.IsNotIn,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         return null;

@@ -16,7 +16,8 @@ export class MinValidator extends BaseValidator implements ValidatorInterface {
                 ConstraintErrorKeynameEnum.Min,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         return null;

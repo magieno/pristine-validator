@@ -13,7 +13,8 @@ export class IsLatLongValidator extends BaseValidator implements ValidatorInterf
                 ConstraintErrorKeynameEnum.IsLatLong,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         return null;

@@ -11,13 +11,14 @@ export class MaxDateValidator extends BaseValidator implements ValidatorInterfac
         super(buildErrorMessage);
     }
 
-    async validate(value: Date, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: Date, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if (value instanceof Date === false) {
             return this.generateErrorMessage("The property '" + property + "' should be of 'Date' type, but it was of type '" + typeof value + "'.",
                 ConstraintErrorKeynameEnum.InvalidDate,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         if(value.getTime() > this.maxDate.getTime()) {
@@ -25,7 +26,8 @@ export class MaxDateValidator extends BaseValidator implements ValidatorInterfac
                 ConstraintErrorKeynameEnum.MaxDate,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         return null;

@@ -16,7 +16,8 @@ export class ArrayUniqueValidator extends BaseValidator implements ValidatorInte
           ConstraintErrorKeynameEnum.ArrayInvalid,
           value,
           property,
-          target);
+            target,
+            metadata);
     }
 
     let array = value;
@@ -31,7 +32,8 @@ export class ArrayUniqueValidator extends BaseValidator implements ValidatorInte
           ConstraintErrorKeynameEnum.ArrayUnique,
           value,
           property,
-          target);
+            target,
+            metadata);
     }
 
     return null;

@@ -12,7 +12,8 @@ export class ArrayNotEmptyValidator extends BaseValidator implements ValidatorIn
                 ConstraintErrorKeynameEnum.ArrayInvalid,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         if(value.length === 0) {
@@ -21,7 +22,8 @@ export class ArrayNotEmptyValidator extends BaseValidator implements ValidatorIn
                 ConstraintErrorKeynameEnum.ArrayNotEmpty,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         return null;

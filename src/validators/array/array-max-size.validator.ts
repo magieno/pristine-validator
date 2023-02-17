@@ -16,7 +16,8 @@ export class ArrayMaxSizeValidator extends BaseValidator implements ValidatorInt
                 ConstraintErrorKeynameEnum.ArrayInvalid,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         if (value.length <= this.max) {

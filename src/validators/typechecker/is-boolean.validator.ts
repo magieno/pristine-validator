@@ -12,7 +12,8 @@ export class IsBooleanValidator extends BaseValidator implements ValidatorInterf
                 ConstraintErrorKeynameEnum.IsBoolean,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         return null;

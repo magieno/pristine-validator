@@ -13,7 +13,8 @@ export class IsLongitudeValidator extends BaseValidator implements ValidatorInte
                 ConstraintErrorKeynameEnum.IsLongitude,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         return null;

@@ -12,7 +12,8 @@ export class IsDefinedValidator extends BaseValidator implements ValidatorInterf
                 ConstraintErrorKeynameEnum.IsDefined,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         return null;

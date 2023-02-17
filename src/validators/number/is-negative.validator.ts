@@ -12,7 +12,8 @@ export class IsNegativeValidator extends BaseValidator implements ValidatorInter
                 ConstraintErrorKeynameEnum.IsNegative,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         return null;

@@ -12,7 +12,8 @@ export class IsArrayValidator extends BaseValidator implements ValidatorInterfac
                 ConstraintErrorKeynameEnum.IsArray,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         return null;

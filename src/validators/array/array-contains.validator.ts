@@ -16,7 +16,8 @@ export class ArrayContainsValidator extends BaseValidator implements ValidatorIn
                 ConstraintErrorKeynameEnum.ArrayInvalid,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         for (const elementToFind of this.values) {
@@ -25,7 +26,8 @@ export class ArrayContainsValidator extends BaseValidator implements ValidatorIn
                     ConstraintErrorKeynameEnum.ArrayContains,
                     value,
                     property,
-                    target);
+            target,
+            metadata);
             }
         }
 

@@ -6,7 +6,7 @@ import {BuildErrorMessageType} from "../../types/build-error-message.type";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 
 export class IsStringValidator extends BaseValidator implements ValidatorInterface {
-    async validate(value: any, propertyKey: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, propertyKey: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         if(value instanceof String || typeof value === 'string') {
             return null;
         }
@@ -15,7 +15,8 @@ export class IsStringValidator extends BaseValidator implements ValidatorInterfa
             ConstraintErrorKeynameEnum.IsString,
             value,
             propertyKey,
-            target);
+            target,
+            metadata);
     }
 
     getName(): string {

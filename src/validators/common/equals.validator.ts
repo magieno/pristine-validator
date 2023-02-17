@@ -16,7 +16,8 @@ export class EqualsValidator extends BaseValidator implements ValidatorInterface
                 ConstraintErrorKeynameEnum.Equals,
                 value,
                 property,
-                target);
+            target,
+            metadata);
         }
 
         return null;

@@ -6,6 +6,7 @@ export interface ValidatorInterface {
      * @param value
      * @param property
      * @param target
+     * @param metadata
      */
     validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null>;
 }
