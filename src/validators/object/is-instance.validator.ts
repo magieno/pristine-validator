@@ -12,7 +12,7 @@ export class IsInstanceValidator extends BaseValidator implements ValidatorInter
 
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(this.targetTypeConstructor && typeof this.targetTypeConstructor === 'function' && value instanceof this.targetTypeConstructor) {
+        if (this.targetTypeConstructor && typeof this.targetTypeConstructor === 'function' && value instanceof this.targetTypeConstructor) {
             return null;
         }
 
@@ -21,7 +21,14 @@ export class IsInstanceValidator extends BaseValidator implements ValidatorInter
             value,
             property,
             target,
+            this,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+            targetTypeConstructor: this.targetTypeConstructor,
+        }
     }
 }
 
@@ -32,7 +39,6 @@ export const isInstance = (targetTypeConstructor: new (...args: any[]) => any, b
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

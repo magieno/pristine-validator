@@ -16,7 +16,9 @@ export class ArrayMaxSizeValidator extends BaseValidator implements ValidatorInt
                 ConstraintErrorKeynameEnum.ArrayInvalid,
                 value,
                 property,
-                target);
+                target,
+                this,
+                metadata);
         }
 
         if (value.length <= this.max) {
@@ -29,7 +31,14 @@ export class ArrayMaxSizeValidator extends BaseValidator implements ValidatorInt
             value,
             property,
             target,
+            this,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+            max: this.max,
+        }
     }
 }
 
@@ -41,7 +50,6 @@ export const arrayMaxSize = (max: number, buildErrorMessage?: BuildErrorMessageT
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

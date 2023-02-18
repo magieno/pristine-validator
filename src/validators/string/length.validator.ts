@@ -12,7 +12,7 @@ export class LengthValidator extends BaseValidator implements ValidatorInterface
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isLengthValidator(value, { min: this.minLength, max: this.maxLength })){
+        if (typeof value === 'string' && isLengthValidator(value, {min: this.minLength, max: this.maxLength})) {
             return null;
         }
 
@@ -21,7 +21,15 @@ export class LengthValidator extends BaseValidator implements ValidatorInterface
             value,
             property,
             target,
+            this,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+            minLength: this.minLength,
+            maxLength: this.maxLength,
+        }
     }
 }
 
@@ -39,7 +47,6 @@ export const length = (minLength: number, maxLength: number, buildErrorMessage?:
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

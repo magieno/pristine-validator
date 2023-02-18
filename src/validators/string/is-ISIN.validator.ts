@@ -8,7 +8,7 @@ import isIsinValidator from 'validator/lib/isISIN';
 
 export class IsISINValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isIsinValidator(value)) {
+        if (typeof value === 'string' && isIsinValidator(value)) {
             return null;
         }
 
@@ -17,7 +17,12 @@ export class IsISINValidator extends BaseValidator implements ValidatorInterface
             value,
             property,
             target,
+            this,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -28,7 +33,6 @@ export const isISIN = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

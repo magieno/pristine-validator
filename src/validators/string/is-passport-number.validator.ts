@@ -16,7 +16,12 @@ export class IsPassportNumberValidator extends BaseValidator implements Validato
             value,
             property,
             target,
+            this,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -27,7 +32,6 @@ export const isPassportNumber = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

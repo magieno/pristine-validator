@@ -14,7 +14,7 @@ export class IsMobilePhoneValidator extends BaseValidator implements ValidatorIn
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isMobilePhoneValidator(value, this.locale, this.options)) {
+        if (typeof value === 'string' && isMobilePhoneValidator(value, this.locale, this.options)) {
             return null;
         }
 
@@ -23,7 +23,14 @@ export class IsMobilePhoneValidator extends BaseValidator implements ValidatorIn
             value,
             property,
             target,
+            this,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+            locale: this.locale,
+        }
     }
 }
 
@@ -47,7 +54,6 @@ export const isMobilePhone = (locale?: ValidatorJS.MobilePhoneLocale, options?: 
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

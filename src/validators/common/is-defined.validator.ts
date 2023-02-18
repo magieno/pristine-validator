@@ -7,15 +7,21 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 
 export class IsDefinedValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(value === undefined || value === null) {
+        if (value === undefined || value === null) {
             return this.generateErrorMessage("The property '" + property + "' is not defined.",
                 ConstraintErrorKeynameEnum.IsDefined,
                 value,
                 property,
-                target);
+                target,
+                this,
+                metadata);
         }
 
         return null;
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -27,7 +33,6 @@ export const isDefined = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

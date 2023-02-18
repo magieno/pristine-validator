@@ -8,7 +8,7 @@ import isOctalValidator from 'validator/lib/isOctal';
 
 export class IsOctalValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isOctalValidator(value)) {
+        if (typeof value === 'string' && isOctalValidator(value)) {
             return null;
         }
 
@@ -17,7 +17,12 @@ export class IsOctalValidator extends BaseValidator implements ValidatorInterfac
             value,
             property,
             target,
+            this,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -29,7 +34,6 @@ export const isOctal = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

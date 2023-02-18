@@ -16,21 +16,31 @@ export class ArrayNotContainsValidator extends BaseValidator implements Validato
                 ConstraintErrorKeynameEnum.ArrayInvalid,
                 value,
                 property,
-                target);
+                target,
+                this,
+                metadata);
         }
 
         for (const elementToFind of this.values) {
-            if(value.indexOf(elementToFind) !== -1) {
+            if (value.indexOf(elementToFind) !== -1) {
                 return this.generateErrorMessage("The element '" + elementToFind + "' was found and should not be found in the array at property '" + property + "'.",
                     ConstraintErrorKeynameEnum.ArrayNotContains,
                     value,
                     property,
-                    target);
+                    target,
+                    this,
+                    metadata);
             }
         }
 
         // Here, it means we have not found any of the elements
         return null;
+    }
+
+    public getConstraints(): any {
+        return {
+            values: this.values,
+        }
     }
 }
 
@@ -41,7 +51,6 @@ export const arrayNotContains = (values: any[], buildErrorMessage?: BuildErrorMe
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

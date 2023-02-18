@@ -12,9 +12,10 @@ export class IsIPValidator extends BaseValidator implements ValidatorInterface {
     public constructor(private readonly version?: IsIpVersion, buildErrorMessage?: BuildErrorMessageType) {
         super();
     }
+
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         const versionStr = this.version ? (`${this.version}` as '4' | '6') : undefined;
-        if(typeof value === 'string' && isIPValidator(value, versionStr)) {
+        if (typeof value === 'string' && isIPValidator(value, versionStr)) {
             return null;
         }
 
@@ -23,7 +24,14 @@ export class IsIPValidator extends BaseValidator implements ValidatorInterface {
             value,
             property,
             target,
+            this,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+            version: this.version,
+        }
     }
 }
 
@@ -34,7 +42,6 @@ export const isIP = (version?: IsIpVersion, buildErrorMessage?: BuildErrorMessag
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

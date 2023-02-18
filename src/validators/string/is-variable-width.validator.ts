@@ -8,7 +8,7 @@ import isVariableWidthValidator from 'validator/lib/isVariableWidth';
 
 export class IsVariableWidthValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isVariableWidthValidator(value)) {
+        if (typeof value === 'string' && isVariableWidthValidator(value)) {
             return null;
         }
 
@@ -17,7 +17,12 @@ export class IsVariableWidthValidator extends BaseValidator implements Validator
             value,
             property,
             target,
+            this,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -29,7 +34,6 @@ export const isVariableWidth = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

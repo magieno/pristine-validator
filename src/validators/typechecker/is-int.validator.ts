@@ -7,7 +7,7 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 
 export class IsIntValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'number' && Number.isInteger(value)) {
+        if (typeof value === 'number' && Number.isInteger(value)) {
             return null;
         }
 
@@ -17,7 +17,12 @@ export class IsIntValidator extends BaseValidator implements ValidatorInterface 
             value,
             property,
             target,
+            this,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -29,7 +34,6 @@ export const isInt = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

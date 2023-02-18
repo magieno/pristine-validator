@@ -12,19 +12,27 @@ export class ArrayNotEmptyValidator extends BaseValidator implements ValidatorIn
                 ConstraintErrorKeynameEnum.ArrayInvalid,
                 value,
                 property,
-                target);
+                target,
+                this,
+                metadata);
         }
 
-        if(value.length === 0) {
+        if (value.length === 0) {
             // todo: Error message
             return this.generateErrorMessage("The array at property '" + property + "' should not be empty.",
                 ConstraintErrorKeynameEnum.ArrayNotEmpty,
                 value,
                 property,
-                target);
+                target,
+                this,
+                metadata);
         }
 
         return null;
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -36,7 +44,6 @@ export const arrayNotEmpty = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

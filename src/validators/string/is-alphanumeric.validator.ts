@@ -11,8 +11,9 @@ export class IsAlphanumericValidator extends BaseValidator implements ValidatorI
     public constructor(private readonly locale?: ValidatorJS.AlphanumericLocale, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
+
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isAlphanumericValidator(value, this.locale)){
+        if (typeof value === 'string' && isAlphanumericValidator(value, this.locale)) {
             return null;
         }
 
@@ -21,7 +22,14 @@ export class IsAlphanumericValidator extends BaseValidator implements ValidatorI
             value,
             property,
             target,
+            this,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+            locale: this.locale,
+        }
     }
 }
 
@@ -33,7 +41,6 @@ export const isAlphanumeric = (locale?: ValidatorJS.AlphanumericLocale, buildErr
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

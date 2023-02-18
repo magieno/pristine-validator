@@ -6,20 +6,26 @@ import {BuildErrorMessageType} from "../../types/build-error-message.type";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 
 export class IsStringValidator extends BaseValidator implements ValidatorInterface {
-    async validate(value: any, propertyKey: string, target: any): Promise<ErrorMessage | null> {
-        if(value instanceof String || typeof value === 'string') {
+    async validate(value: any, propertyKey: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+        if (value instanceof String || typeof value === 'string') {
             return null;
         }
 
-        return this.generateErrorMessage("The value is not of type string. Type received: '" + typeof value+ "'.",
+        return this.generateErrorMessage("The value is not of type string. Type received: '" + typeof value + "'.",
             ConstraintErrorKeynameEnum.IsString,
             value,
             propertyKey,
-            target);
+            target,
+            this,
+            metadata);
     }
 
     getName(): string {
         return "IS_STRING";
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -31,7 +37,6 @@ export const isString = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

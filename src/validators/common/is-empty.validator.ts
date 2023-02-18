@@ -7,15 +7,21 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 
 export class IsEmptyValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(value !== '' && value !== null && value !== undefined) {
+        if (value !== '' && value !== null && value !== undefined) {
             return this.generateErrorMessage("The value '" + value + "' at property '" + property + "' is not empty.",
                 ConstraintErrorKeynameEnum.IsEmpty,
                 value,
                 property,
-                target);
+                target,
+                this,
+                metadata);
         }
 
         return null;
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -27,7 +33,6 @@ export const isEmpty = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

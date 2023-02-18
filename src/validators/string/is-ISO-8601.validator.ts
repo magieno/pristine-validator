@@ -11,9 +11,9 @@ export class IsISO8601Validator extends BaseValidator implements ValidatorInterf
     public constructor(private readonly options?: ValidatorJS.IsISO8601Options, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    
+
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isIso8601Validator(value, this.options)) {
+        if (typeof value === 'string' && isIso8601Validator(value, this.options)) {
             return null;
         }
 
@@ -22,7 +22,14 @@ export class IsISO8601Validator extends BaseValidator implements ValidatorInterf
             value,
             property,
             target,
+            this,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+            options: this.options,
+        }
     }
 }
 
@@ -33,7 +40,6 @@ export const isISO8601 = (options?: ValidatorJS.IsISO8601Options, buildErrorMess
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

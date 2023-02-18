@@ -8,7 +8,7 @@ import isJwtValidator from 'validator/lib/isJWT';
 
 export class IsJWTValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isJwtValidator(value)) {
+        if (typeof value === 'string' && isJwtValidator(value)) {
             return null;
         }
 
@@ -18,7 +18,12 @@ export class IsJWTValidator extends BaseValidator implements ValidatorInterface 
             value,
             property,
             target,
+            this,
             metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -29,7 +34,6 @@ export const isJWT = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */
