@@ -233,7 +233,7 @@ export class Validator {
         // If object is array, loop over the array and validate each object inside
         if (Array.isArray(objectToValidate)) {
             for (const [index, object] of objectToValidate.entries()) {
-                const nestedValidationErrors = await this.executeValidation(object, objectToValidate, [], propertyPaths, metadata);
+                const nestedValidationErrors = await this.executeValidation(object, objectToValidate, [], propertyPaths,"", metadata);
 
                 if (nestedValidationErrors.length === 0) {
                     continue;
@@ -245,7 +245,7 @@ export class Validator {
                 validationErrors.push(validationError);
             }
         } else {
-            validationErrors = await this.executeValidation(objectToValidate, objectToValidate, [], propertyPaths, metadata);
+            validationErrors = await this.executeValidation(objectToValidate, objectToValidate, [], propertyPaths, "", metadata);
         }
 
         return validationErrors;
