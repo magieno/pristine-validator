@@ -32,7 +32,7 @@ export enum ConstraintErrorKeynameEnum {
     IsNegative = "IS_NEGATIVE",
     IsPositive = "IS_POSITIVE",
     Max = "MAX",
-    Min = "Min",
+    Min = "MIN",
 
     // Object
     IsInstance = "IS_INSTANCE",
