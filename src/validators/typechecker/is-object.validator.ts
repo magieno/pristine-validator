@@ -7,9 +7,17 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 
 export class IsObjectValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+        if(metadata === undefined) {
+            metadata = {};
+        }
+
         if (value != null && (typeof value === 'object' || typeof value === 'function') && !Array.isArray(value)) {
             return null;
         }
+
+        metadata.errorContext = {
+            type: typeof value,
+        };
 
         // todo: Error message
         return this.generateErrorMessage("'" + property + "' must be an object.",
