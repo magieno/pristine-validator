@@ -27,7 +27,7 @@ export class IsInstanceValidator extends BaseValidator implements ValidatorInter
 
     public getConstraints(): any {
         return {
-            targetTypeConstructor: this.targetTypeConstructor,
+            targetTypeConstructor: this.targetTypeConstructor.name,
         }
     }
 }

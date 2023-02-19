@@ -7,9 +7,17 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 
 export class IsStringValidator extends BaseValidator implements ValidatorInterface {
     async validate(value: any, propertyKey: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+        if(metadata === undefined) {
+            metadata = {};
+        }
+
         if (value instanceof String || typeof value === 'string') {
             return null;
         }
+
+        metadata.errorContext = {
+            type: typeof value,
+        };
 
         return this.generateErrorMessage("The value is not of type string. Type received: '" + typeof value + "'.",
             ConstraintErrorKeynameEnum.IsString,

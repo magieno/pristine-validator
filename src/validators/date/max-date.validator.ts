@@ -12,7 +12,15 @@ export class MaxDateValidator extends BaseValidator implements ValidatorInterfac
     }
 
     async validate(value: Date, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+        if(metadata === undefined) {
+            metadata = {};
+        }
+
         if (value instanceof Date === false) {
+            metadata.errorContext = {
+                type: typeof value,
+            };
+
             return this.generateErrorMessage("The property '" + property + "' should be of 'Date' type, but it was of type '" + typeof value + "'.",
                 ConstraintErrorKeynameEnum.InvalidDate,
                 value,
