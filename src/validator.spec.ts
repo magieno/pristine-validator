@@ -247,7 +247,7 @@ describe("Validator", () => {
     })
 
     // Conditional validators
-    it("should not validate a property if it isn't present in the object and there is the @isOptional condition", async () => {
+    it("should not validate a property if it isn't present in the object, is undefined or is null and there is the @isOptional condition", async () => {
         class NestedClass {
             @IsString()
                 // @ts-ignore
@@ -267,7 +267,7 @@ describe("Validator", () => {
             @IsString()
             @isOptional()
                 // @ts-ignore
-            title: string;
+            title?: string;
         }
 
         const basicClassInvalid = new BasicClass();
@@ -275,9 +275,21 @@ describe("Validator", () => {
         basicClassInvalid.nestedClass.title = "title";
 
         const validator = new Validator();
-        const validationErrors = await validator.validate(basicClassInvalid);
 
+        //Not present
+        const validationErrors = await validator.validate(basicClassInvalid);
         expect(validationErrors.length).toBe(0);
+
+        // Undefined
+        basicClassInvalid.title = undefined;
+        const validationErrors2 = await validator.validate(basicClassInvalid);
+        expect(validationErrors2.length).toBe(0);
+
+        // Undefined
+        // @ts-ignore
+        basicClassInvalid.title = null;
+        const validationErrors3 = await validator.validate(basicClassInvalid);
+        expect(validationErrors3.length).toBe(0);
     })
 
     it("should still validate a property if it's not undefined in the object, the @isOptional condition is present but the value is invalid", async () => {

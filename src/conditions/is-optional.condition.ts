@@ -15,7 +15,7 @@ export class IsOptionalCondition implements ConditionInterface {
      * @param root
      */
     shouldBeValidated(value: any, propertyKey: string, target: any, root: any): boolean {
-        return target.hasOwnProperty(propertyKey);
+        return target.hasOwnProperty(propertyKey) && target[propertyKey] !== null && target[propertyKey] !== undefined;
     }
 }
 
