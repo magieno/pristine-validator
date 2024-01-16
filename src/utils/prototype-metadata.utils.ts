@@ -1,37 +1,19 @@
+import "reflect-metadata";
+
 export class PrototypeMetadataUtils {
-    static getPropertyMetadata(target:any, property: string): any {
-        if(target.constructor.prototype.hasOwnProperty("__metadata__") === false) {
-            return {};
+    static appendToMetadata(metadataKeyname: string, metadata: any, target: any, propertyKey?: string | symbol) {
+        if(propertyKey === undefined) {
+            const targetElements = Reflect.getMetadata(metadataKeyname, target) ?? [];
+
+            targetElements.push(metadata);
+
+            Reflect.defineMetadata(metadataKeyname, targetElements, target.prototype);
+        } else {
+            const targetElements = Reflect.getMetadata(metadataKeyname, target, propertyKey) ?? [];
+
+            targetElements.push(metadata);
+
+            Reflect.defineMetadata(metadataKeyname, targetElements, target, propertyKey);
         }
-
-        if(target.constructor.prototype.__metadata__.hasOwnProperty("class-validator") === false) {
-            return {};
-        }
-
-        if(target.constructor.prototype.__metadata__['class-validator'].hasOwnProperty("properties") === false) {
-            return {};
-        }
-
-        if(target.constructor.prototype.__metadata__['class-validator'].properties.hasOwnProperty(property) === false) {
-            return {};
-        }
-
-        return target.constructor.prototype.__metadata__['class-validator'].properties[property];
-    }
-
-    static getPropertiesFromMetadata(target: any): string[] {
-        if(target.constructor.prototype.hasOwnProperty("__metadata__") === false) {
-            return [];
-        }
-
-        if(target.constructor.prototype.__metadata__.hasOwnProperty("class-validator") === false) {
-            return [];
-        }
-
-        if(target.constructor.prototype.__metadata__['class-validator'].hasOwnProperty("properties") === false) {
-            return [];
-        }
-
-        return Object.keys(target.constructor.prototype.__metadata__['class-validator'].properties)
     }
 }
