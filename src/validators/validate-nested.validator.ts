@@ -1,6 +1,5 @@
 import {PropertyMetadata} from "@pristine-ts/metadata";
-
-export const validateNestedMetadataKeyname = "@validateNested";
+import {MetadataKeynameEnum} from "../enums/metadata-keyname.enum";
 
 export const validateNested = () => {
     return (
@@ -13,7 +12,7 @@ export const validateNested = () => {
          */
         propertyKey: string,
     ) => {
-        PropertyMetadata.defineMetadata(target, propertyKey, validateNestedMetadataKeyname, true);
+        PropertyMetadata.defineMetadata(target, propertyKey, MetadataKeynameEnum.ValidateNested, true);
     }
 }
 
