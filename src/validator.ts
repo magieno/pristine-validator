@@ -1,9 +1,11 @@
+import "reflect-metadata"
 import {ValidatorInterface} from "./interfaces/validator.interface";
 import {ConditionInterface} from "./interfaces/condition.interface";
 import {ValidationError} from "./models/validation-error.model";
 import {ErrorMessage} from "./types/error-message.type";
 import {ValidationConstraintError} from "./types/validation-constraint-error.type";
-import {PrototypeMetadataUtils} from "./utils/prototype-metadata.utils";
+import {ClassMetadata, PropertyMetadata} from "@pristine-ts/metadata";
+import {MetadataKeynameEnum} from "./enums/metadata-keyname.enum";
 
 export class Validator {
     /**
@@ -16,13 +18,11 @@ export class Validator {
         const value = objectToValidate[property];
 
         // Find the validators associated with this particular property for this object.
-        const propertyMetadata = PrototypeMetadataUtils.getPropertyMetadata(objectToValidate, property);
+        const validators: ValidatorInterface[] | undefined = PropertyMetadata.getMetadata(objectToValidate, property, MetadataKeynameEnum.Validator);
 
-        if (propertyMetadata.hasOwnProperty("validators") === false || Array.isArray(propertyMetadata.validators) === false) {
+        if(validators === undefined || Array.isArray(validators) === false) {
             return null;
         }
-
-        const validators: ValidatorInterface[] = propertyMetadata.validators;
 
         const validationConstraints: ValidationConstraintError = {};
 
@@ -91,15 +91,15 @@ export class Validator {
         } else {
             // If there are no property path, we validate all the paths.
             // Loop over all the properties in the object that needs to be validated, then check for each if there are any validators associated.
-            propertiesToVisit = PrototypeMetadataUtils.getPropertiesFromMetadata(objectToValidate);
+            const metadata = ClassMetadata.getInformation(objectToValidate.constructor);
+            propertiesToVisit = metadata.properties;
         }
 
         for (let property of propertiesToVisit) {
             currentPath += currentPath.length > 0 ? "." + property : property;
             const value = objectToValidate[property];
 
-            const propertyMetadata = PrototypeMetadataUtils.getPropertyMetadata(objectToValidate, property);
-            const conditions: ConditionInterface[] = propertyMetadata.conditions;
+            const conditions: ConditionInterface[] = PropertyMetadata.getMetadata(objectToValidate, property, MetadataKeynameEnum.Condition);
 
             if (conditions && Array.isArray(conditions)) {
                 let shouldPropertyBeValidated = true;
@@ -114,10 +114,10 @@ export class Validator {
                 }
             }
 
-            const validationError: ValidationError | null = await this.executeValidatorsOnProperty(property, objectToValidate, metadata)
+            const validationError: ValidationError | null = await this.executeValidatorsOnProperty(property, objectToValidate)
 
             // If there are nested elements and there is a @validateNested annotation, we must validate them further.
-            const shouldValidateNested = propertyMetadata.hasOwnProperty("validateNested") && propertyMetadata.validateNested;
+            const shouldValidateNested = PropertyMetadata.getMetadata(objectToValidate, property, MetadataKeynameEnum.ValidateNested) ?? false;
 
             // If we visit only specific properties, the value must be a nested element if there are additional property paths
             if (visitOnlyInPropertyPath && propertyPath.length !== 0 && typeof value !== 'object' && Array.isArray(value) === false) {
