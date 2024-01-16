@@ -1,6 +1,5 @@
 import {ConditionInterface} from "../interfaces/condition.interface";
 import {addCondition} from "../helpers/add-condition";
-import {PropertyInformationEnum, PropertyMetadata} from "@pristine-ts/metadata";
 
 export class IsOptionalCondition implements ConditionInterface {
     constructor() {
