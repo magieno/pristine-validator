@@ -1,5 +1,6 @@
 import {ConditionInterface} from "../interfaces/condition.interface";
 import {addCondition} from "../helpers/add-condition";
+import {PropertyInformationEnum, PropertyMetadata} from "@pristine-ts/metadata";
 
 export class IsOptionalCondition implements ConditionInterface {
     constructor() {
@@ -35,6 +36,8 @@ export const isOptional = () => {
         const isOptionalCondition = new IsOptionalCondition();
 
         addCondition(target, propertyKey, isOptionalCondition)
+
+        PropertyMetadata.defineMetadata(target, propertyKey, PropertyInformationEnum.Nullable, true);
     }
 }
 
