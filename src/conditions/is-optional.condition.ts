@@ -36,8 +36,6 @@ export const isOptional = () => {
         const isOptionalCondition = new IsOptionalCondition();
 
         addCondition(target, propertyKey, isOptionalCondition)
-
-        PropertyMetadata.defineMetadata(target, propertyKey, PropertyInformationEnum.Nullable, true);
     }
 }
 
