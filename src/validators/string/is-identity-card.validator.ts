@@ -12,9 +12,9 @@ export class IsIdentityCardValidator extends BaseValidator implements ValidatorI
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
 
-        if(typeof value === 'string' && isIdentityCardValidator(value, this.locale)) {
+        if (typeof value === 'string' && isIdentityCardValidator(value, this.locale)) {
             return null;
         }
 
@@ -22,7 +22,15 @@ export class IsIdentityCardValidator extends BaseValidator implements ValidatorI
             ConstraintErrorKeynameEnum.IsIdentityCard,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+            locale: this.locale,
+        }
     }
 }
 
@@ -39,7 +47,6 @@ export const isIdentityCard = (locale: ValidatorJS.IdentityCardLocale, buildErro
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

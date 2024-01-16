@@ -10,7 +10,6 @@ export const validateNested = () => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

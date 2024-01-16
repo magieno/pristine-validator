@@ -10,8 +10,9 @@ export class IsBtcAddressValidator extends BaseValidator implements ValidatorInt
     public constructor(buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isBtcAddressValidator(value)) {
+
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+        if (typeof value === 'string' && isBtcAddressValidator(value)) {
             return null;
         }
 
@@ -19,7 +20,13 @@ export class IsBtcAddressValidator extends BaseValidator implements ValidatorInt
             ConstraintErrorKeynameEnum.IsBtcAddress,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -31,7 +38,6 @@ export const isBtcAddress = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

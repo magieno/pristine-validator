@@ -11,8 +11,8 @@ export class IsInstanceValidator extends BaseValidator implements ValidatorInter
     }
 
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
-        if(this.targetTypeConstructor && typeof this.targetTypeConstructor === 'function' && value instanceof this.targetTypeConstructor) {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+        if (this.targetTypeConstructor && typeof this.targetTypeConstructor === 'function' && value instanceof this.targetTypeConstructor) {
             return null;
         }
 
@@ -20,7 +20,15 @@ export class IsInstanceValidator extends BaseValidator implements ValidatorInter
             ConstraintErrorKeynameEnum.IsInstance,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+            targetTypeConstructor: this.targetTypeConstructor.name,
+        }
     }
 }
 
@@ -31,7 +39,6 @@ export const isInstance = (targetTypeConstructor: new (...args: any[]) => any, b
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

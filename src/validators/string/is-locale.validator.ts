@@ -7,8 +7,8 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 import isLocaleValidator from 'validator/lib/isLocale';
 
 export class IsLocaleValidator extends BaseValidator implements ValidatorInterface {
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isLocaleValidator(value)) {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+        if (typeof value === 'string' && isLocaleValidator(value)) {
             return null;
         }
 
@@ -17,7 +17,13 @@ export class IsLocaleValidator extends BaseValidator implements ValidatorInterfa
             ConstraintErrorKeynameEnum.IsLocale,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -28,7 +34,6 @@ export const isLocale = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

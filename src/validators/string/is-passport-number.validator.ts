@@ -7,7 +7,7 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 import isPassportNumberValidator from 'validator/lib/isPassportNumber';
 
 export class IsPassportNumberValidator extends BaseValidator implements ValidatorInterface {
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         // todo: CODE HERE
 
         // todo: Error message
@@ -15,7 +15,13 @@ export class IsPassportNumberValidator extends BaseValidator implements Validato
             ConstraintErrorKeynameEnum.IsPassportNumber,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -26,7 +32,6 @@ export const isPassportNumber = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

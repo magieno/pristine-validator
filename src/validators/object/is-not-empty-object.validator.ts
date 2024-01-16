@@ -10,23 +10,25 @@ export interface IsNotEmptyObjectOptions {
 }
 
 export class IsNotEmptyObjectValidator extends BaseValidator implements ValidatorInterface {
-  constructor(private readonly options?: IsNotEmptyObjectOptions, buildErrorMessage?: BuildErrorMessageType) {
-    super(buildErrorMessage);
-  }
+    constructor(private readonly options?: IsNotEmptyObjectOptions, buildErrorMessage?: BuildErrorMessageType) {
+        super(buildErrorMessage);
+    }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         const errorMessage = this.generateErrorMessage("'" + property + "' must be a non-empty object",
             ConstraintErrorKeynameEnum.IsNotEmptyObject,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
 
         // Ensures that it's an object
         if (value != null && (typeof value === 'object' || typeof value === 'function') && !Array.isArray(value)) {
 
             if (this.options?.nullable === true) {
-                if(!Object.values(value).every(propertyValue => propertyValue === null || propertyValue === undefined)) {
-                  return null
+                if (!Object.values(value).every(propertyValue => propertyValue === null || propertyValue === undefined)) {
+                    return null
                 }
 
                 return errorMessage;
@@ -43,6 +45,12 @@ export class IsNotEmptyObjectValidator extends BaseValidator implements Validato
 
         return errorMessage;
 
+    }
+
+    public getConstraints(): any {
+        return {
+            options: this.options,
+        }
     }
 }
 

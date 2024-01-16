@@ -1,9 +1,9 @@
-import { BaseValidator } from "../base.validator";
-import { ValidatorInterface } from "../../interfaces/validator.interface";
-import { ErrorMessage } from "../../types/error-message.type";
-import { BuildErrorMessageType } from "../../types/build-error-message.type";
-import { addValidator } from "../../helpers/add-validator";
-import { ConstraintErrorKeynameEnum } from "../../enums/constraint-error-keyname.enum";
+import {BaseValidator} from "../base.validator";
+import {ValidatorInterface} from "../../interfaces/validator.interface";
+import {ErrorMessage} from "../../types/error-message.type";
+import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {addValidator} from "../../helpers/add-validator";
+import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isCurrencyValidator from "validator/lib/isCurrency";
 import ValidatorJS from "validator";
 
@@ -11,8 +11,9 @@ export class IsCurrencyValidator extends BaseValidator implements ValidatorInter
     public constructor(private readonly options?: ValidatorJS.IsCurrencyOptions, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isCurrencyValidator(value, this.options)){
+
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+        if (typeof value === 'string' && isCurrencyValidator(value, this.options)) {
             return null;
         }
 
@@ -20,7 +21,15 @@ export class IsCurrencyValidator extends BaseValidator implements ValidatorInter
             ConstraintErrorKeynameEnum.IsCurrency,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+            options: this.options,
+        }
     }
 }
 
@@ -32,7 +41,6 @@ export const isCurrency = (options?: ValidatorJS.IsCurrencyOptions, buildErrorMe
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

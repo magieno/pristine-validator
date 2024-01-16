@@ -9,9 +9,10 @@ export class IsFirebasePushIdValidator extends BaseValidator implements Validato
     public constructor(buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         const webSafeRegex = /^[a-zA-Z0-9_-]*$/;
-        if(typeof value === 'string' && value.length === 20 && webSafeRegex.test(value)) {
+        if (typeof value === 'string' && value.length === 20 && webSafeRegex.test(value)) {
             return null;
         }
 
@@ -19,7 +20,13 @@ export class IsFirebasePushIdValidator extends BaseValidator implements Validato
             ConstraintErrorKeynameEnum.IsFirebasePushId,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -31,7 +38,6 @@ export const isFirebasePushId = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

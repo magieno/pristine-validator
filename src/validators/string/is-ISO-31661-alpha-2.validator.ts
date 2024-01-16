@@ -7,8 +7,8 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 import isISO31661Alpha2Validator from 'validator/lib/isISO31661Alpha2';
 
 export class IsISO31661Alpha2Validator extends BaseValidator implements ValidatorInterface {
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isISO31661Alpha2Validator(value)) {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+        if (typeof value === 'string' && isISO31661Alpha2Validator(value)) {
             return null;
         }
 
@@ -16,7 +16,13 @@ export class IsISO31661Alpha2Validator extends BaseValidator implements Validato
             ConstraintErrorKeynameEnum.IsISO31661Alpha2,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -27,7 +33,6 @@ export const isISO31661Alpha2 = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

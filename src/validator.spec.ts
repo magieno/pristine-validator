@@ -4,6 +4,9 @@ import {validateNested} from "./validators/validate-nested.validator";
 import {isOptional} from "./conditions/is-optional.condition";
 import { Max } from "./validators/number/max.validator";
 import { ValidateIf } from "./conditions/validate-if.condition";
+import {customValidator} from "./validators/common/custom.validator";
+import {ErrorMessage} from "./types/error-message.type";
+import {isNotEmpty} from "./validators/common/is-not-empty.validator";
 
 describe("Validator", () => {
     it("should directly validate the first-level properties", async () => {
@@ -244,7 +247,7 @@ describe("Validator", () => {
     })
 
     // Conditional validators
-    it("should not validate a property if it isn't present in the object and there is the @isOptional condition", async () => {
+    it("should not validate a property if it isn't present in the object, is undefined or is null and there is the @isOptional condition", async () => {
         class NestedClass {
             @IsString()
                 // @ts-ignore
@@ -264,7 +267,7 @@ describe("Validator", () => {
             @IsString()
             @isOptional()
                 // @ts-ignore
-            title: string;
+            title?: string;
         }
 
         const basicClassInvalid = new BasicClass();
@@ -272,9 +275,21 @@ describe("Validator", () => {
         basicClassInvalid.nestedClass.title = "title";
 
         const validator = new Validator();
-        const validationErrors = await validator.validate(basicClassInvalid);
 
+        //Not present
+        const validationErrors = await validator.validate(basicClassInvalid);
         expect(validationErrors.length).toBe(0);
+
+        // Undefined
+        basicClassInvalid.title = undefined;
+        const validationErrors2 = await validator.validate(basicClassInvalid);
+        expect(validationErrors2.length).toBe(0);
+
+        // Undefined
+        // @ts-ignore
+        basicClassInvalid.title = null;
+        const validationErrors3 = await validator.validate(basicClassInvalid);
+        expect(validationErrors3.length).toBe(0);
     })
 
     it("should still validate a property if it's not undefined in the object, the @isOptional condition is present but the value is invalid", async () => {
@@ -582,5 +597,84 @@ describe("Validator", () => {
         expect(validationErrors1[0].children[0].children[0].children[0].children.length).toBe(1);
         expect(validationErrors1[0].children[0].children[0].children[0].children[0].property).toBe("subNestedArrayTitle");
         expect(Object.keys(validationErrors1[0].children[0].children[0].children[0].children[0].constraints).length).toBe(1);
+    })
+
+    it("should validate children properties if validateNested even if error on whole array", async () => {
+        class NestedArray {
+            @isNotEmpty()
+            @IsString()
+            // @ts-ignore
+            title: string;
+        }
+
+        class BasicClass {
+            @validateNested()
+            @customValidator(async (value: NestedArray[]) => {
+                if(value.length != 1) {
+                    return {
+                        message: "There must be exactly one element.",
+                        keyname: "EXACTLY_ONE",
+                    } as ErrorMessage;
+                }
+
+                return null;
+            })
+            // @ts-ignore
+            nestedArray: NestedArray[] = [];
+        }
+
+        const basicClass = new BasicClass();
+        const nestedArray1 = new NestedArray();
+        // @ts-ignore
+        nestedArray1.title = 2;
+        basicClass.nestedArray.push(nestedArray1);
+
+        const nestedArray2 = new NestedArray();
+        nestedArray2.title = "title";
+        basicClass.nestedArray.push(nestedArray2);
+
+        const validator = new Validator();
+
+        const validationErrors =  await validator.validate(basicClass, {
+            propertyPath: "nestedArray.0.title"
+        });
+
+        console.log(JSON.stringify(validationErrors, null, 2));
+
+        expect(validationErrors.length).toBe(1);
+        expect(validationErrors[0].property).toBe("nestedArray");
+        expect(Object.keys(validationErrors[0].constraints).length).toBe(1);
+        expect(Object.keys(validationErrors[0].constraints)[0]).toBe("EXACTLY_ONE");
+        expect(validationErrors[0].children.length).toBe(1);
+        expect(validationErrors[0].children[0].property).toBe("0");
+        expect(validationErrors[0].children[0].children[0].property).toBe("title");
+        expect(Object.keys(validationErrors[0].children[0].children[0].constraints).length).toBe(1);
+        expect(Object.keys(validationErrors[0].children[0].children[0].constraints)[0]).toBe("IS_STRING");
+
+        const validationErrors1 = await validator.validate(basicClass, {
+            propertyPath: "nestedArray.1.title"
+        });
+
+        console.log(JSON.stringify(validationErrors1, null, 2));
+
+        expect(validationErrors1.length).toBe(1);
+        expect(validationErrors1[0].property).toBe("nestedArray");
+        expect(Object.keys(validationErrors1[0].constraints).length).toBe(1);
+        expect(Object.keys(validationErrors1[0].constraints)[0]).toBe("EXACTLY_ONE");
+        expect(validationErrors1[0].children.length).toBe(0);
+
+        const validationErrors2 = await validator.validate(basicClass);
+
+        console.log(JSON.stringify(validationErrors2, null, 2));
+
+        expect(validationErrors2.length).toBe(1);
+        expect(validationErrors2[0].property).toBe("nestedArray");
+        expect(Object.keys(validationErrors2[0].constraints).length).toBe(1);
+        expect(Object.keys(validationErrors2[0].constraints)[0]).toBe("EXACTLY_ONE");
+        expect(validationErrors2[0].children.length).toBe(1);
+        expect(validationErrors2[0].children[0].property).toBe("0");
+        expect(validationErrors2[0].children[0].children[0].property).toBe("title");
+        expect(Object.keys(validationErrors2[0].children[0].children[0].constraints).length).toBe(1);
+        expect(Object.keys(validationErrors2[0].children[0].children[0].constraints)[0]).toBe("IS_STRING");
     })
 });

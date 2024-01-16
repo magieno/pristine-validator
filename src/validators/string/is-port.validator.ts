@@ -7,8 +7,8 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 import isPortValidator from 'validator/lib/isPort';
 
 export class IsPortValidator extends BaseValidator implements ValidatorInterface {
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isPortValidator(value)) {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+        if (typeof value === 'string' && isPortValidator(value)) {
             return null;
         }
 
@@ -16,7 +16,13 @@ export class IsPortValidator extends BaseValidator implements ValidatorInterface
             ConstraintErrorKeynameEnum.IsPort,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -28,7 +34,6 @@ export const isPort = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

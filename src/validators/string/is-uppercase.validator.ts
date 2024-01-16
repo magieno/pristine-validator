@@ -7,8 +7,8 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 import isUppercaseValidator from 'validator/lib/isUppercase';
 
 export class IsUppercaseValidator extends BaseValidator implements ValidatorInterface {
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isUppercaseValidator(value)){
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+        if (typeof value === 'string' && isUppercaseValidator(value)) {
             return null;
         }
 
@@ -17,7 +17,13 @@ export class IsUppercaseValidator extends BaseValidator implements ValidatorInte
             ConstraintErrorKeynameEnum.IsUppercase,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -29,7 +35,6 @@ export const isUppercase = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

@@ -1,9 +1,9 @@
-import { BaseValidator } from "../base.validator";
-import { ValidatorInterface } from "../../interfaces/validator.interface";
-import { ErrorMessage } from "../../types/error-message.type";
-import { BuildErrorMessageType } from "../../types/build-error-message.type";
-import { addValidator } from "../../helpers/add-validator";
-import { ConstraintErrorKeynameEnum } from "../../enums/constraint-error-keyname.enum";
+import {BaseValidator} from "../base.validator";
+import {ValidatorInterface} from "../../interfaces/validator.interface";
+import {ErrorMessage} from "../../types/error-message.type";
+import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {addValidator} from "../../helpers/add-validator";
+import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import matchesValidator from "validator/lib/matches";
 
 export class MatchesValidator extends BaseValidator implements ValidatorInterface {
@@ -11,9 +11,9 @@ export class MatchesValidator extends BaseValidator implements ValidatorInterfac
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
         // todo do we want to support string with modifiers ?
-        if(typeof value === 'string' && matchesValidator(value, this.pattern as unknown as any)){
+        if (typeof value === 'string' && matchesValidator(value, this.pattern as unknown as any)) {
             return null;
         }
 
@@ -21,7 +21,15 @@ export class MatchesValidator extends BaseValidator implements ValidatorInterfac
             ConstraintErrorKeynameEnum.Matches,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+            pattern: this.pattern,
+        }
     }
 }
 
@@ -33,7 +41,6 @@ export const matches = (pattern: RegExp, buildErrorMessage?: BuildErrorMessageTy
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

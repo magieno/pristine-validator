@@ -11,8 +11,9 @@ export class IsMacAddressValidator extends BaseValidator implements ValidatorInt
     public constructor(private readonly options?: ValidatorJS.IsMACAddressOptions, buildErrorMessage?: BuildErrorMessageType) {
         super(buildErrorMessage);
     }
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isMacAddressValidator(value, this.options)) {
+
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+        if (typeof value === 'string' && isMacAddressValidator(value, this.options)) {
             return null;
         }
 
@@ -20,7 +21,15 @@ export class IsMacAddressValidator extends BaseValidator implements ValidatorInt
             ConstraintErrorKeynameEnum.IsMacAddress,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+            options: this.options,
+        }
     }
 }
 
@@ -31,7 +40,6 @@ export const isMacAddress = (options?: ValidatorJS.IsMACAddressOptions, buildErr
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

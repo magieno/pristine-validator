@@ -10,25 +10,49 @@ export class ArrayMaxSizeValidator extends BaseValidator implements ValidatorInt
         super(buildErrorMessage);
     }
 
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+
+        if(metadata === undefined) {
+            metadata = {};
+        }
+
         if (!Array.isArray(value)) {
+            metadata.errorContext = {
+                type: typeof value,
+            };
+
             return this.generateErrorMessage("The property '" + property + "' should be of 'Array' type, but it was of type '" + typeof value + "'.",
                 ConstraintErrorKeynameEnum.ArrayInvalid,
                 value,
                 property,
-                target);
+                target,
+                this,
+                metadata);
         }
 
-        if(value.length <= this.max) {
+        if (value.length <= this.max) {
             return null;
         }
+
+        metadata.errorContext = {
+            length: value.length,
+        };
+
 
         // todo: Error message
         return this.generateErrorMessage("The property '" + property + "' should not have more than '" + this.max + "' elements.",
             ConstraintErrorKeynameEnum.ArrayMaxSize,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {
+            max: this.max,
+        }
     }
 }
 
@@ -40,7 +64,6 @@ export const arrayMaxSize = (max: number, buildErrorMessage?: BuildErrorMessageT
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */

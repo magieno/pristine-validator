@@ -7,8 +7,8 @@ import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.e
 import isRFC3339Validator from 'validator/lib/isRFC3339';
 
 export class IsRFC3339Validator extends BaseValidator implements ValidatorInterface {
-    async validate(value: any, property: string, target: any): Promise<ErrorMessage | null> {
-        if(typeof value === 'string' && isRFC3339Validator(value)) {
+    async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
+        if (typeof value === 'string' && isRFC3339Validator(value)) {
             return null;
         }
 
@@ -16,7 +16,13 @@ export class IsRFC3339Validator extends BaseValidator implements ValidatorInterf
             ConstraintErrorKeynameEnum.IsRFC3339,
             value,
             property,
-            target);
+            target,
+            this,
+            metadata);
+    }
+
+    public getConstraints(): any {
+        return {}
     }
 }
 
@@ -28,7 +34,6 @@ export const isRFC3339 = (buildErrorMessage?: BuildErrorMessageType) => {
          * The class on which the decorator is used.
          */
         target: any,
-
         /**
          * The property on which the decorator is used.
          */
