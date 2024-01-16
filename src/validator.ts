@@ -4,10 +4,10 @@ import {ConditionInterface} from "./interfaces/condition.interface";
 import {ValidationError} from "./models/validation-error.model";
 import {ErrorMessage} from "./types/error-message.type";
 import {ValidationConstraintError} from "./types/validation-constraint-error.type";
-import {PrototypeMetadataUtils} from "./utils/prototype-metadata.utils";
 import {conditionMetadataKeyname} from "./helpers/add-condition";
 import {validateNestedMetadataKeyname} from "./validators/validate-nested.validator";
 import {validatorMetadataKeyname} from "./helpers/add-validator";
+import {PropertyMetadata} from "@pristine-ts/metadata";
 
 export class Validator {
     /**
@@ -20,7 +20,7 @@ export class Validator {
         const value = objectToValidate[property];
 
         // Find the validators associated with this particular property for this object.
-        const validators: ValidatorInterface[] | undefined = Reflect.getMetadata(validatorMetadataKeyname, objectToValidate, property);
+        const validators: ValidatorInterface[] | undefined = PropertyMetadata.getMetadata(objectToValidate.constructor, property, validatorMetadataKeyname);
 
         if(validators === undefined || Array.isArray(validators) === false) {
             return null;
@@ -97,7 +97,7 @@ export class Validator {
             currentPath += currentPath.length > 0 ? "." + property : property;
             const value = objectToValidate[property];
 
-            const conditions: ConditionInterface[] = Reflect.getMetadata(conditionMetadataKeyname, objectToValidate, property);
+            const conditions: ConditionInterface[] = PropertyMetadata.getMetadata(objectToValidate.constructor, property, conditionMetadataKeyname);
 
             if(conditions && Array.isArray(conditions)) {
                 let shouldPropertyBeValidated = true;
@@ -121,7 +121,7 @@ export class Validator {
             }
 
             // If there are nested elements and there is a @validateNested annotation, we must validate them further.
-            const shouldValidateNested = Reflect.getMetadata(validateNestedMetadataKeyname, objectToValidate, property) ?? false;
+            const shouldValidateNested = PropertyMetadata.getMetadata(objectToValidate.constructor, property, validateNestedMetadataKeyname) ?? false;
 
             // If we visit only specific properties, the value must be a nested element if there are additional property paths
             if(visitOnlyInPropertyPath && propertyPath.length !== 0 && typeof value !== 'object' && Array.isArray(value) === false) {

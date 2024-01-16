@@ -4,6 +4,5 @@ export * from "./helpers/helpers";
 export * from "./interfaces/interfaces";
 export * from "./models/models";
 export * from "./types/types";
-export * from "./utils/utils";
 export * from "./validators/validators";
 export * from "./validator";

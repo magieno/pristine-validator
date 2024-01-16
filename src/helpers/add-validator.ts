@@ -1,7 +1,8 @@
 import {ValidatorInterface} from "../interfaces/validator.interface";
-import {PrototypeMetadataUtils} from "../utils/prototype-metadata.utils";
+import {PropertyMetadata} from "@pristine-ts/metadata";
+
 export const validatorMetadataKeyname = "@validator";
 
 export const addValidator = (target: any, propertyKey: string, instanciatedValidator: ValidatorInterface) => {
-    PrototypeMetadataUtils.appendToMetadata(validatorMetadataKeyname, instanciatedValidator, target, propertyKey);
+    PropertyMetadata.appendToMetadata(target, propertyKey, validatorMetadataKeyname, instanciatedValidator);
 }
