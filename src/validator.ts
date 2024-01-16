@@ -118,12 +118,6 @@ export class Validator {
 
             const validationError: ValidationError | null = await this.executeValidatorsOnProperty(property, objectToValidate)
 
-            // If there is a validation error, we save it and directly continue to visit the next property.
-            if(validationError !== null) {
-                validationErrors.push(validationError);
-                continue;
-            }
-
             // If there are nested elements and there is a @validateNested annotation, we must validate them further.
             const shouldValidateNested = PropertyMetadata.getMetadata(objectToValidate, property, validateNestedMetadataKeyname) ?? false;
 

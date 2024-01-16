@@ -1,5 +1,3 @@
-import {addValidator} from "../helpers/add-validator";
-import {IsStringValidator} from "./typechecker/is-string.validator";
 import {PropertyMetadata} from "@pristine-ts/metadata";
 
 export const validateNestedMetadataKeyname = "@validateNested";
