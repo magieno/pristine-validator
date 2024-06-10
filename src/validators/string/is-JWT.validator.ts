@@ -1,7 +1,7 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isJwtValidator from 'validator/lib/isJWT';
@@ -28,7 +28,7 @@ export class IsJWTValidator extends BaseValidator implements ValidatorInterface 
 }
 
 // Decorator
-export const isJWT = (buildErrorMessage?: BuildErrorMessageType) => {
+export const isJWT = (validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -39,7 +39,7 @@ export const isJWT = (buildErrorMessage?: BuildErrorMessageType) => {
          */
         propertyKey: string,
     ) => {
-        const validator = new IsJWTValidator(buildErrorMessage);
+        const validator = new IsJWTValidator(validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

@@ -1,13 +1,13 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 
 export class ArrayContainsValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly values: any[], buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(private readonly values: any[], validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -46,7 +46,7 @@ export class ArrayContainsValidator extends BaseValidator implements ValidatorIn
 
 
 // Decorator
-export const arrayContains = (values: any[], buildErrorMessage?: BuildErrorMessageType) => {
+export const arrayContains = (values: any[], validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -57,7 +57,7 @@ export const arrayContains = (values: any[], buildErrorMessage?: BuildErrorMessa
          */
         property: string,
     ) => {
-        const validator = new ArrayContainsValidator(values, buildErrorMessage);
+        const validator = new ArrayContainsValidator(values, validationOptions);
 
         addValidator(target, property, validator)
     }

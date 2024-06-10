@@ -1,14 +1,14 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isBtcAddressValidator from "validator/lib/isBtcAddress";
 
 export class IsBtcAddressValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -32,7 +32,7 @@ export class IsBtcAddressValidator extends BaseValidator implements ValidatorInt
 
 
 // Decorator
-export const isBtcAddress = (buildErrorMessage?: BuildErrorMessageType) => {
+export const isBtcAddress = (validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -43,7 +43,7 @@ export const isBtcAddress = (buildErrorMessage?: BuildErrorMessageType) => {
          */
         propertyKey: string,
     ) => {
-        const validator = new IsBtcAddressValidator(buildErrorMessage);
+        const validator = new IsBtcAddressValidator(validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

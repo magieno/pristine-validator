@@ -1,13 +1,13 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 
 export class IsInstanceValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly targetTypeConstructor: new (...args: any[]) => any, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(private readonly targetTypeConstructor: new (...args: any[]) => any, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
 
@@ -33,7 +33,7 @@ export class IsInstanceValidator extends BaseValidator implements ValidatorInter
 }
 
 // Decorator
-export const isInstance = (targetTypeConstructor: new (...args: any[]) => any, buildErrorMessage?: BuildErrorMessageType) => {
+export const isInstance = (targetTypeConstructor: new (...args: any[]) => any, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -44,7 +44,7 @@ export const isInstance = (targetTypeConstructor: new (...args: any[]) => any, b
          */
         propertyKey: string,
     ) => {
-        const validator = new IsInstanceValidator(targetTypeConstructor, buildErrorMessage);
+        const validator = new IsInstanceValidator(targetTypeConstructor, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }
