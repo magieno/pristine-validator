@@ -1,14 +1,14 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isEthereumAddressValidator from "validator/lib/isEthereumAddress";
 
 export class IsEthereumAddressValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -32,7 +32,7 @@ export class IsEthereumAddressValidator extends BaseValidator implements Validat
 
 
 // Decorator
-export const isEthereumAddress = (buildErrorMessage?: BuildErrorMessageType) => {
+export const isEthereumAddress = (validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -43,7 +43,7 @@ export const isEthereumAddress = (buildErrorMessage?: BuildErrorMessageType) => 
          */
         propertyKey: string,
     ) => {
-        const validator = new IsEthereumAddressValidator(buildErrorMessage);
+        const validator = new IsEthereumAddressValidator(validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

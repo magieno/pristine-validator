@@ -1,7 +1,7 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isOctalValidator from 'validator/lib/isOctal';
@@ -28,7 +28,7 @@ export class IsOctalValidator extends BaseValidator implements ValidatorInterfac
 
 
 // Decorator
-export const isOctal = (buildErrorMessage?: BuildErrorMessageType) => {
+export const isOctal = (validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -39,7 +39,7 @@ export const isOctal = (buildErrorMessage?: BuildErrorMessageType) => {
          */
         propertyKey: string,
     ) => {
-        const validator = new IsOctalValidator(buildErrorMessage);
+        const validator = new IsOctalValidator(validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

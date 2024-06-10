@@ -1,7 +1,7 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isIBANValidator from 'validator/lib/isIBAN';
@@ -27,7 +27,7 @@ export class IsIBANValidator extends BaseValidator implements ValidatorInterface
 }
 
 // Decorator
-export const isIBAN = (buildErrorMessage?: BuildErrorMessageType) => {
+export const isIBAN = (validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -38,7 +38,7 @@ export const isIBAN = (buildErrorMessage?: BuildErrorMessageType) => {
          */
         propertyKey: string,
     ) => {
-        const validator = new IsIBANValidator(buildErrorMessage);
+        const validator = new IsIBANValidator(validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

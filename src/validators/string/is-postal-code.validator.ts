@@ -1,15 +1,15 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isPostalCodeValidator from 'validator/lib/isPostalCode';
 import ValidatorJS from 'validator';
 
 export class IsPostalCodeValidator extends BaseValidator implements ValidatorInterface {
-    constructor(private readonly locale: 'any' | ValidatorJS.PostalCodeLocale, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    constructor(private readonly locale: 'any' | ValidatorJS.PostalCodeLocale, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -40,7 +40,7 @@ export class IsPostalCodeValidator extends BaseValidator implements ValidatorInt
  * (locale is one of [ 'AD', 'AT', 'AU', 'BE', 'BG', 'BR', 'CA', 'CH', 'CZ', 'DE', 'DK', 'DZ', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU', 'ID', 'IE' 'IL', 'IN', 'IR', 'IS', 'IT', 'JP', 'KE', 'LI', 'LT', 'LU', 'LV', 'MT', 'MX', 'NL', 'NO', 'NZ', 'PL', 'PR', 'PT', 'RO', 'RU', 'SA', 'SE', 'SI', 'TN', 'TW', 'UA', 'US', 'ZA', 'ZM' ] OR 'any'. If 'any' is used, function will check if any of the locals match. Locale list is validator.isPostalCodeLocales.).
  * If given value is not a string, then it returns false.
  */
-export const isPostalCode = (locale: 'any' | ValidatorJS.PostalCodeLocale, buildErrorMessage?: BuildErrorMessageType) => {
+export const isPostalCode = (locale: 'any' | ValidatorJS.PostalCodeLocale, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -51,7 +51,7 @@ export const isPostalCode = (locale: 'any' | ValidatorJS.PostalCodeLocale, build
          */
         propertyKey: string,
     ) => {
-        const validator = new IsPostalCodeValidator(locale, buildErrorMessage);
+        const validator = new IsPostalCodeValidator(locale, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

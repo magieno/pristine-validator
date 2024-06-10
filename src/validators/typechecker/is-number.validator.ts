@@ -1,7 +1,7 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 
@@ -15,8 +15,8 @@ export interface IsNumberOptions {
 }
 
 export class IsNumberValidator extends BaseValidator implements ValidatorInterface {
-    constructor(private readonly numberOptions?: IsNumberOptions, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    constructor(private readonly numberOptions?: IsNumberOptions, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -73,7 +73,7 @@ export class IsNumberValidator extends BaseValidator implements ValidatorInterfa
 }
 
 // Decorator
-export const isNumber = (numberOptions?: IsNumberOptions, buildErrorMessage?: BuildErrorMessageType) => {
+export const isNumber = (numberOptions?: IsNumberOptions, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -84,7 +84,7 @@ export const isNumber = (numberOptions?: IsNumberOptions, buildErrorMessage?: Bu
          */
         propertyKey: string,
     ) => {
-        const validator = new IsNumberValidator(numberOptions, buildErrorMessage);
+        const validator = new IsNumberValidator(numberOptions, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

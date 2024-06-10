@@ -1,7 +1,7 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isMobilePhoneValidator from 'validator/lib/isMobilePhone';
@@ -9,8 +9,8 @@ import ValidatorJS from 'validator';
 
 export class IsMobilePhoneValidator extends BaseValidator implements ValidatorInterface {
     public constructor(private readonly locale?: ValidatorJS.MobilePhoneLocale,
-                       private readonly options?: ValidatorJS.IsMobilePhoneOptions, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+                       private readonly options?: ValidatorJS.IsMobilePhoneOptions, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -48,7 +48,7 @@ export class IsMobilePhoneValidator extends BaseValidator implements ValidatorIn
  * 'zh-HK', 'zh-MO', 'zh-TW']
  * If given value is not a string, then it returns false.
  */
-export const isMobilePhone = (locale?: ValidatorJS.MobilePhoneLocale, options?: ValidatorJS.IsMobilePhoneOptions, buildErrorMessage?: BuildErrorMessageType) => {
+export const isMobilePhone = (locale?: ValidatorJS.MobilePhoneLocale, options?: ValidatorJS.IsMobilePhoneOptions, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -59,7 +59,7 @@ export const isMobilePhone = (locale?: ValidatorJS.MobilePhoneLocale, options?: 
          */
         propertyKey: string,
     ) => {
-        const validator = new IsMobilePhoneValidator(locale, options, buildErrorMessage);
+        const validator = new IsMobilePhoneValidator(locale, options, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

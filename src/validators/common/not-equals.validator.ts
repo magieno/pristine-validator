@@ -1,13 +1,13 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 
 export class NotEqualsValidator extends BaseValidator implements ValidatorInterface {
-    constructor(private readonly expectedValue: any, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    constructor(private readonly expectedValue: any, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -33,7 +33,7 @@ export class NotEqualsValidator extends BaseValidator implements ValidatorInterf
 
 
 // Decorator
-export const notEquals = (expectedValue: any, buildErrorMessage?: BuildErrorMessageType) => {
+export const notEquals = (expectedValue: any, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -44,7 +44,7 @@ export const notEquals = (expectedValue: any, buildErrorMessage?: BuildErrorMess
          */
         propertyKey: string,
     ) => {
-        const validator = new NotEqualsValidator(expectedValue, buildErrorMessage);
+        const validator = new NotEqualsValidator(expectedValue, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

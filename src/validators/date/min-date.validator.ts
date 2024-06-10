@@ -1,14 +1,14 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import {format} from 'date-fns'
 
 export class MinDateValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly minDate: Date, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(private readonly minDate: Date, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: Date, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -52,7 +52,7 @@ export class MinDateValidator extends BaseValidator implements ValidatorInterfac
 
 
 // Decorator
-export const minDate = (minDate: Date, buildErrorMessage?: BuildErrorMessageType) => {
+export const minDate = (minDate: Date, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -63,7 +63,7 @@ export const minDate = (minDate: Date, buildErrorMessage?: BuildErrorMessageType
          */
         propertyKey: string,
     ) => {
-        const validator = new MinDateValidator(minDate, buildErrorMessage);
+        const validator = new MinDateValidator(minDate, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

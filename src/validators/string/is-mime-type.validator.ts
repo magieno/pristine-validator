@@ -1,7 +1,7 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isMimeTypeValidator from 'validator/lib/isMimeType';
@@ -28,7 +28,7 @@ export class IsMimeTypeValidator extends BaseValidator implements ValidatorInter
 }
 
 // Decorator
-export const isMimeType = (buildErrorMessage?: BuildErrorMessageType) => {
+export const isMimeType = (validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -39,7 +39,7 @@ export const isMimeType = (buildErrorMessage?: BuildErrorMessageType) => {
          */
         propertyKey: string,
     ) => {
-        const validator = new IsMimeTypeValidator(buildErrorMessage);
+        const validator = new IsMimeTypeValidator(validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

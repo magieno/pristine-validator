@@ -1,14 +1,14 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isBICValidator from "validator/lib/isBIC";
 
 export class IsBICValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -32,7 +32,7 @@ export class IsBICValidator extends BaseValidator implements ValidatorInterface 
 
 
 // Decorator
-export const isBIC = (buildErrorMessage?: BuildErrorMessageType) => {
+export const isBIC = (validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -43,7 +43,7 @@ export const isBIC = (buildErrorMessage?: BuildErrorMessageType) => {
          */
         propertyKey: string,
     ) => {
-        const validator = new IsBICValidator(buildErrorMessage);
+        const validator = new IsBICValidator(validationOptions);
 
         addValidator(target, propertyKey, validator)
     }
