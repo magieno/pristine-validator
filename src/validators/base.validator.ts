@@ -18,4 +18,8 @@ export abstract class BaseValidator {
 
         return this.validationOptions?.buildErrorMessage(constraintKeyname, value, propertyKey, target, validator.getConstraints(), metadata);
     }
+
+    getValidationOptions(): ValidationOptionsInterface | undefined {
+        return this.validationOptions;
+    }
 }
