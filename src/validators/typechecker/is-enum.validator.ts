@@ -1,13 +1,13 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 
 export class IsEnumValidator extends BaseValidator implements ValidatorInterface {
-    constructor(private readonly entity: any, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    constructor(private readonly entity: any, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -43,7 +43,7 @@ export class IsEnumValidator extends BaseValidator implements ValidatorInterface
 
 
 // Decorator
-export const isEnum = (entity: any, buildErrorMessage?: BuildErrorMessageType) => {
+export const isEnum = (entity: any, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -54,7 +54,7 @@ export const isEnum = (entity: any, buildErrorMessage?: BuildErrorMessageType) =
          */
         propertyKey: string,
     ) => {
-        const validator = new IsEnumValidator(entity, buildErrorMessage);
+        const validator = new IsEnumValidator(entity, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

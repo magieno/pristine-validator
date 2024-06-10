@@ -1,15 +1,15 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isISSNValidator from 'validator/lib/isISSN';
 import ValidatorJS from 'validator';
 
 export class IsISSNValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly options?: ValidatorJS.IsISSNOptions, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(private readonly options?: ValidatorJS.IsISSNOptions, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -34,7 +34,7 @@ export class IsISSNValidator extends BaseValidator implements ValidatorInterface
 }
 
 // Decorator
-export const isSSN = (options?: ValidatorJS.IsISSNOptions, buildErrorMessage?: BuildErrorMessageType) => {
+export const isSSN = (options?: ValidatorJS.IsISSNOptions, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -45,7 +45,7 @@ export const isSSN = (options?: ValidatorJS.IsISSNOptions, buildErrorMessage?: B
          */
         propertyKey: string,
     ) => {
-        const validator = new IsISSNValidator(options, buildErrorMessage);
+        const validator = new IsISSNValidator(options, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

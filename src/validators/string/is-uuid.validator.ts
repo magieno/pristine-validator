@@ -1,7 +1,7 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isUuidValidator from "validator/lib/isUUID";
@@ -9,8 +9,8 @@ import isUuidValidator from "validator/lib/isUUID";
 export type UUIDVersion = '3' | '4' | '5' | 'all' | 3 | 4 | 5;
 
 export class IsUUIDValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly uuidVersion?: UUIDVersion, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(private readonly uuidVersion?: UUIDVersion, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -36,7 +36,7 @@ export class IsUUIDValidator extends BaseValidator implements ValidatorInterface
 
 
 // Decorator
-export const isUUID = (uuidVersion?: UUIDVersion, buildErrorMessage?: BuildErrorMessageType) => {
+export const isUUID = (uuidVersion?: UUIDVersion, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -47,7 +47,7 @@ export const isUUID = (uuidVersion?: UUIDVersion, buildErrorMessage?: BuildError
          */
         propertyKey: string,
     ) => {
-        const validator = new IsUUIDValidator(uuidVersion, buildErrorMessage);
+        const validator = new IsUUIDValidator(uuidVersion, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

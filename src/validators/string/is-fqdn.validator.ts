@@ -1,7 +1,7 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import ValidatorJS from "validator";
@@ -12,8 +12,8 @@ import isFQDNValidator from "validator/lib/isFQDN";
  * If given value is not a string, then it returns false.
  */
 export class IsFQDNValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly options?: ValidatorJS.IsFQDNOptions, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(private readonly options?: ValidatorJS.IsFQDNOptions, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -39,7 +39,7 @@ export class IsFQDNValidator extends BaseValidator implements ValidatorInterface
 
 
 // Decorator
-export const isFQDN = (options?: ValidatorJS.IsFQDNOptions, buildErrorMessage?: BuildErrorMessageType) => {
+export const isFQDN = (options?: ValidatorJS.IsFQDNOptions, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -50,7 +50,7 @@ export const isFQDN = (options?: ValidatorJS.IsFQDNOptions, buildErrorMessage?: 
          */
         propertyKey: string,
     ) => {
-        const validator = new IsFQDNValidator(options, buildErrorMessage);
+        const validator = new IsFQDNValidator(options, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

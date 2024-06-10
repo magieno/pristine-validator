@@ -1,15 +1,15 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isIdentityCardValidator from 'validator/lib/isIdentityCard';
 import ValidatorJS from 'validator';
 
 export class IsIdentityCardValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly locale: ValidatorJS.IdentityCardLocale, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(private readonly locale: ValidatorJS.IdentityCardLocale, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -41,7 +41,7 @@ export class IsIdentityCardValidator extends BaseValidator implements ValidatorI
  * Defaults to 'any'.
  * If given value is not a string, then it returns false.
  */
-export const isIdentityCard = (locale: ValidatorJS.IdentityCardLocale, buildErrorMessage?: BuildErrorMessageType) => {
+export const isIdentityCard = (locale: ValidatorJS.IdentityCardLocale, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -52,7 +52,7 @@ export const isIdentityCard = (locale: ValidatorJS.IdentityCardLocale, buildErro
          */
         propertyKey: string,
     ) => {
-        const validator = new IsIdentityCardValidator(locale, buildErrorMessage);
+        const validator = new IsIdentityCardValidator(locale, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

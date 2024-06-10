@@ -1,15 +1,15 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isAlphanumericValidator from "validator/lib/isAlphanumeric";
 import ValidatorJS from "validator";
 
 export class IsAlphanumericValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly locale?: ValidatorJS.AlphanumericLocale, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(private readonly locale?: ValidatorJS.AlphanumericLocale, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -35,7 +35,7 @@ export class IsAlphanumericValidator extends BaseValidator implements ValidatorI
 
 
 // Decorator
-export const isAlphanumeric = (locale?: ValidatorJS.AlphanumericLocale, buildErrorMessage?: BuildErrorMessageType) => {
+export const isAlphanumeric = (locale?: ValidatorJS.AlphanumericLocale, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -46,7 +46,7 @@ export const isAlphanumeric = (locale?: ValidatorJS.AlphanumericLocale, buildErr
          */
         propertyKey: string,
     ) => {
-        const validator = new IsAlphanumericValidator(locale, buildErrorMessage);
+        const validator = new IsAlphanumericValidator(locale, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

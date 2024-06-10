@@ -1,4 +1,5 @@
 import {ErrorMessage} from "../types/error-message.type";
+import {ValidationOptionsInterface} from "./validation-options.interface";
 
 export interface ValidatorInterface {
     /**
@@ -14,4 +15,9 @@ export interface ValidatorInterface {
      * This method returns the constraints with their names and value.
      */
     getConstraints(): any;
+
+    /**
+     * Returns the validation options or undefined if none are set.
+     */
+    getValidationOptions(): ValidationOptionsInterface | undefined
 }

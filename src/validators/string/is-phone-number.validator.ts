@@ -1,15 +1,15 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import {CountryCode, parsePhoneNumberFromString} from "libphonenumber-js";
 
 
 export class IsPhoneNumberValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly countryCode?: CountryCode, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(private readonly countryCode?: CountryCode, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -47,7 +47,7 @@ export class IsPhoneNumberValidator extends BaseValidator implements ValidatorIn
  * @param countryCode 2 characters uppercase country code (e.g. DE, US, CH) for country specific validation.
  * If text doesn't start with the international calling code (e.g. +41), then you must set this parameter.
  */
-export const isPhoneNumber = (countryCode?: CountryCode, buildErrorMessage?: BuildErrorMessageType) => {
+export const isPhoneNumber = (countryCode?: CountryCode, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -58,7 +58,7 @@ export const isPhoneNumber = (countryCode?: CountryCode, buildErrorMessage?: Bui
          */
         propertyKey: string,
     ) => {
-        const validator = new IsPhoneNumberValidator(countryCode, buildErrorMessage);
+        const validator = new IsPhoneNumberValidator(countryCode, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

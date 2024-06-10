@@ -1,7 +1,7 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isLowercaseValidator from 'validator/lib/isLowercase';
@@ -27,7 +27,7 @@ export class IsLowercaseValidator extends BaseValidator implements ValidatorInte
 }
 
 // Decorator
-export const isLowercase = (buildErrorMessage?: BuildErrorMessageType) => {
+export const isLowercase = (validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -38,7 +38,7 @@ export const isLowercase = (buildErrorMessage?: BuildErrorMessageType) => {
          */
         propertyKey: string,
     ) => {
-        const validator = new IsLowercaseValidator(buildErrorMessage);
+        const validator = new IsLowercaseValidator(validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

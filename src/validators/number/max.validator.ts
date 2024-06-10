@@ -1,13 +1,13 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 
 export class MaxValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly maxNumber: number, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(private readonly maxNumber: number, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -33,7 +33,7 @@ export class MaxValidator extends BaseValidator implements ValidatorInterface {
 
 
 // Decorator
-export const max = (maxNumber: number, buildErrorMessage?: BuildErrorMessageType) => {
+export const max = (maxNumber: number, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -44,7 +44,7 @@ export const max = (maxNumber: number, buildErrorMessage?: BuildErrorMessageType
          */
         propertyKey: string,
     ) => {
-        const validator = new MaxValidator(maxNumber, buildErrorMessage);
+        const validator = new MaxValidator(maxNumber, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }
