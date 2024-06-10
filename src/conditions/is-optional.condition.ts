@@ -1,8 +1,9 @@
 import {ConditionInterface} from "../interfaces/condition.interface";
 import {addCondition} from "../helpers/add-condition";
+import {ValidationOptionsInterface} from "../interfaces/validation-options.interface";
 
 export class IsOptionalCondition implements ConditionInterface {
-    constructor() {
+    constructor(private readonly validationOptions?: ValidationOptionsInterface) {
     }
 
     /**
@@ -17,10 +18,14 @@ export class IsOptionalCondition implements ConditionInterface {
     shouldBeValidated(value: any, propertyKey: string, target: any, root: any): boolean {
         return target.hasOwnProperty(propertyKey) && target[propertyKey] !== null && target[propertyKey] !== undefined;
     }
+
+    getValidationOptions(): ValidationOptionsInterface | undefined {
+        return this.validationOptions;
+    }
 }
 
 // Decorator
-export const isOptional = () => {
+export const isOptional = (validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -32,7 +37,7 @@ export const isOptional = () => {
          */
         propertyKey: string,
     ) => {
-        const isOptionalCondition = new IsOptionalCondition();
+        const isOptionalCondition = new IsOptionalCondition(validationOptions);
 
         addCondition(target, propertyKey, isOptionalCondition)
     }

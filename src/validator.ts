@@ -6,6 +6,7 @@ import {ErrorMessage} from "./types/error-message.type";
 import {ValidationConstraintError} from "./types/validation-constraint-error.type";
 import {ClassMetadata, PropertyMetadata} from "@pristine-ts/metadata";
 import {MetadataKeynameEnum} from "./enums/metadata-keyname.enum";
+import {ValidationOptionsInterface} from "./interfaces/validation-options.interface";
 
 export class Validator {
     /**
@@ -34,8 +35,10 @@ export class Validator {
                 throw new Error("The validator with name: '" + validator.constructor.name + "' doesn't implement the ValidatorInterface");
             }
 
+            const validationOptions: ValidationOptionsInterface | undefined = validator.getValidationOptions();
+
             // If there are groups in the options and that the validator has groups, we need to check if the groups are the same. If the validator has no group, we still validate it.
-            if(options.groups && validator.getValidationOptions()?.groups?.some((group) => options.groups?.includes(group)) === false) {
+            if(validationOptions && validationOptions.groups && validationOptions.groups.length > 0 && !validationOptions.groups.some((group) => options.groups?.includes(group))) {
                 continue;
             }
 
@@ -109,6 +112,13 @@ export class Validator {
             if (conditions && Array.isArray(conditions)) {
                 let shouldPropertyBeValidated = true;
                 for (let condition of conditions) {
+                    const validationOptions: ValidationOptionsInterface | undefined = condition.getValidationOptions();
+
+                    // Don't execute a condition if it specifies a group and the group is not in the options.
+                    if(validationOptions && validationOptions.groups && validationOptions.groups.length > 0 && !validationOptions.groups.some((group) => options.groups?.includes(group))) {
+                        continue;
+                    }
+
                     if (condition.shouldBeValidated(value, property, objectToValidate, rootObject, currentPath) === false) {
                         shouldPropertyBeValidated = false;
                         continue;

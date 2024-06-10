@@ -1,9 +1,11 @@
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
 import {addValidator} from "../../helpers/add-validator";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
+import {property} from "@pristine-ts/metadata";
 
 export class CustomValidator implements ValidatorInterface {
-    constructor(private readonly validationFunction: (value: any, property: string, target: any, metadata?: any) => Promise<ErrorMessage | null>) {
+    constructor(private readonly validationFunction: (value: any, property: string, target: any, metadata?: any) => Promise<ErrorMessage | null>, private readonly validationOptions?: ValidationOptionsInterface) {
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -15,10 +17,14 @@ export class CustomValidator implements ValidatorInterface {
             validationFunction: this.validationFunction,
         }
     }
+
+    getValidationOptions(): ValidationOptionsInterface | undefined {
+        return this.validationOptions;
+    }
 }
 
 // Decorator
-export const customValidator = (validationFunction: (value: any, property: string, target: any) => Promise<ErrorMessage | null>) => {
+export const customValidator = (validationFunction: (value: any, property: string, target: any) => Promise<ErrorMessage | null>, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -29,7 +35,7 @@ export const customValidator = (validationFunction: (value: any, property: strin
          */
         propertyKey: string,
     ) => {
-        const validator = new CustomValidator(validationFunction);
+        const validator = new CustomValidator(validationFunction, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

@@ -1,12 +1,13 @@
 import {IsString} from "./validators/typechecker/is-string.validator";
 import {Validator} from "./validator";
 import {validateNested} from "./validators/validate-nested.validator";
-import {isOptional} from "./conditions/is-optional.condition";
+import {IsOptional, isOptional} from "./conditions/is-optional.condition";
 import { Max } from "./validators/number/max.validator";
 import { ValidateIf } from "./conditions/validate-if.condition";
 import {customValidator} from "./validators/common/custom.validator";
 import {ErrorMessage} from "./types/error-message.type";
 import {isNotEmpty} from "./validators/common/is-not-empty.validator";
+import {IsInt} from "./validators/typechecker/is-int.validator";
 
 describe("Validator", () => {
     it("should directly validate the first-level properties", async () => {
@@ -676,5 +677,64 @@ describe("Validator", () => {
         expect(validationErrors2[0].children[0].children[0].property).toBe("title");
         expect(Object.keys(validationErrors2[0].children[0].children[0].constraints).length).toBe(1);
         expect(Object.keys(validationErrors2[0].children[0].children[0].constraints)[0]).toBe("IS_STRING");
+    })
+
+    it("should validate only the properties if the group is specified", async () => {
+        class NestedClass {
+            @IsInt({
+                groups: ["GroupA"]
+            })
+            @IsString({
+                groups: ["GroupB"]
+            })
+            // @ts-ignore
+            title: string;
+
+            @IsString()
+            // @ts-ignore
+            description: string;
+        }
+
+        class BasicClass {
+            @validateNested()
+            // @ts-ignore
+            nestedClass: NestedClass;
+
+            @IsString()
+            @IsOptional({
+                groups: ["GroupA"]
+            })
+            // @ts-ignore
+            title?: string;
+        }
+
+        const basicClass = new BasicClass();
+        const nestedClass = new NestedClass();
+        // @ts-ignore
+        nestedClass.title = 3;
+        nestedClass.description = "Description"
+
+        basicClass.nestedClass = nestedClass;
+
+        const validator = new Validator();
+
+        const validationErrorsGroupA =  await validator.validate(basicClass, {
+            groups: ["GroupA"],
+        });
+
+        expect(validationErrorsGroupA.length).toBe(0);
+
+        const validationErrorsGroupB =  await validator.validate(basicClass, {
+            groups: ["GroupB"],
+        });
+
+
+        expect(validationErrorsGroupB.length).toBe(2);
+        expect(validationErrorsGroupB[0].property).toBe("nestedClass");
+        expect(validationErrorsGroupB[0].children.length).toBe(1);
+        expect(validationErrorsGroupB[0].children[0].property).toBe("title");
+        expect(validationErrorsGroupB[0].children[0].constraints.IS_STRING).toBeDefined()
+        expect(validationErrorsGroupB[1].property).toBe("title")
+        expect(validationErrorsGroupB[1].constraints.IS_STRING).toBeDefined();
     })
 });
