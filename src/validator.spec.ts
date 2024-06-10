@@ -7,6 +7,7 @@ import { ValidateIf } from "./conditions/validate-if.condition";
 import {customValidator} from "./validators/common/custom.validator";
 import {ErrorMessage} from "./types/error-message.type";
 import {isNotEmpty} from "./validators/common/is-not-empty.validator";
+import {plainToInstance} from "class-transformer";
 import {IsInt} from "./validators/typechecker/is-int.validator";
 
 describe("Validator", () => {
@@ -18,6 +19,25 @@ describe("Validator", () => {
         }
 
         const object = new BasicClass();
+        const validator = new Validator();
+        const validationErrors = await validator.validate(object);
+
+        expect(validationErrors.length).toBe(1);
+        expect(validationErrors[0].constraints).toBeDefined();
+        expect(validationErrors[0].constraints["IS_STRING"]).toBeDefined();
+        expect(validationErrors[0].target).toBe(object);
+        expect(validationErrors[0].value).toBeUndefined()
+        expect(validationErrors[0].property).toBe("title")
+    });
+
+    it("should directly validate the first-level properties when the object is built using plainToInstance", async () => {
+        class BasicClass {
+            @IsString()
+            // @ts-ignore
+            title: string;
+        }
+
+        const object = plainToInstance(BasicClass, {});
         const validator = new Validator();
         const validationErrors = await validator.validate(object);
 

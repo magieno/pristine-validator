@@ -20,15 +20,14 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           always-auth: true
           node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org
           scope: '@pristine'
-      - run: npm install -g npm@8.19.2
       - run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -43,14 +42,14 @@ jobs:
     # Set the type of machine to run on
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js 16.x
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           always-auth: true
-          node-version: 16.x
+          node-version: 20.x
           registry-url: https://registry.npmjs.org
           scope: '@pristine'
       - run: npm install -g npm@latest
