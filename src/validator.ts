@@ -13,7 +13,7 @@ export class Validator {
      * @param property
      * @param objectToValidate
      */
-    public async executeValidatorsOnProperty(property: string, objectToValidate: any, metadata?: any): Promise<ValidationError | null> {
+    public async executeValidatorsOnProperty(property: string, objectToValidate: any, metadata?: any, options: {groups?: string[]} = {}): Promise<ValidationError | null> {
         // Retrieve the value from the object
         const value = objectToValidate[property];
 
@@ -32,6 +32,11 @@ export class Validator {
         for (const validator of validators) {
             if (typeof validator.validate === "undefined") {
                 throw new Error("The validator with name: '" + validator.constructor.name + "' doesn't implement the ValidatorInterface");
+            }
+
+            // If there are groups in the options and that the validator has groups, we need to check if the groups are the same. If the validator has no group, we still validate it.
+            if(options.groups && validator.getValidationOptions()?.groups?.some((group) => options.groups?.includes(group)) === false) {
+                continue;
             }
 
             const errorMessage: ErrorMessage | null = await validator.validate(value, property, objectToValidate, metadata);
@@ -65,7 +70,7 @@ export class Validator {
      * @private
      */
 
-    private async executeValidation(objectToValidate: any, rootObject: any, defaultConditions: ConditionInterface[] = [], propertyPath: string[] = [], currentPath: string = "", metadata?: any): Promise<ValidationError[]> {
+    private async executeValidation(objectToValidate: any, rootObject: any, defaultConditions: ConditionInterface[] = [], options: {propertyPath?: string[], groups?: string[]} = {}, currentPath: string = "", metadata?: any): Promise<ValidationError[]> {
         if (typeof objectToValidate !== "object") {
             throw new Error("The Object to validate must be of type object. Type: '" + typeof objectToValidate + "'.")
         }
@@ -77,11 +82,11 @@ export class Validator {
         let visitOnlyInPropertyPath = false;
 
         // This means that we validate the specified property paths
-        if (propertyPath.length !== 0) {
+        if (options.propertyPath && options.propertyPath.length !== 0) {
             visitOnlyInPropertyPath = true;
 
             // We visit only the first property, check if the property is valid
-            const property = propertyPath.shift();
+            const property = options.propertyPath.shift();
 
             if (property === undefined) {
                 throw new Error("The property '" + property + "' is undefined and shouldn't be.");
@@ -114,13 +119,13 @@ export class Validator {
                 }
             }
 
-            const validationError: ValidationError | null = await this.executeValidatorsOnProperty(property, objectToValidate)
+            const validationError: ValidationError | null = await this.executeValidatorsOnProperty(property, objectToValidate, {}, {groups: options.groups})
 
             // If there are nested elements and there is a @validateNested annotation, we must validate them further.
             const shouldValidateNested = PropertyMetadata.getMetadata(objectToValidate, property, MetadataKeynameEnum.ValidateNested) ?? false;
 
             // If we visit only specific properties, the value must be a nested element if there are additional property paths
-            if (visitOnlyInPropertyPath && propertyPath.length !== 0 && typeof value !== 'object' && Array.isArray(value) === false) {
+            if (visitOnlyInPropertyPath && options.propertyPath && options.propertyPath.length !== 0 && typeof value !== 'object' && Array.isArray(value) === false) {
                 throw new Error("The property '" + property + "' from propertyPath is not an object or an array.")
             }
 
@@ -135,8 +140,8 @@ export class Validator {
             if (Array.isArray(value)) {
                 let validateOnlyOneItem = false
                 let indexToValidate;
-                if (propertyPath.length !== 0) {
-                    indexToValidate = propertyPath.shift();
+                if (options.propertyPath && options.propertyPath.length !== 0) {
+                    indexToValidate = options.propertyPath && options.propertyPath.shift();
                     if (indexToValidate === undefined || isNaN(+indexToValidate)) {
                         throw new Error("The property path in an array should be a number");
                     }
@@ -151,7 +156,7 @@ export class Validator {
                     }
 
                     let indexCurrentPath = currentPath + "." + index;
-                    const inArrayElementValidationErrors = await this.executeValidation(element, rootObject, defaultConditions, propertyPath, indexCurrentPath, metadata);
+                    const inArrayElementValidationErrors = await this.executeValidation(element, rootObject, defaultConditions, options, indexCurrentPath, metadata);
 
 
                     if (inArrayElementValidationErrors.length === 0) {
@@ -180,7 +185,7 @@ export class Validator {
                 // Add the errors to the list of validation errors
                 validationErrors.push(validationError1);
             } else if (typeof value === 'object') {
-                const nestedValidationErrors = await this.executeValidation(value, rootObject, defaultConditions, propertyPath, currentPath, metadata);
+                const nestedValidationErrors = await this.executeValidation(value, rootObject, defaultConditions, options, currentPath, metadata);
 
 
                 if (nestedValidationErrors.length === 0) {
@@ -220,7 +225,8 @@ export class Validator {
      * @param parameters
      */
     public async validate(objectToValidate: any, parameters: {
-        propertyPath?: string
+        propertyPath?: string,
+        groups?: string[],
     } = {}, metadata?: any): Promise<ValidationError[]> {
         let validationErrors: ValidationError[] = [];
 
@@ -233,7 +239,7 @@ export class Validator {
         // If object is array, loop over the array and validate each object inside
         if (Array.isArray(objectToValidate)) {
             for (const [index, object] of objectToValidate.entries()) {
-                const nestedValidationErrors = await this.executeValidation(object, objectToValidate, [], propertyPaths,"", metadata);
+                const nestedValidationErrors = await this.executeValidation(object, objectToValidate, [], {propertyPath: propertyPaths, groups: parameters.groups},"", metadata);
 
                 if (nestedValidationErrors.length === 0) {
                     continue;
@@ -245,7 +251,7 @@ export class Validator {
                 validationErrors.push(validationError);
             }
         } else {
-            validationErrors = await this.executeValidation(objectToValidate, objectToValidate, [], propertyPaths, "", metadata);
+            validationErrors = await this.executeValidation(objectToValidate, objectToValidate, [], {propertyPath: propertyPaths, groups: parameters.groups}, "", metadata);
         }
 
         return validationErrors;
