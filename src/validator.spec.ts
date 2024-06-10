@@ -698,7 +698,13 @@ describe("Validator", () => {
         class BasicClass {
             @validateNested()
             // @ts-ignore
-            nestedClass: NestedClass;
+            nestedClass: NestedClass = new NestedClass();
+
+            @validateNested({
+                groups: ["GroupB"]
+            })
+            // @ts-ignore
+            nestedClass2: NestedClass = new NestedClass();
 
             @IsString()
             @IsOptional({
@@ -718,6 +724,13 @@ describe("Validator", () => {
 
         const validator = new Validator();
 
+        const validationErrors =  await validator.validate(basicClass, {
+        });
+
+        expect(validationErrors.length).toBe(1);
+        expect(validationErrors[0].property).toBe("title");
+        expect(validationErrors[0].constraints.IS_STRING).toBeDefined();
+
         const validationErrorsGroupA =  await validator.validate(basicClass, {
             groups: ["GroupA"],
         });
@@ -729,12 +742,18 @@ describe("Validator", () => {
         });
 
 
-        expect(validationErrorsGroupB.length).toBe(2);
+        expect(validationErrorsGroupB.length).toBe(3);
         expect(validationErrorsGroupB[0].property).toBe("nestedClass");
         expect(validationErrorsGroupB[0].children.length).toBe(1);
         expect(validationErrorsGroupB[0].children[0].property).toBe("title");
         expect(validationErrorsGroupB[0].children[0].constraints.IS_STRING).toBeDefined()
-        expect(validationErrorsGroupB[1].property).toBe("title")
-        expect(validationErrorsGroupB[1].constraints.IS_STRING).toBeDefined();
+        expect(validationErrorsGroupB[1].property).toBe("nestedClass2");
+        expect(validationErrorsGroupB[1].children.length).toBe(2);
+        expect(validationErrorsGroupB[1].children[0].property).toBe("title");
+        expect(validationErrorsGroupB[1].children[0].constraints.IS_STRING).toBeDefined()
+        expect(validationErrorsGroupB[1].children[1].property).toBe("description");
+        expect(validationErrorsGroupB[1].children[1].constraints.IS_STRING).toBeDefined()
+        expect(validationErrorsGroupB[2].property).toBe("title")
+        expect(validationErrorsGroupB[2].constraints.IS_STRING).toBeDefined();
     })
 });

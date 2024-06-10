@@ -132,14 +132,14 @@ export class Validator {
             const validationError: ValidationError | null = await this.executeValidatorsOnProperty(property, objectToValidate, {}, {groups: options.groups})
 
             // If there are nested elements and there is a @validateNested annotation, we must validate them further.
-            const shouldValidateNested = PropertyMetadata.getMetadata(objectToValidate, property, MetadataKeynameEnum.ValidateNested) ?? false;
+            const validateNestedValidationOptions: ValidationOptionsInterface | undefined = PropertyMetadata.getMetadata(objectToValidate, property, MetadataKeynameEnum.ValidateNested) ?? undefined;
 
             // If we visit only specific properties, the value must be a nested element if there are additional property paths
             if (visitOnlyInPropertyPath && options.propertyPath && options.propertyPath.length !== 0 && typeof value !== 'object' && Array.isArray(value) === false) {
                 throw new Error("The property '" + property + "' from propertyPath is not an object or an array.")
             }
 
-            if (shouldValidateNested === false && visitOnlyInPropertyPath === false) {
+            if ( (validateNestedValidationOptions === undefined || (validateNestedValidationOptions.groups && validateNestedValidationOptions.groups.length > 0 && !validateNestedValidationOptions.groups.some((group) => options.groups?.includes(group)))) && visitOnlyInPropertyPath === false) {
                 // If we have a validation error we save it before continuing to next property
                 if (validationError !== null) {
                     validationErrors.push(validationError);
@@ -196,7 +196,6 @@ export class Validator {
                 validationErrors.push(validationError1);
             } else if (typeof value === 'object') {
                 const nestedValidationErrors = await this.executeValidation(value, rootObject, defaultConditions, options, currentPath, metadata);
-
 
                 if (nestedValidationErrors.length === 0) {
                     // If there was already a parent validation error we need to push it.
