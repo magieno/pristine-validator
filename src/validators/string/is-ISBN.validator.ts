@@ -1,7 +1,7 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isIsbnValidator from 'validator/lib/isISBN';
@@ -9,8 +9,8 @@ import isIsbnValidator from 'validator/lib/isISBN';
 export type IsISBNVersion = '10' | '13' | 10 | 13;
 
 export class IsISBNValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly version?: IsISBNVersion, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(private readonly version?: IsISBNVersion, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -37,7 +37,7 @@ export class IsISBNValidator extends BaseValidator implements ValidatorInterface
 }
 
 // Decorator
-export const isISBN = (version?: IsISBNVersion, buildErrorMessage?: BuildErrorMessageType) => {
+export const isISBN = (version?: IsISBNVersion, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -48,7 +48,7 @@ export const isISBN = (version?: IsISBNVersion, buildErrorMessage?: BuildErrorMe
          */
         propertyKey: string,
     ) => {
-        const validator = new IsISBNValidator(version, buildErrorMessage);
+        const validator = new IsISBNValidator(version, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

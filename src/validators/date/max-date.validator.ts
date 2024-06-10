@@ -1,14 +1,14 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import {format} from 'date-fns'
 
 export class MaxDateValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly maxDate: Date, buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(private readonly maxDate: Date, validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: Date, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -52,7 +52,7 @@ export class MaxDateValidator extends BaseValidator implements ValidatorInterfac
 
 
 // Decorator
-export const maxDate = (maxDate: Date, buildErrorMessage?: BuildErrorMessageType) => {
+export const maxDate = (maxDate: Date, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -63,7 +63,7 @@ export const maxDate = (maxDate: Date, buildErrorMessage?: BuildErrorMessageType
          */
         propertyKey: string,
     ) => {
-        const validator = new MaxDateValidator(maxDate, buildErrorMessage);
+        const validator = new MaxDateValidator(maxDate, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

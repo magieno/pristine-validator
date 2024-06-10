@@ -2,7 +2,7 @@ import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ErrorMessage} from "../../types/error-message.type";
 import {BaseValidator} from "../base.validator";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 
 export class IsStringValidator extends BaseValidator implements ValidatorInterface {
@@ -39,7 +39,7 @@ export class IsStringValidator extends BaseValidator implements ValidatorInterfa
 
 
 // Decorator
-export const isString = (buildErrorMessage?: BuildErrorMessageType) => {
+export const isString = (validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -50,7 +50,7 @@ export const isString = (buildErrorMessage?: BuildErrorMessageType) => {
          */
         propertyKey: string,
     ) => {
-        const isStringValidator = new IsStringValidator(buildErrorMessage);
+        const isStringValidator = new IsStringValidator(validationOptions);
 
         addValidator(target, propertyKey, isStringValidator)
     }

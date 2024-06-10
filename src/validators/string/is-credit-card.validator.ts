@@ -1,14 +1,14 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isCreditCardValidator from "validator/lib/isCreditCard";
 
 export class IsCreditCardValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(buildErrorMessage?: BuildErrorMessageType) {
-        super(buildErrorMessage);
+    public constructor(validationOptions?: ValidationOptionsInterface) {
+        super(validationOptions);
     }
 
     async validate(value: any, property: string, target: any, metadata?: any): Promise<ErrorMessage | null> {
@@ -32,7 +32,7 @@ export class IsCreditCardValidator extends BaseValidator implements ValidatorInt
 
 
 // Decorator
-export const isCreditCard = (buildErrorMessage?: BuildErrorMessageType) => {
+export const isCreditCard = (validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -43,7 +43,7 @@ export const isCreditCard = (buildErrorMessage?: BuildErrorMessageType) => {
          */
         propertyKey: string,
     ) => {
-        const validator = new IsCreditCardValidator(buildErrorMessage);
+        const validator = new IsCreditCardValidator(validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

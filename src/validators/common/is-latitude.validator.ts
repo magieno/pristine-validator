@@ -1,7 +1,7 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isLatLongValidator from "validator/lib/isLatLong";
@@ -28,7 +28,7 @@ export class IsLatitudeValidator extends BaseValidator implements ValidatorInter
 
 
 // Decorator
-export const isLatitude = (buildErrorMessage?: BuildErrorMessageType) => {
+export const isLatitude = (validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -39,7 +39,7 @@ export const isLatitude = (buildErrorMessage?: BuildErrorMessageType) => {
          */
         propertyKey: string,
     ) => {
-        const validator = new IsLatitudeValidator(buildErrorMessage);
+        const validator = new IsLatitudeValidator(validationOptions);
 
         addValidator(target, propertyKey, validator)
     }

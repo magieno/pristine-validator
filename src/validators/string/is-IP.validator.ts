@@ -1,7 +1,7 @@
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
-import {BuildErrorMessageType} from "../../types/build-error-message.type";
+import {ValidationOptionsInterface} from "../../interfaces/validation-options.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ConstraintErrorKeynameEnum} from "../../enums/constraint-error-keyname.enum";
 import isIPValidator from 'validator/lib/isIP';
@@ -9,7 +9,7 @@ import isIPValidator from 'validator/lib/isIP';
 export type IsIpVersion = '4' | '6' | 4 | 6;
 
 export class IsIPValidator extends BaseValidator implements ValidatorInterface {
-    public constructor(private readonly version?: IsIpVersion, buildErrorMessage?: BuildErrorMessageType) {
+    public constructor(private readonly version?: IsIpVersion, validationOptions?: ValidationOptionsInterface) {
         super();
     }
 
@@ -36,7 +36,7 @@ export class IsIPValidator extends BaseValidator implements ValidatorInterface {
 }
 
 // Decorator
-export const isIP = (version?: IsIpVersion, buildErrorMessage?: BuildErrorMessageType) => {
+export const isIP = (version?: IsIpVersion, validationOptions?: ValidationOptionsInterface) => {
     return (
         /**
          * The class on which the decorator is used.
@@ -47,7 +47,7 @@ export const isIP = (version?: IsIpVersion, buildErrorMessage?: BuildErrorMessag
          */
         propertyKey: string,
     ) => {
-        const validator = new IsIPValidator(version, buildErrorMessage);
+        const validator = new IsIPValidator(version, validationOptions);
 
         addValidator(target, propertyKey, validator)
     }
