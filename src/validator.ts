@@ -119,7 +119,7 @@ export class Validator {
                         continue;
                     }
 
-                    if (condition.shouldBeValidated(value, property, objectToValidate, rootObject, currentPath) === false) {
+                    if (!condition.shouldBeValidated(value, property, objectToValidate, rootObject, currentPath)) {
                         shouldPropertyBeValidated = false;
                         continue;
                     }
