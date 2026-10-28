@@ -24,13 +24,8 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          always-auth: true
           node-version: ${{ matrix.node-version }}
-          registry-url: https://registry.npmjs.org
-          scope: '@pristine'
       - run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm run build
       - run: npx eslint **/*.ts
       - run: npm run test
@@ -42,27 +37,49 @@ jobs:
     # Set the type of machine to run on
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # npm trusted publishing: npm exchanges the GitHub OIDC token for a short-lived publish
+    # token. No NPM_TOKEN secret is used. `contents: write` lets the job push the version commit.
+    permissions:
+      id-token: write
+      contents: write
+    # Two merges in a row must not race on the version commit.
+    concurrency:
+      group: publish-master
+      cancel-in-progress: false
 
     steps:
+      # Check out the tip of master, not the triggering commit, so that a re-run sees the
+      # version commit of a failed attempt.
       - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-tags: true
       - name: Use Node.js 24.x
         uses: actions/setup-node@v4
         with:
-          always-auth: true
           node-version: 24.x
           registry-url: https://registry.npmjs.org
-          scope: '@pristine'
       - run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: npm whoami
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Version and publish to npm
-        uses: bcomnes/npm-bump@v2.0.2
-        with:
-          git_email: 'ima-bot@ima-tech.ca'
-          git_username: 'ima-bot'
-          newversion: 'patch'
-#          github_token: ${{ secrets.GITHUB_TOKEN }} # built in actions token.  Passed tp gh-release if in use.
-          npm_token: ${{ secrets.NPM_TOKEN }} # user set secret token generated at npm
+      - run: npm run test
+      - run: git config --global user.name 'ima-bot'
+      - run: git config --global user.email 'ima-bot@ima-tech.ca'
+      # Bump only when HEAD is not already a release: a re-run after a failed publish keeps
+      # the version of the first attempt.
+      - name: Bump version (skipped when HEAD is already tagged)
+        run: |
+          existing_tag="$(git tag --points-at HEAD 'v*')"
+          if [ -n "$existing_tag" ]; then
+            echo "HEAD is already tagged ($existing_tag); skipping the version bump."
+            exit 0
+          fi
+          npm version patch -m "v%s"
+          git push --follow-tags origin HEAD:master
+      # `prepare` builds the package. Skip the publish when this version is already on npm.
+      - name: Publish to npm
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          if npm view "@pristine-ts/class-validator@$version" version >/dev/null 2>&1; then
+            echo "@pristine-ts/class-validator@$version is already on npm; nothing to publish."
+            exit 0
+          fi
+          npm publish --provenance --access public
