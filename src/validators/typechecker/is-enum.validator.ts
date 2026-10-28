@@ -1,3 +1,5 @@
+import {JsonSchemaInterface} from "../../interfaces/json-schema.interface";
+import {JsonSchemaUtil} from "../../utils/json-schema.util";
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
@@ -32,6 +34,11 @@ export class IsEnumValidator extends BaseValidator implements ValidatorInterface
             target,
             this,
             metadata);
+    }
+
+    public getJsonSchema(): JsonSchemaInterface {
+        // A numeric enum also maps each value back to its name (`E[0] === "A"`); skip those reverse keys.
+        return JsonSchemaUtil.enumSchema(Object.keys(this.entity).filter(key => isNaN(Number(key))).map(key => this.entity[key]));
     }
 
     public getConstraints(): any {

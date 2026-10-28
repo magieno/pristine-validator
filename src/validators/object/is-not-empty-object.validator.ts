@@ -1,3 +1,4 @@
+import {JsonSchemaInterface} from "../../interfaces/json-schema.interface";
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
@@ -45,6 +46,10 @@ export class IsNotEmptyObjectValidator extends BaseValidator implements Validato
 
         return errorMessage;
 
+    }
+
+    public getJsonSchema(): JsonSchemaInterface {
+        return {minProperties: 1};
     }
 
     public getConstraints(): any {

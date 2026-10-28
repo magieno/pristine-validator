@@ -1,3 +1,4 @@
+import {JsonSchemaInterface} from "../../interfaces/json-schema.interface";
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
@@ -26,6 +27,10 @@ export class IsArrayValidator extends BaseValidator implements ValidatorInterfac
         }
 
         return null;
+    }
+
+    public getJsonSchema(): JsonSchemaInterface {
+        return {type: "array"};
     }
 
     public getConstraints(): any {

@@ -1,3 +1,4 @@
+import {JsonSchemaInterface} from "../../interfaces/json-schema.interface";
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
@@ -23,6 +24,10 @@ export class MaxLengthValidator extends BaseValidator implements ValidatorInterf
             target,
             this,
             metadata);
+    }
+
+    public getJsonSchema(): JsonSchemaInterface {
+        return {maxLength: this.maxLength};
     }
 
     public getConstraints(): any {

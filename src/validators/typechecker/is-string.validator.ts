@@ -1,3 +1,4 @@
+import {JsonSchemaInterface} from "../../interfaces/json-schema.interface";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {addValidator} from "../../helpers/add-validator";
 import {ErrorMessage} from "../../types/error-message.type";
@@ -30,6 +31,10 @@ export class IsStringValidator extends BaseValidator implements ValidatorInterfa
 
     getName(): string {
         return "IS_STRING";
+    }
+
+    public getJsonSchema(): JsonSchemaInterface {
+        return {type: "string"};
     }
 
     public getConstraints(): any {

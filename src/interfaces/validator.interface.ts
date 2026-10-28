@@ -1,5 +1,6 @@
 import {ErrorMessage} from "../types/error-message.type";
 import {ValidationOptionsInterface} from "./validation-options.interface";
+import {JsonSchemaInterface} from "./json-schema.interface";
 
 export interface ValidatorInterface {
     /**
@@ -20,4 +21,10 @@ export interface ValidatorInterface {
      * Returns the validation options or undefined if none are set.
      */
     getValidationOptions(): ValidationOptionsInterface | undefined
+
+    /**
+     * Returns the JSON Schema keywords this validator stands for, when JSON Schema can express it.
+     * `JsonSchemaGenerator` merges them into the schema of the property.
+     */
+    getJsonSchema?(): JsonSchemaInterface;
 }
