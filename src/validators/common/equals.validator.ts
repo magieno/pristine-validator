@@ -1,3 +1,4 @@
+import {JsonSchemaInterface} from "../../interfaces/json-schema.interface";
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
@@ -22,6 +23,10 @@ export class EqualsValidator extends BaseValidator implements ValidatorInterface
         }
 
         return null;
+    }
+
+    public getJsonSchema(): JsonSchemaInterface {
+        return {const: this.expectedValue};
     }
 
     public getConstraints(): any {

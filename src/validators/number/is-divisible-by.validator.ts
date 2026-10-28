@@ -1,3 +1,4 @@
+import {JsonSchemaInterface} from "../../interfaces/json-schema.interface";
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
@@ -23,6 +24,10 @@ export class IsDivisibleByValidator extends BaseValidator implements ValidatorIn
         }
 
         return null;
+    }
+
+    public getJsonSchema(): JsonSchemaInterface {
+        return {multipleOf: this.numberToDivideBy};
     }
 
     public getConstraints(): any {

@@ -1,3 +1,4 @@
+import {JsonSchemaInterface} from "../../interfaces/json-schema.interface";
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
@@ -26,6 +27,11 @@ export class IsDateValidator extends BaseValidator implements ValidatorInterface
             target,
             this,
             metadata);
+    }
+
+    public getJsonSchema(): JsonSchemaInterface {
+        // JSON has no date type: a date travels as an RFC 3339 string.
+        return {type: "string", format: "date-time"};
     }
 
     public getConstraints(): any {

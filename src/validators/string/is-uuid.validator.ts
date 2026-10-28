@@ -1,3 +1,4 @@
+import {JsonSchemaInterface} from "../../interfaces/json-schema.interface";
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
@@ -25,6 +26,10 @@ export class IsUUIDValidator extends BaseValidator implements ValidatorInterface
             target,
             this,
             metadata);
+    }
+
+    public getJsonSchema(): JsonSchemaInterface {
+        return {format: "uuid"};
     }
 
     public getConstraints(): any {

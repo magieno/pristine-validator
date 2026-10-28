@@ -1,3 +1,5 @@
+import {JsonSchemaInterface} from "../../interfaces/json-schema.interface";
+import {JsonSchemaUtil} from "../../utils/json-schema.util";
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
@@ -32,6 +34,10 @@ export class IsInValidator extends BaseValidator implements ValidatorInterface {
         }
 
         return null;
+    }
+
+    public getJsonSchema(): JsonSchemaInterface {
+        return JsonSchemaUtil.enumSchema(this.possibleValues);
     }
 
     public getConstraints(): any {

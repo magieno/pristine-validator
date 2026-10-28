@@ -28,6 +28,7 @@ export * from "./is-IBAN.validator";
 export * from "./is-identity-card.validator";
 export * from "./is-IP.validator";
 export * from "./is-ISBN.validator";
+export * from "./is-ISO-8601.validator";
 export * from "./is-ISIN.validator";
 export * from "./is-ISO-31661-alpha-2.validator";
 export * from "./is-ISO-31661-alpha-3.validator";

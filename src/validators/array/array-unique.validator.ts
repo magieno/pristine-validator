@@ -1,3 +1,4 @@
+import {JsonSchemaInterface} from "../../interfaces/json-schema.interface";
 import {BaseValidator} from "../base.validator";
 import {ValidatorInterface} from "../../interfaces/validator.interface";
 import {ErrorMessage} from "../../types/error-message.type";
@@ -39,6 +40,10 @@ export class ArrayUniqueValidator extends BaseValidator implements ValidatorInte
         }
 
         return null;
+    }
+
+    public getJsonSchema(): JsonSchemaInterface {
+        return {uniqueItems: true};
     }
 
     public getConstraints(): any {
